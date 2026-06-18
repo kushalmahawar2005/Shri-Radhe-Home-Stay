@@ -19,6 +19,7 @@ import {
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import { AvailabilityCard } from "@/components/availability-card";
+import { RoomGallery } from "@/components/room-gallery";
 import { Reveal } from "@/components/reveal";
 import { Flourish } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
@@ -110,37 +111,10 @@ export default function RoomDetailPage({
           <div className="flex flex-col gap-10">
             {/* gallery */}
             <Reveal>
-              <figure className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
-                <Image
-                  src={room.image}
-                  alt={room.alt}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  placeholder="blur"
-                  blurDataURL={BLUR_DATA_URL}
-                  className="object-cover"
-                />
-              </figure>
-              <div className="mt-3 grid grid-cols-4 gap-3">
-                {room.gallery.map((src, i) => (
-                  <figure
-                    key={src + i}
-                    className="relative aspect-[4/3] overflow-hidden rounded-xl border border-gold/30"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${room.name} view ${i + 1}`}
-                      fill
-                      loading="lazy"
-                      sizes="(max-width: 1024px) 25vw, 15vw"
-                      placeholder="blur"
-                      blurDataURL={BLUR_DATA_URL}
-                      className="object-cover"
-                    />
-                  </figure>
-                ))}
-              </div>
+              <RoomGallery
+                images={Array.from(new Set([room.image, ...room.gallery]))}
+                name={room.name}
+              />
             </Reveal>
 
             {/* quick facts */}

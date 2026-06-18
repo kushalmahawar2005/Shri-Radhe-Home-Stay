@@ -87,7 +87,7 @@ export function Hero() {
         >
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-4 border-cream-light shadow-card ring-1 ring-gold/40">
             <Image
-              src="/images/03.jpg"
+              src="/images/3.jpg"
               alt="Comfortable AC room with a temple-town view at Shri Radha Home Stay"
               fill
               priority

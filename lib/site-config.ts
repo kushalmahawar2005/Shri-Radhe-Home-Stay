@@ -153,7 +153,7 @@ export const siteConfig = {
     {
       slug: "deluxe",
       name: "Deluxe Room",
-      image: "/images/room-deluxe.jpg",
+      image: "/images/02.jpg",
       alt: "Deluxe AC room with comfortable bedding at Shri Radha Home Stay",
       blurb:
         "A cosy, well-appointed AC room perfect for couples and solo pilgrims seeking a peaceful stay near the temple.",
@@ -165,10 +165,10 @@ export const siteConfig = {
       bed: "King Size Bed",
       size: "180 sq.ft",
       gallery: [
-        "/images/room-deluxe.jpg",
-        "/images/terrace.jpg",
-        "/images/building.jpg",
-        "/images/hero-room.jpg",
+        "/images/01.jpg",
+        "/images/02.jpg",
+        "/images/03.jpg",
+        "/images/BathroomB.jpg",
       ],
       amenities: [
         "Air Conditioner",
@@ -191,22 +191,22 @@ export const siteConfig = {
     {
       slug: "family",
       name: "Family Room",
-      image: "/images/room-family.jpg",
+      image: "/images/r3.jpg",
       alt: "Spacious family room with multiple beds at Shri Radha Home Stay",
       blurb:
         "A spacious, family-friendly room with room to relax together after darshan — ideal for families travelling with children or elders.",
-      features: ["Spacious", "Family Friendly", "AC", "4–5 Guests"],
-      guests: "4–5 Guests",
+      features: ["Spacious", "Family Friendly", "AC", "3–4 Guests"],
+      guests: "3–4 Guests",
       price: "On Request",
       priceNight: "₹2,500",
       tagline: "Space, Comfort & Togetherness",
       bed: "2 King Size Beds",
       size: "300 sq.ft",
       gallery: [
-        "/images/room-family.jpg",
-        "/images/room-deluxe.jpg",
-        "/images/terrace.jpg",
-        "/images/food.jpg",
+        "/images/r1.jpg",
+        "/images/r2.jpg",
+        "/images/r3.jpg",
+        "/images/BathroomC.jpg",
       ],
       amenities: [
         "Air Conditioner",
@@ -229,22 +229,22 @@ export const siteConfig = {
     {
       slug: "premium",
       name: "Premium Room",
-      image: "/images/room-premium.jpg",
+      image: "/images/c1.jpg",
       alt: "Premium room with temple town view and luxury bedding",
       blurb:
         "Our finest room with a temple-town view and luxury bedding, for guests who want an elevated, restful stay.",
-      features: ["Temple Town View", "Luxury Bedding", "AC", "2–3 Guests"],
-      guests: "2–3 Guests",
+      features: ["Temple Town View", "Luxury Bedding", "AC", "5–6 Guests"],
+      guests: "5–6 Guests",
       price: "On Request",
       priceNight: "₹3,200",
       tagline: "Luxury, Calm & Devotion",
       bed: "King Size Bed",
       size: "240 sq.ft",
       gallery: [
-        "/images/room-premium.jpg",
-        "/images/building.jpg",
-        "/images/terrace.jpg",
-        "/images/hero-room.jpg",
+        "/images/c1.jpg",
+        "/images/c2.jpg",
+        "/images/c3.jpg",
+        "/images/BathroomA.jpg",
       ],
       amenities: [
         "Air Conditioner",
