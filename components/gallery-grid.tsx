@@ -5,20 +5,24 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import {
-  galleryImages,
+  galleryImages as defaultGalleryImages,
   galleryCategories,
   type GalleryImage,
 } from "@/lib/site-config";
 import { BLUR_DATA_URL, cn } from "@/lib/utils";
 
-export function GalleryGrid() {
+export function GalleryGrid({
+  images: allImages = defaultGalleryImages,
+}: {
+  images?: GalleryImage[];
+}) {
   const [active, setActive] = useState<(typeof galleryCategories)[number]>("All");
   const [lightbox, setLightbox] = useState<GalleryImage | null>(null);
 
   const images =
     active === "All"
-      ? galleryImages
-      : galleryImages.filter((img) => img.category === active);
+      ? allImages
+      : allImages.filter((img) => img.category === active);
 
   return (
     <div>

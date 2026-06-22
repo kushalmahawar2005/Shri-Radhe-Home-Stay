@@ -9,17 +9,20 @@ import { Nearby } from "@/components/nearby";
 import { Testimonials } from "@/components/testimonials";
 import { FindUs } from "@/components/find-us";
 import { CtaBand } from "@/components/cta-band";
+import { getRooms } from "@/lib/content-store";
 
-// Fully static — no server runtime required.
-export const dynamic = "force-static";
+// Rendered on the server with rooms from the DB; refreshed hourly and
+// on-demand whenever the admin saves a room.
+export const revalidate = 3600;
 
-export default function HomePage() {
+export default async function HomePage() {
+  const rooms = await getRooms();
   return (
     <>
       <Hero />
       <QuickFacts />
       <About />
-      <Rooms />
+      <Rooms rooms={rooms} />
       <GreenBand />
       <DivineEnergy />
 

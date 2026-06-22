@@ -3,13 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check, MessageCircle, Users, ArrowRight, CalendarCheck } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getRooms } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { Facilities } from "@/components/facilities";
 import { Reveal } from "@/components/reveal";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Our Rooms",
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/rooms" },
 };
 
-export default function RoomsPage() {
+export default async function RoomsPage() {
+  const rooms = await getRooms();
   return (
     <>
       {/* page header */}
@@ -36,7 +38,7 @@ export default function RoomsPage() {
       {/* room rows */}
       <section className="bg-cream py-14 md:py-20">
         <div className="container flex flex-col gap-12">
-          {siteConfig.rooms.map((room, i) => (
+          {rooms.map((room, i) => (
             <Reveal
               key={room.slug}
               className={`grid items-center gap-8 md:grid-cols-2 ${

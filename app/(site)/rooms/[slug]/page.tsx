@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getRooms, getRoomBySlug } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { AvailabilityCard } from "@/components/availability-card";
 import { RoomGallery } from "@/components/room-gallery";
@@ -24,18 +25,19 @@ import { Reveal } from "@/components/reveal";
 import { Flourish } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
-export function generateStaticParams() {
-  return siteConfig.rooms.map((room) => ({ slug: room.slug }));
+export async function generateStaticParams() {
+  const rooms = await getRooms();
+  return rooms.map((room) => ({ slug: room.slug }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
-}): Metadata {
-  const room = siteConfig.rooms.find((r) => r.slug === params.slug);
+}): Promise<Metadata> {
+  const room = await getRoomBySlug(params.slug);
   if (!room) return { title: "Room Not Found" };
   return {
     title: room.name,
@@ -44,15 +46,16 @@ export function generateMetadata({
   };
 }
 
-export default function RoomDetailPage({
+export default async function RoomDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const room = siteConfig.rooms.find((r) => r.slug === params.slug);
+  const allRooms = await getRooms();
+  const room = allRooms.find((r) => r.slug === params.slug);
   if (!room) notFound();
 
-  const others = siteConfig.rooms.filter((r) => r.slug !== room.slug);
+  const others = allRooms.filter((r) => r.slug !== room.slug);
 
   const quickFacts = [
     { icon: Snowflake, label: "AC Room" },
@@ -214,7 +217,7 @@ export default function RoomDetailPage({
                 </span>
                 <span className="text-sm text-cream/80">/ night</span>
               </div>
-              <AvailabilityCard roomSlug={room.slug} />
+              <AvailabilityCard roomSlug={room.slug} rooms={allRooms} />
             </div>
 
             <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">

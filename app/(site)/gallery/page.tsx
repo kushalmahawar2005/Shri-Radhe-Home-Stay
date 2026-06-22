@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getGallery } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { GalleryGrid } from "@/components/gallery-grid";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gallery" },
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const images = await getGallery();
   return (
     <>
       <section className="bg-cream-gradient py-14 md:py-20">
@@ -30,7 +32,7 @@ export default function GalleryPage() {
 
       <section className="bg-cream py-14 md:py-20">
         <div className="container">
-          <GalleryGrid />
+          <GalleryGrid images={images} />
         </div>
       </section>
 

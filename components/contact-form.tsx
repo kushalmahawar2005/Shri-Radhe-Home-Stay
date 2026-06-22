@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Send, MessageCircle, CheckCircle2 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
+import { submitContactMessage } from "@/app/(site)/contact/actions";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
@@ -26,35 +27,53 @@ export function ContactForm() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    // Fallback: no endpoint configured → open WhatsApp with the message.
-    if (!ENDPOINT) {
-      const msg = `Jai Shri Krishna! I'm ${data.get("name")}.\n${data.get(
-        "message"
-      )}\nReach me at ${data.get("email")} / ${data.get("phone")}`;
-      window.open(
-        `https://wa.me/918619301401?text=${encodeURIComponent(msg)}`,
-        "_blank",
-        "noopener"
-      );
-      return;
-    }
+    setStatus("sending");
 
+    // Primary: save to our database (admin inbox).
     try {
-      setStatus("sending");
-      const res = await fetch(ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: data,
+      const res = await submitContactMessage({
+        name: String(data.get("name") ?? ""),
+        phone: String(data.get("phone") ?? ""),
+        email: String(data.get("email") ?? ""),
+        message: String(data.get("message") ?? ""),
       });
       if (res.ok) {
         setStatus("sent");
         form.reset();
-      } else {
-        setStatus("error");
+        return;
       }
     } catch {
-      setStatus("error");
+      /* fall through to other options */
     }
+
+    // Optional: post to Formspree if configured.
+    if (ENDPOINT) {
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: data,
+        });
+        if (res.ok) {
+          setStatus("sent");
+          form.reset();
+          return;
+        }
+      } catch {
+        /* fall through to WhatsApp */
+      }
+    }
+
+    // Final fallback: open WhatsApp with a pre-filled message.
+    const msg = `Jai Shri Krishna! I'm ${data.get("name")}.\n${data.get(
+      "message"
+    )}\nReach me at ${data.get("email")} / ${data.get("phone")}`;
+    window.open(
+      `https://wa.me/918619301401?text=${encodeURIComponent(msg)}`,
+      "_blank",
+      "noopener"
+    );
+    setStatus("idle");
   }
 
   if (status === "sent") {

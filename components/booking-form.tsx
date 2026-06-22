@@ -4,18 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CalendarCheck, MessageCircle, Check } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, type Room } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import { BLUR_DATA_URL, cn } from "@/lib/utils";
+import { submitBookingRequest } from "@/app/(site)/booking/actions";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
-export function BookingForm() {
+export function BookingForm({ rooms = siteConfig.rooms }: { rooms?: Room[] }) {
   const router = useRouter();
   const search = useSearchParams();
 
   const [room, setRoom] = useState(
-    search.get("room") ?? siteConfig.rooms[0].slug
+    search.get("room") ?? rooms[0].slug
   );
   const [checkIn, setCheckIn] = useState(search.get("checkin") ?? "");
   const [checkOut, setCheckOut] = useState(search.get("checkout") ?? "");
@@ -26,7 +27,7 @@ export function BookingForm() {
   const [notes, setNotes] = useState("");
 
   const selectedRoom =
-    siteConfig.rooms.find((r) => r.slug === room) ?? siteConfig.rooms[0];
+    rooms.find((r) => r.slug === room) ?? rooms[0];
 
   const inputCls =
     "w-full rounded-lg border border-gold/40 bg-cream-light px-4 py-2.5 text-ink placeholder:text-ink/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold";
@@ -54,6 +55,23 @@ export function BookingForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const params = buildSummaryParams();
+
+    // Save the request to our database (admin inbox). Non-blocking: if the
+    // DB isn't configured or the save fails, we still confirm to the guest.
+    try {
+      await submitBookingRequest({
+        roomSlug: room,
+        checkIn,
+        checkOut,
+        guests,
+        name,
+        phone,
+        email,
+        notes,
+      });
+    } catch {
+      /* ignore — still show confirmation */
+    }
 
     // Optional: post to Formspree if configured (no server needed otherwise).
     if (ENDPOINT) {
@@ -133,7 +151,7 @@ export function BookingForm() {
             Select Room Type
           </h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
-            {siteConfig.rooms.map((r) => (
+            {rooms.map((r) => (
               <button
                 key={r.slug}
                 type="button"

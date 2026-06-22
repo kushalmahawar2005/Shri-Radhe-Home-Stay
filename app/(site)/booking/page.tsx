@@ -4,8 +4,9 @@ import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
 import { BookingForm } from "@/components/booking-form";
 import { bookingPerks } from "@/lib/site-config";
+import { getRooms } from "@/lib/content-store";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Book Your Stay",
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/booking" },
 };
 
-export default function BookingPage() {
+export default async function BookingPage() {
+  const rooms = await getRooms();
   return (
     <>
       <section className="bg-cream-gradient py-14 md:py-20">
@@ -31,7 +33,7 @@ export default function BookingPage() {
       <section className="bg-cream py-12 md:py-16">
         <div className="container">
           <Suspense fallback={<div className="h-40" />}>
-            <BookingForm />
+            <BookingForm rooms={rooms} />
           </Suspense>
         </div>
       </section>

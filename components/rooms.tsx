@@ -116,7 +116,7 @@ function RoomCard({ room }: { room: Room }) {
   );
 }
 
-export function Rooms() {
+export function Rooms({ rooms = siteConfig.rooms }: { rooms?: Room[] }) {
   return (
     <section id="rooms" className="bg-cream-alt py-16 md:py-24">
       <div className="container">
@@ -128,7 +128,7 @@ export function Rooms() {
         />
 
         <RevealGroup className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {siteConfig.rooms.map((room) => (
+          {rooms.map((room) => (
             <RoomCard key={room.slug} room={room} />
           ))}
         </RevealGroup>

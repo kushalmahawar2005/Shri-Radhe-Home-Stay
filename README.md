@@ -139,6 +139,7 @@ Fonts (via `next/font/google`): **Cormorant Garamond** (serif headings) +
 
 ---
 
+
 ## 📁 Project structure
 
 ```

@@ -3,17 +3,23 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarCheck, MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, type Room } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 
 /**
  * Compact "Check Availability" widget for the room detail sidebar.
- * No backend: it builds a pre-filled WhatsApp message and forwards the
- * guest to /booking with the chosen room + dates pre-selected.
+ * Builds a pre-filled WhatsApp message and forwards the guest to /booking
+ * with the chosen room + dates pre-selected.
  */
-export function AvailabilityCard({ roomSlug }: { roomSlug: string }) {
+export function AvailabilityCard({
+  roomSlug,
+  rooms = siteConfig.rooms,
+}: {
+  roomSlug: string;
+  rooms?: Room[];
+}) {
   const router = useRouter();
-  const room = siteConfig.rooms.find((r) => r.slug === roomSlug);
+  const room = rooms.find((r) => r.slug === roomSlug);
 
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -93,7 +99,7 @@ export function AvailabilityCard({ roomSlug }: { roomSlug: string }) {
             onChange={(e) => setSelected(e.target.value)}
             className={inputCls}
           >
-            {siteConfig.rooms.map((r) => (
+            {rooms.map((r) => (
               <option key={r.slug} value={r.slug}>
                 {r.name}
               </option>
