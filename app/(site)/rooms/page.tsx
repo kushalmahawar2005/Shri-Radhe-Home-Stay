@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, MessageCircle, Users, ArrowRight, CalendarCheck } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
-import { getRooms } from "@/lib/content-store";
+import { getRooms, getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { Facilities } from "@/components/facilities";
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RoomsPage() {
-  const rooms = await getRooms();
+  const [rooms, contact] = await Promise.all([getRooms(), getContact()]);
   return (
     <>
       {/* page header */}
@@ -99,7 +98,7 @@ export default async function RoomsPage() {
                   </Button>
                   <Button asChild variant="outline" size="sm">
                     <a
-                      href={siteConfig.links.whatsappPrimary}
+                      href={contact.links.whatsappPrimary}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -11,6 +11,7 @@ import {
 export type BookingResult = {
   ok: boolean;
   available?: boolean;
+  bookingId?: number;
   error?: string;
 };
 
@@ -23,6 +24,7 @@ const schema = z.object({
   phone: z.string().default(""),
   email: z.string().default(""),
   notes: z.string().default(""),
+  paymentMode: z.string().default("pay_at_homestay"),
 });
 
 /**
@@ -46,7 +48,7 @@ export async function submitBookingRequest(
     if (roomId) {
       available = await isRoomAvailable(roomId, data.checkIn, data.checkOut);
     }
-    await createBooking({
+    const result = await createBooking({
       roomId: roomId ?? null,
       guestName: data.name,
       phone: data.phone,
@@ -58,8 +60,9 @@ export async function submitBookingRequest(
       status: "pending",
       kind: "request",
       source: "web",
+      paymentMode: data.paymentMode,
     });
-    return { ok: true, available };
+    return { ok: true, available, bookingId: result.id };
   } catch {
     return { ok: false, error: "save-failed" };
   }

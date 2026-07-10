@@ -4,7 +4,12 @@ import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
 import { BookingForm } from "@/components/booking-form";
 import { bookingPerks } from "@/lib/site-config";
-import { getRooms } from "@/lib/content-store";
+import {
+  getRooms,
+  getBlockedRanges,
+  getBrand,
+  getContact,
+} from "@/lib/content-store";
 
 export const revalidate = 3600;
 
@@ -16,7 +21,12 @@ export const metadata: Metadata = {
 };
 
 export default async function BookingPage() {
-  const rooms = await getRooms();
+  const [rooms, blockedRanges, brand, contact] = await Promise.all([
+    getRooms(),
+    getBlockedRanges(),
+    getBrand(),
+    getContact(),
+  ]);
   return (
     <>
       <section className="bg-cream-gradient py-14 md:py-20">
@@ -33,7 +43,12 @@ export default async function BookingPage() {
       <section className="bg-cream py-12 md:py-16">
         <div className="container">
           <Suspense fallback={<div className="h-40" />}>
-            <BookingForm rooms={rooms} />
+            <BookingForm
+              rooms={rooms}
+              blockedRanges={blockedRanges}
+              brandName={brand.name}
+              whatsappNumber={contact.phones.e164Primary.replace("+", "")}
+            />
           </Suspense>
         </div>
       </section>

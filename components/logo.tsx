@@ -4,13 +4,26 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 /** Serif wordmark + logo mark. `invert` for dark backgrounds (footer). */
-export function Logo({ invert = false }: { invert?: boolean }) {
+export function Logo({
+  invert = false,
+  name,
+  shortName,
+  logo,
+}: {
+  invert?: boolean;
+  name?: string;
+  shortName?: string;
+  logo?: string | null;
+}) {
+  const _name = name ?? siteConfig.name;
+  const _shortName = shortName ?? siteConfig.shortName;
+  const _logo = logo !== undefined ? logo : siteConfig.logo;
   return (
     <span className="inline-flex items-center gap-2.5">
-      {siteConfig.logo ? (
+      {_logo ? (
         <Image
-          src={siteConfig.logo}
-          alt={`${siteConfig.name} logo`}
+          src={_logo}
+          alt={`${_name} logo`}
           width={44}
           height={44}
           priority
@@ -28,7 +41,7 @@ export function Logo({ invert = false }: { invert?: boolean }) {
             invert ? "text-cream-light" : "text-emerald"
           )}
         >
-          {siteConfig.shortName}
+          {_shortName}
         </span>
         <span
           className={cn(

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, MessageCircle } from "lucide-react";
-import { siteConfig, about } from "@/lib/site-config";
+import { about } from "@/lib/site-config";
+import { getBrand, getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
@@ -10,7 +11,7 @@ import { Reveal } from "@/components/reveal";
 import { Eyebrow, Flourish } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [brand, contact] = await Promise.all([getBrand(), getContact()]);
   return (
     <>
       {/* ── page header ── */}
@@ -40,7 +42,7 @@ export default function AboutPage() {
             <figure className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
               <Image
                 src="/images/building.jpg"
-                alt={`${siteConfig.name}, Nathdwara`}
+                alt={`${brand.name}, Nathdwara`}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -190,7 +192,7 @@ export default function AboutPage() {
                 <Star key={i} className="h-5 w-5 fill-gold text-gold" />
               ))}
               <span className="ml-2 text-sm font-medium text-ink/70">
-                4.9 / 5 · Happy Guests
+                5 / 5 · Happy Guests
               </span>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -199,7 +201,7 @@ export default function AboutPage() {
               </Button>
               <Button asChild variant="gold" size="sm">
                 <a
-                  href={siteConfig.links.whatsappPrimary}
+                  href={contact.links.whatsappPrimary}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

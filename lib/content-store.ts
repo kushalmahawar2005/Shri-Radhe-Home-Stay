@@ -12,11 +12,12 @@
  */
 import "server-only";
 import { cache } from "react";
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq, gte, or } from "drizzle-orm";
 
 import { db, isDbConfigured } from "@/lib/db";
 import {
   rooms as roomsTable,
+  bookings as bookingsTable,
   galleryImages as galleryTable,
   siteContent,
   type Room as DbRoom,
@@ -24,7 +25,9 @@ import {
 import {
   siteConfig,
   galleryImages as defaultGallery,
+  faqs as defaultFaqs,
   type GalleryImage,
+  type Testimonial,
 } from "@/lib/site-config";
 
 /** Public-facing room shape (what the components consume). */
@@ -96,6 +99,49 @@ export const getRoomBySlug = cache(
   }
 );
 
+/* ── Availability (admin date blocks + confirmed bookings) ──────────── */
+/** A blocked stay: nights [from, to) are unavailable (to = checkout day). */
+export type BlockedRange = { from: string; to: string };
+
+/**
+ * Blocked date ranges per room slug, used to disable dates in the public
+ * booking calendar. Includes manual admin blocks (kind "block") and any
+ * confirmed bookings. Past ranges are dropped. Falls back to {} (nothing
+ * blocked) when the DB isn't configured.
+ */
+export const getBlockedRanges = cache(
+  async (): Promise<Record<string, BlockedRange[]>> => {
+    if (!isDbConfigured()) return {};
+    try {
+      const todayKey = new Date().toISOString().slice(0, 10);
+      const rows = await db
+        .select({
+          slug: roomsTable.slug,
+          from: bookingsTable.checkIn,
+          to: bookingsTable.checkOut,
+        })
+        .from(bookingsTable)
+        .innerJoin(roomsTable, eq(bookingsTable.roomId, roomsTable.id))
+        .where(
+          and(
+            or(
+              eq(bookingsTable.kind, "block"),
+              eq(bookingsTable.status, "confirmed")
+            ),
+            gte(bookingsTable.checkOut, todayKey)
+          )
+        );
+      const map: Record<string, BlockedRange[]> = {};
+      for (const r of rows) {
+        (map[r.slug] ??= []).push({ from: r.from, to: r.to });
+      }
+      return map;
+    } catch {
+      return {};
+    }
+  }
+);
+
 /* ── Gallery ────────────────────────────────────────────────────────── */
 export const getGallery = cache(async (): Promise<GalleryImage[]> => {
   if (!isDbConfigured()) return defaultGallery;
@@ -132,3 +178,145 @@ export const getContent = cache(
     }
   }
 );
+
+/* ── Brand + contact (resolved, with derived phone/whatsapp links) ──── */
+/**
+ * The admin panel only stores raw phone digits and a handful of links.
+ * The public components, however, expect the same fully-derived shape that
+ * `site-config` exposes (e164 numbers, `tel:` links, pre-filled WhatsApp
+ * deep links). These resolvers rebuild that shape from whatever the admin
+ * saved, falling back to `site-config` field-by-field.
+ */
+const WHATSAPP_MESSAGE =
+  "Jai Shri Krishna, I'd like to book a stay at Shri Radha Home Stay. Please share availability and details.";
+
+function toE164(raw: string): string {
+  const d = (raw ?? "").replace(/\D/g, "");
+  if (!d) return "";
+  return d.startsWith("91") ? `+${d}` : `+91${d}`;
+}
+
+function waLink(raw: string): string {
+  const e = toE164(raw).replace("+", "");
+  return e
+    ? `https://wa.me/${e}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
+    : "#";
+}
+
+export type BrandView = {
+  name: string;
+  shortName: string;
+  tagline: string;
+  description: string;
+  intro: string;
+  templeWalkTime: string;
+  logo: string | null;
+};
+
+export type ContactView = {
+  phones: {
+    primary: string;
+    secondary: string;
+    e164Primary: string;
+    e164Secondary: string;
+    telPrimary: string;
+    telSecondary: string;
+  };
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    full: string;
+    lat: number | null;
+    lng: number | null;
+  };
+  links: {
+    instagram: string;
+    instagramHandle: string;
+    facebook: string;
+    whatsappPrimary: string;
+    whatsappSecondary: string;
+    mapsEmbed: string;
+    mapsDirections: string;
+  };
+};
+
+export type Faq = { q: string; a: string };
+
+export const getBrand = cache(async (): Promise<BrandView> => {
+  const fallback: BrandView = {
+    name: siteConfig.name,
+    shortName: siteConfig.shortName,
+    tagline: siteConfig.tagline,
+    description: siteConfig.description,
+    intro: siteConfig.intro,
+    templeWalkTime: siteConfig.templeWalkTime,
+    logo: siteConfig.logo,
+  };
+  const raw = await getContent<Partial<BrandView>>("brand", fallback);
+  return { ...fallback, ...raw };
+});
+
+export const getContact = cache(async (): Promise<ContactView> => {
+  type StoredContact = {
+    phones?: { primary?: string; secondary?: string };
+    address?: Partial<ContactView["address"]>;
+    links?: {
+      instagram?: string;
+      instagramHandle?: string;
+      facebook?: string;
+      mapsEmbed?: string;
+      mapsDirections?: string;
+    };
+  };
+  const fallback: StoredContact = {
+    phones: {
+      primary: siteConfig.phones.primary,
+      secondary: siteConfig.phones.secondary,
+    },
+    address: siteConfig.address,
+    links: {
+      instagram: siteConfig.links.instagram,
+      instagramHandle: siteConfig.links.instagramHandle,
+      facebook: siteConfig.links.facebook,
+      mapsEmbed: siteConfig.links.mapsEmbed,
+      mapsDirections: siteConfig.links.mapsDirections,
+    },
+  };
+  const raw = await getContent<StoredContact>("contact", fallback);
+  const primary = raw.phones?.primary ?? "";
+  const secondary = raw.phones?.secondary ?? "";
+  return {
+    phones: {
+      primary,
+      secondary,
+      e164Primary: toE164(primary),
+      e164Secondary: toE164(secondary),
+      telPrimary: `tel:${toE164(primary)}`,
+      telSecondary: `tel:${toE164(secondary)}`,
+    },
+    address: { ...siteConfig.address, ...raw.address },
+    links: {
+      instagram: raw.links?.instagram ?? siteConfig.links.instagram,
+      instagramHandle:
+        raw.links?.instagramHandle ?? siteConfig.links.instagramHandle,
+      facebook: raw.links?.facebook ?? siteConfig.links.facebook,
+      whatsappPrimary: waLink(primary),
+      whatsappSecondary: waLink(secondary),
+      mapsEmbed: raw.links?.mapsEmbed ?? siteConfig.links.mapsEmbed,
+      mapsDirections:
+        raw.links?.mapsDirections ?? siteConfig.links.mapsDirections,
+    },
+  };
+});
+
+/* ── FAQs + testimonials ────────────────────────────────────────────── */
+export const getFaqs = cache(async (): Promise<Faq[]> => {
+  return getContent<Faq[]>("faqs", [...defaultFaqs]);
+});
+
+export const getTestimonials = cache(async (): Promise<Testimonial[]> => {
+  return getContent<Testimonial[]>("testimonials", [...siteConfig.testimonials]);
+});

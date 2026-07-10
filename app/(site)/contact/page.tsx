@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Phone, MessageCircle, MapPin, Instagram, Clock, Plus } from "lucide-react";
-import { siteConfig, faqs } from "@/lib/site-config";
+import { getBrand, getContact, getFaqs } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
 
-export const dynamic = "force-static";
+// Refreshed hourly and on-demand whenever the admin saves site content.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Contact & Location",
@@ -15,8 +16,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
-  const { address, phones, links } = siteConfig;
+export default async function ContactPage() {
+  const [brand, contact, faqs] = await Promise.all([
+    getBrand(),
+    getContact(),
+    getFaqs(),
+  ]);
+  const { address, phones, links } = contact;
 
   return (
     <>
@@ -37,7 +43,7 @@ export default function ContactPage() {
           <Reveal className="flex flex-col gap-6">
             <div className="rounded-2xl border border-gold/30 bg-cream-light p-7 shadow-card">
               <h2 className="font-serif text-2xl font-semibold text-emerald">
-                {siteConfig.name}
+                {brand.name}
               </h2>
               <ul className="mt-5 space-y-4 text-ink/80">
                 <li className="flex items-start gap-3">
@@ -92,7 +98,7 @@ export default function ContactPage() {
 
             <div className="overflow-hidden rounded-2xl border border-gold/30 shadow-card">
               <iframe
-                title={`Map showing ${siteConfig.name} in Nathdwara`}
+                title={`Map showing ${brand.name} in Nathdwara`}
                 src={links.mapsEmbed}
                 className="h-[280px] w-full"
                 loading="lazy"
@@ -107,7 +113,10 @@ export default function ContactPage() {
             <h2 className="mb-4 font-serif text-2xl font-semibold text-ink">
               Send us a message
             </h2>
-            <ContactForm />
+            <ContactForm
+              whatsappPrimary={links.whatsappPrimary}
+              whatsappNumber={phones.e164Primary.replace("+", "")}
+            />
           </Reveal>
         </div>
       </section>

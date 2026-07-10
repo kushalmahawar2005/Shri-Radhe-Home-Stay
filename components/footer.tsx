@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { Facebook, Instagram, MessageCircle, Phone, MapPin } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getBrand, getContact, getRooms } from "@/lib/content-store";
 import { Logo } from "@/components/logo";
 import { Lotus } from "@/components/decor";
 
-export function Footer() {
-  const { address, phones, links, rooms, nav } = siteConfig;
+export async function Footer() {
+  const [brand, contact, rooms] = await Promise.all([
+    getBrand(),
+    getContact(),
+    getRooms(),
+  ]);
+  const { address, phones, links } = contact;
+  const { nav } = siteConfig;
   const year = new Date().getFullYear();
 
   return (
@@ -13,9 +20,14 @@ export function Footer() {
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         {/* brand */}
         <div>
-          <Logo invert />
+          <Logo
+            invert
+            name={brand.name}
+            shortName={brand.shortName}
+            logo={brand.logo}
+          />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/70">
-            {siteConfig.tagline}. A peaceful homestay near Shrinathji Temple,
+            {brand.tagline}. A peaceful homestay near Shrinathji Temple,
             Nathdwara.
           </p>
           <Lotus className="mt-5 h-7 w-12 text-gold-light" />
@@ -119,10 +131,10 @@ export function Footer() {
       <div className="border-t border-cream/15">
         <div className="container flex flex-col items-center justify-between gap-2 py-5 text-xs text-cream/60 sm:flex-row">
           <p>
-            © {year} {siteConfig.name}. All rights reserved.
+            © {year} {brand.name}. All rights reserved.
           </p>
           <p>
-            Made with devotion in Nathdwara · {siteConfig.links.instagramHandle}
+            Made with devotion in Nathdwara · {links.instagramHandle}
           </p>
         </div>
       </div>

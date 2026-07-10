@@ -1,12 +1,14 @@
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { WhatsAppFab } from "@/components/whatsapp-fab";
+import { getBrand, getContact } from "@/lib/content-store";
 
-export default function SiteLayout({
+export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [brand, contact] = await Promise.all([getBrand(), getContact()]);
   return (
     <>
       <a
@@ -15,10 +17,17 @@ export default function SiteLayout({
       >
         Skip to content
       </a>
-      <Navbar />
+      <Navbar
+        brand={{
+          name: brand.name,
+          shortName: brand.shortName,
+          logo: brand.logo,
+        }}
+        whatsappPrimary={contact.links.whatsappPrimary}
+      />
       <main id="main">{children}</main>
       <Footer />
-      <WhatsAppFab />
+      <WhatsAppFab whatsappPrimary={contact.links.whatsappPrimary} />
     </>
   );
 }

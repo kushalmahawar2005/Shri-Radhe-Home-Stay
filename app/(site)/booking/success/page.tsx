@@ -10,11 +10,11 @@ import {
   MessageCircle,
   Home,
 } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { getBrand, getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { BookingSummary } from "@/components/booking-summary";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Booking Received",
@@ -26,14 +26,14 @@ export const metadata: Metadata = {
 
 const steps = [
   {
-    icon: Mail,
-    title: "Confirmation Email",
-    desc: "A confirmation email has been sent to your email address.",
+    icon: PhoneCall,
+    title: "We Will Call You",
+    desc: "Our team will call you to confirm your stay details.",
   },
   {
-    icon: PhoneCall,
-    title: "We Will Contact You",
-    desc: "Our team will call to confirm your stay and answer any questions.",
+    icon: MessageCircle,
+    title: "WhatsApp Support",
+    desc: "You can also message us directly on WhatsApp anytime.",
   },
   {
     icon: ClipboardCheck,
@@ -43,11 +43,17 @@ const steps = [
   {
     icon: ShieldCheck,
     title: "Safe & Secure",
-    desc: "Your information is safe with us — no advance payment needed.",
+    desc: "Your information is safe and secure with us at every step.",
   },
 ];
 
-export default function BookingSuccessPage() {
+export default async function BookingSuccessPage({
+  searchParams,
+}: {
+  searchParams: { paymentStatus?: string };
+}) {
+  const [brand, contact] = await Promise.all([getBrand(), getContact()]);
+  const paid = searchParams?.paymentStatus === "paid";
   return (
     <>
       <section className="bg-cream-gradient py-16 md:py-24">
@@ -59,11 +65,15 @@ export default function BookingSuccessPage() {
             Thank You!
           </h1>
           <p className="mt-3 font-serif text-xl italic text-gold-dark">
-            Your Booking Request Has Been Received
+            {paid
+              ? "Your Booking Is Confirmed"
+              : "Your Booking Request Has Been Received"}
           </p>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-ink/70">
-            We truly appreciate you choosing {siteConfig.name}. Our team will
-            contact you shortly to confirm your stay.
+            We truly appreciate you choosing {brand.name}.{" "}
+            {paid
+              ? "Your advance payment is received and our team will call you shortly with your stay details."
+              : "Our team will contact you shortly to confirm your stay."}
           </p>
         </div>
       </section>
@@ -114,13 +124,13 @@ export default function BookingSuccessPage() {
             </div>
             <div className="flex flex-wrap justify-center gap-3">
               <Button asChild variant="primary" size="sm">
-                <a href={siteConfig.phones.telPrimary}>
+                <a href={contact.phones.telPrimary}>
                   <PhoneCall className="h-4 w-4" /> Call Now
                 </a>
               </Button>
               <Button asChild variant="gold" size="sm">
                 <a
-                  href={siteConfig.links.whatsappPrimary}
+                  href={contact.links.whatsappPrimary}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

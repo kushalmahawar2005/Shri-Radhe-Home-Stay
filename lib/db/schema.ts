@@ -70,6 +70,11 @@ export const bookings = pgTable(
     status: text("status").notNull().default("pending"),
     kind: text("kind").notNull().default("request"),
     source: text("source").notNull().default("web"),
+    paymentMode: text("payment_mode").notNull().default("pay_at_homestay"), // "online" | "pay_at_homestay" | "whatsapp"
+    paymentStatus: text("payment_status").notNull().default("none"), // "none" | "pending" | "paid" | "failed" | "refunded"
+    razorpayOrderId: text("razorpay_order_id"),
+    razorpayPaymentId: text("razorpay_payment_id"),
+    amount: integer("amount"), // total in paise
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

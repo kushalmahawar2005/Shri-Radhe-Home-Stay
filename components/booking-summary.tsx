@@ -21,6 +21,19 @@ export function BookingSummary() {
     { label: "Guests", value: search.get("guests") || "—" },
   ];
 
+  const total = search.get("total");
+  if (total) {
+    rows.push({ label: "Total Price", value: `₹${parseInt(total, 10).toLocaleString('en-IN')}` });
+  }
+
+  const paymentStatus = search.get("paymentStatus");
+  if (paymentStatus === "paid") {
+    rows.push({
+      label: "Payment Status",
+      value: `₹${siteConfig.advanceAmount} Advance Paid`,
+    });
+  }
+
   return (
     <div className="grid gap-6 rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-card md:grid-cols-[1.4fr_1fr] md:items-center">
       <dl className="space-y-3 text-sm">

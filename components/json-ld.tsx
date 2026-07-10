@@ -1,8 +1,16 @@
 import { siteConfig } from "@/lib/site-config";
+import { getBrand, getContact, getTestimonials } from "@/lib/content-store";
 
 /** LodgingBusiness JSON-LD structured data (real NAP). */
-export function JsonLd() {
-  const { address, phones, links, url, name, description } = siteConfig;
+export async function JsonLd() {
+  const [brand, contact, testimonials] = await Promise.all([
+    getBrand(),
+    getContact(),
+    getTestimonials(),
+  ]);
+  const { address, phones, links } = contact;
+  const { url } = siteConfig;
+  const { name, description } = brand;
 
   const data = {
     "@context": "https://schema.org",
@@ -36,9 +44,9 @@ export function JsonLd() {
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "5",
-      reviewCount: String(siteConfig.testimonials.length),
+      reviewCount: String(testimonials.length),
     },
-    review: siteConfig.testimonials.map((t) => ({
+    review: testimonials.map((t) => ({
       "@type": "Review",
       author: { "@type": "Person", name: t.author },
       reviewRating: {

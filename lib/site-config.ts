@@ -60,7 +60,7 @@ export const siteConfig = {
   shortName: "Shri Radha",
   tagline: "Stay With Peace & Devotion",
   description:
-    "A serene, family-friendly homestay in Nathdwara, just a 5–8 minute walk from the Shrinathji Temple. 3 AC rooms with attached bathrooms, 24x7 hot water, free WiFi and warm hospitality.",
+    "A serene, family-friendly homestay in Nathdwara, just an 8 minute walk from the Shrinathji Temple. 3 AC rooms with attached bathrooms, 24x7 hot water, free WiFi and warm hospitality.",
   intro:
     "Experience a comfortable stay near Shrinathji Temple with modern amenities, spiritual surroundings and authentic Nathdwara hospitality.",
 
@@ -83,8 +83,8 @@ export const siteConfig = {
     country: "IN",
     full: "Haldighati Road, Kumbhalgarh Road, Nathdwara, Rajasthan",
     // Approximate coordinates for Nathdwara — replace with exact lat/lng.
-    lat: 24.9305,
-    lng: 73.8242,
+    lat: 24.9302049,
+    lng: 73.8125976,
   },
 
   phones: {
@@ -110,13 +110,19 @@ export const siteConfig = {
     )}`,
     // TODO: paste the real Google Maps embed URL (Maps → Share → Embed a map).
     mapsEmbed:
-      "https://www.google.com/maps?q=Nathdwara%20Rajasthan&output=embed",
+      "https://www.google.com/maps?q=24.9302049,73.8125976&z=17&output=embed",
     // TODO: paste the real Google Maps directions link.
     mapsDirections:
-      "https://www.google.com/maps/dir/?api=1&destination=Shrinathji+Temple+Nathdwara",
+      "https://www.google.com/maps/dir/?api=1&destination=24.9302049,73.8125976",
   },
 
-  templeWalkTime: "5–8 minute walk",
+  templeWalkTime: "8 minute walk",
+
+  checkInTime: "12:00 PM",
+  checkOutTime: "10:00 AM",
+
+  // ₹ advance amount for online booking confirmation
+  advanceAmount: 500,
 
   // ── Navigation ──
   nav: [
@@ -131,7 +137,7 @@ export const siteConfig = {
   // ── Quick facts strip ──
   quickFacts: [
     { icon: "MapPin", label: "Nathdwara, Rajasthan" },
-    { icon: "Footprints", label: "5–8 Min Walk to Shrinathji Temple" },
+    { icon: "Footprints", label: "8 Min Walk to Shrinathji Temple" },
     { icon: "Snowflake", label: "3 AC Rooms" },
     { icon: "Bath", label: "Attached Bathrooms" },
     { icon: "Wifi", label: "Free WiFi" },
@@ -160,7 +166,7 @@ export const siteConfig = {
       features: ["AC", "Attached Bathroom", "Free WiFi", "2 Guests"],
       guests: "2 Guests",
       price: "On Request",
-      priceNight: "₹1,500",
+      priceNight: "₹2,500",
       tagline: "Comfort, Peace & Devotion",
       bed: "King Size Bed",
       size: "180 sq.ft",
@@ -198,7 +204,7 @@ export const siteConfig = {
       features: ["Spacious", "Family Friendly", "AC", "3–4 Guests"],
       guests: "3–4 Guests",
       price: "On Request",
-      priceNight: "₹2,500",
+      priceNight: "₹3,000",
       tagline: "Space, Comfort & Togetherness",
       bed: "2 King Size Beds",
       size: "300 sq.ft",
@@ -236,7 +242,7 @@ export const siteConfig = {
       features: ["Temple Town View", "Luxury Bedding", "AC", "5–6 Guests"],
       guests: "5–6 Guests",
       price: "On Request",
-      priceNight: "₹3,200",
+      priceNight: "₹3,500",
       tagline: "Luxury, Calm & Devotion",
       bed: "King Size Bed",
       size: "240 sq.ft",
@@ -304,7 +310,7 @@ export const siteConfig = {
 
   // ── Green highlight band ──
   highlights: [
-    { icon: "Landmark", label: "Temple Nearby", sub: "5–8 min walk" },
+    { icon: "Landmark", label: "Temple Nearby", sub: "8 min walk" },
     { icon: "Wifi", label: "Free WiFi", sub: "High speed internet" },
     { icon: "Car", label: "Parking", sub: "Safe and secure" },
     { icon: "CarTaxiFront", label: "Taxi Support", sub: "Local travel assistance" },
@@ -314,7 +320,7 @@ export const siteConfig = {
   nearby: [
     {
       name: "Shrinathji Temple",
-      distance: "5–8 Min Walk",
+      distance: "8 Min Walk",
       image: "/images/shrenathji.jpg",
       alt: "Shrinathji Temple, Nathdwara",
     },
@@ -444,7 +450,7 @@ export const attractions: Attraction[] = [
     alt: "Shrinathji Temple, Nathdwara",
     byCar: "1.2 km",
     byBike: "5 Min",
-    byWalk: "15 Min Walk",
+    byWalk: "8 Min Walk",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Shrinathji+Temple+Nathdwara",
   },
   {
@@ -531,7 +537,7 @@ export const about = {
     "Today, Shri Radha Home Stay is more than just a place to stay — it is an experience of devotion, comfort and heartfelt hospitality.",
   ],
   storyBadges: [
-    { icon: "Footprints", title: "Close to Shrinathji Temple", sub: "Just 5–8 Minutes Walk" },
+    { icon: "Footprints", title: "Close to Shrinathji Temple", sub: "Just 8 Minutes Walk" },
     { icon: "Users", title: "Personalised Hospitality", sub: "Guests are Family" },
     { icon: "Flower2", title: "Peaceful Environment", sub: "Spiritual & Relaxing Stay" },
     { icon: "HeartHandshake", title: "Best Price Guarantee", sub: "Honest & Transparent" },
@@ -555,7 +561,7 @@ export const about = {
 export const faqs = [
   {
     q: "How far is the Shri Radha Home Stay from the Shrinathji Temple?",
-    a: "We are located just a 5–8 minute walk from the Shrinathji Temple, making it perfect for early-morning darshan.",
+    a: "We are located just an 8 minute walk from the Shrinathji Temple, making it perfect for early-morning darshan.",
   },
   {
     q: "Do you provide parking facilities?",
@@ -579,7 +585,7 @@ export const faqs = [
  *  BOOKING — trust badges shown on the booking page/success page
  * ──────────────────────────────────────────────────────────────────── */
 export const bookingPerks = [
-  { icon: "Footprints", title: "5–8 Min Walk", sub: "to Shrinathji Temple" },
+  { icon: "Footprints", title: "8 Min Walk", sub: "to Shrinathji Temple" },
   { icon: "Snowflake", title: "AC Rooms", sub: "Clean & comfortable" },
   { icon: "Flower2", title: "Peaceful", sub: "Spiritual environment" },
   { icon: "HeartHandshake", title: "Best Price", sub: "Honest & transparent" },

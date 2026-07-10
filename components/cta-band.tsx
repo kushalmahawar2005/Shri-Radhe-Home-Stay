@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { Phone, MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/reveal";
 import { Toran } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
-export function CtaBand() {
-  const { phones, links } = siteConfig;
+export async function CtaBand() {
+  const { phones, links } = await getContact();
   return (
     <section
       aria-label="Book your stay"

@@ -8,7 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+type NavBrand = { name: string; shortName: string; logo: string | null };
+
+export function Navbar({
+  brand,
+  whatsappPrimary,
+}: {
+  brand: NavBrand;
+  whatsappPrimary: string;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -38,8 +46,8 @@ export function Navbar() {
         className="container flex h-[72px] items-center justify-between gap-4"
         aria-label="Primary"
       >
-        <Link href="/#home" aria-label={`${siteConfig.name} — home`}>
-          <Logo />
+        <Link href="/#home" aria-label={`${brand.name} — home`}>
+          <Logo name={brand.name} shortName={brand.shortName} logo={brand.logo} />
         </Link>
 
         {/* Desktop links */}
@@ -58,7 +66,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <Button asChild variant="outline" size="sm">
-            <a href={siteConfig.links.whatsappPrimary} target="_blank" rel="noopener noreferrer">
+            <a href={whatsappPrimary} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="h-4 w-4" />
               WhatsApp
             </a>

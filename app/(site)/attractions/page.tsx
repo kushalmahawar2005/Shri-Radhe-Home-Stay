@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { AttractionsList } from "@/components/attractions-list";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Nearby Attractions",
@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/attractions" },
 };
 
-export default function AttractionsPage() {
+export default async function AttractionsPage() {
+  const contact = await getContact();
   return (
     <>
       <section className="bg-cream-gradient py-14 md:py-20">
@@ -53,7 +54,7 @@ export default function AttractionsPage() {
             </Button>
             <Button asChild variant="gold" size="sm">
               <a
-                href={siteConfig.links.whatsappPrimary}
+                href={contact.links.whatsappPrimary}
                 target="_blank"
                 rel="noopener noreferrer"
               >

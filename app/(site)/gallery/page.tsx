@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
-import { getGallery } from "@/lib/content-store";
+import { getGallery, getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { GalleryGrid } from "@/components/gallery-grid";
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GalleryPage() {
-  const images = await getGallery();
+  const [images, contact] = await Promise.all([getGallery(), getContact()]);
   return (
     <>
       <section className="bg-cream-gradient py-14 md:py-20">
@@ -53,7 +52,7 @@ export default async function GalleryPage() {
             </Button>
             <Button asChild variant="gold" size="sm">
               <a
-                href={siteConfig.links.whatsappPrimary}
+                href={contact.links.whatsappPrimary}
                 target="_blank"
                 rel="noopener noreferrer"
               >

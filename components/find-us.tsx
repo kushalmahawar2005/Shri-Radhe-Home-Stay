@@ -1,11 +1,12 @@
 import { Phone, MapPin, Instagram, Navigation } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { getBrand, getContact } from "@/lib/content-store";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 
-export function FindUs() {
-  const { address, phones, links } = siteConfig;
+export async function FindUs() {
+  const [brand, contact] = await Promise.all([getBrand(), getContact()]);
+  const { address, phones, links } = contact;
   return (
     <section id="find-us" className="bg-cream-alt py-16 md:py-24">
       <div className="container">
@@ -15,7 +16,7 @@ export function FindUs() {
           {/* details */}
           <Reveal className="flex flex-col justify-center rounded-2xl border border-gold/30 bg-cream-light p-7 shadow-card">
             <h3 className="font-serif text-2xl font-semibold text-emerald">
-              {siteConfig.name}
+              {brand.name}
             </h3>
 
             <ul className="mt-5 space-y-4 text-ink/80">
@@ -74,7 +75,7 @@ export function FindUs() {
             className="overflow-hidden rounded-2xl border border-gold/30 shadow-card"
           >
             <iframe
-              title={`Map showing ${siteConfig.name} in Nathdwara`}
+              title={`Map showing ${brand.name} in Nathdwara`}
               src={links.mapsEmbed}
               className="h-full min-h-[320px] w-full"
               loading="lazy"

@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import { CalendarCheck, MessageCircle } from "lucide-react";
 import { siteConfig, type Room } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
+import {
+  DateRangePicker,
+  type BlockedRange,
+} from "@/components/ui/date-range-picker";
 
 /**
  * Compact "Check Availability" widget for the room detail sidebar.
@@ -14,9 +18,16 @@ import { Button } from "@/components/ui/button";
 export function AvailabilityCard({
   roomSlug,
   rooms = siteConfig.rooms,
+  blockedRanges = {},
+  brandName = siteConfig.name,
+  whatsappNumber = siteConfig.phones.e164Primary.replace("+", ""),
 }: {
   roomSlug: string;
   rooms?: Room[];
+  blockedRanges?: Record<string, BlockedRange[]>;
+  brandName?: string;
+  /** Bare e164 digits (no +) for the WhatsApp deep link. */
+  whatsappNumber?: string;
 }) {
   const router = useRouter();
   const room = rooms.find((r) => r.slug === roomSlug);
@@ -25,6 +36,8 @@ export function AvailabilityCard({
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("2 Adults");
   const [selected, setSelected] = useState(roomSlug);
+
+  const blockedForRoom = blockedRanges[selected] ?? [];
 
   const inputCls =
     "w-full rounded-lg border border-gold/40 bg-cream-light px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold";
@@ -41,7 +54,7 @@ export function AvailabilityCard({
 
   const waMessage = `Jai Shri Krishna! I'd like to check availability for the ${
     room?.name ?? "room"
-  } at ${siteConfig.name}.${checkIn ? `\nCheck-in: ${checkIn}` : ""}${
+  } at ${brandName}.${checkIn ? `\nCheck-in: ${checkIn}` : ""}${
     checkOut ? `\nCheck-out: ${checkOut}` : ""
   }\nGuests: ${guests}`;
 
@@ -56,25 +69,16 @@ export function AvailabilityCard({
         </span>
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1 text-xs font-medium text-ink/70">
-          Check In
-          <input
-            type="date"
-            value={checkIn}
-            onChange={(e) => setCheckIn(e.target.value)}
-            className={inputCls}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-xs font-medium text-ink/70">
-          Check Out
-          <input
-            type="date"
-            value={checkOut}
-            onChange={(e) => setCheckOut(e.target.value)}
-            className={inputCls}
-          />
-        </label>
+      <div className="mt-5">
+        <DateRangePicker
+          checkIn={checkIn}
+          checkOut={checkOut}
+          blocked={blockedForRoom}
+          onChange={(ci, co) => {
+            setCheckIn(ci);
+            setCheckOut(co);
+          }}
+        />
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-3">
@@ -89,7 +93,9 @@ export function AvailabilityCard({
             <option>2 Adults</option>
             <option>2 Adults, 1 Child</option>
             <option>3 Adults</option>
-            <option>4+ Guests</option>
+            <option>4 Adults</option>
+            <option>5 Adults</option>
+            <option>6 Guests</option>
           </select>
         </label>
         <label className="flex flex-col gap-1 text-xs font-medium text-ink/70">
@@ -131,10 +137,9 @@ export function AvailabilityCard({
           className="mt-3 w-full"
         >
           <a
-            href={`https://wa.me/${siteConfig.phones.e164Primary.replace(
-              "+",
-              ""
-            )}?text=${encodeURIComponent(waMessage)}`}
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+              waMessage
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
           >

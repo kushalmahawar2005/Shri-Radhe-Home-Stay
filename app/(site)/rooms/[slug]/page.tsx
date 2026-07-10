@@ -17,7 +17,13 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
-import { getRooms, getRoomBySlug } from "@/lib/content-store";
+import {
+  getRooms,
+  getRoomBySlug,
+  getBlockedRanges,
+  getBrand,
+  getContact,
+} from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { AvailabilityCard } from "@/components/availability-card";
 import { RoomGallery } from "@/components/room-gallery";
@@ -51,7 +57,12 @@ export default async function RoomDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const allRooms = await getRooms();
+  const [allRooms, blockedRanges, brand, contact] = await Promise.all([
+    getRooms(),
+    getBlockedRanges(),
+    getBrand(),
+    getContact(),
+  ]);
   const room = allRooms.find((r) => r.slug === params.slug);
   if (!room) notFound();
 
@@ -95,8 +106,7 @@ export default async function RoomDetailPage({
             </div>
             <div className="flex flex-wrap items-center gap-5 text-sm">
               <span className="flex items-center gap-1.5 font-medium text-ink/75">
-                <Star className="h-4 w-4 fill-gold text-gold" /> 4.9 / 5
-                <span className="text-ink/50">(120+ Reviews)</span>
+                <Star className="h-4 w-4 fill-gold text-gold" /> Loved by Guests
               </span>
               <span className="flex items-center gap-1.5 font-medium text-ink/75">
                 <Footprints className="h-4 w-4 text-emerald" />
@@ -217,7 +227,13 @@ export default async function RoomDetailPage({
                 </span>
                 <span className="text-sm text-cream/80">/ night</span>
               </div>
-              <AvailabilityCard roomSlug={room.slug} rooms={allRooms} />
+              <AvailabilityCard
+                roomSlug={room.slug}
+                rooms={allRooms}
+                blockedRanges={blockedRanges}
+                brandName={brand.name}
+                whatsappNumber={contact.phones.e164Primary.replace("+", "")}
+              />
             </div>
 
             <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
@@ -228,10 +244,10 @@ export default async function RoomDetailPage({
                 Call us for quick booking assistance.
               </p>
               <a
-                href={siteConfig.phones.telPrimary}
+                href={contact.phones.telPrimary}
                 className="mt-2 block font-serif text-2xl font-bold text-ink hover:text-emerald"
               >
-                {siteConfig.phones.primary}
+                {contact.phones.primary}
               </a>
             </div>
 
@@ -250,7 +266,7 @@ export default async function RoomDetailPage({
                   <Check className="h-4 w-4 text-emerald" /> 24x7 Support
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-emerald" /> Trusted by 500+ Devotees
+                  <Check className="h-4 w-4 text-emerald" /> Trusted by Happy Devotees
                 </li>
               </ul>
             </div>

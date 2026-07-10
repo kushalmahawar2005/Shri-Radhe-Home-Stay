@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Send, MessageCircle, CheckCircle2 } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import { submitContactMessage } from "@/app/(site)/contact/actions";
 
@@ -14,7 +13,15 @@ const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
  * - Otherwise it gracefully falls back to a pre-filled WhatsApp message,
  *   so the site works fully without any backend.
  */
-export function ContactForm() {
+export function ContactForm({
+  whatsappPrimary,
+  whatsappNumber,
+}: {
+  /** Full WhatsApp deep link (with default message) for the success button. */
+  whatsappPrimary: string;
+  /** Bare e164 digits (no +) used to build the custom-message fallback link. */
+  whatsappNumber: string;
+}) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
@@ -69,7 +76,7 @@ export function ContactForm() {
       "message"
     )}\nReach me at ${data.get("email")} / ${data.get("phone")}`;
     window.open(
-      `https://wa.me/918619301401?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`,
       "_blank",
       "noopener"
     );
@@ -87,7 +94,7 @@ export function ContactForm() {
         </p>
         <Button asChild variant="primary" size="sm">
           <a
-            href={siteConfig.links.whatsappPrimary}
+            href={whatsappPrimary}
             target="_blank"
             rel="noopener noreferrer"
           >

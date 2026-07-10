@@ -1,11 +1,10 @@
 import { MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
 
 /** Floating WhatsApp button — always reachable booking CTA. */
-export function WhatsAppFab() {
+export function WhatsAppFab({ whatsappPrimary }: { whatsappPrimary: string }) {
   return (
     <a
-      href={siteConfig.links.whatsappPrimary}
+      href={whatsappPrimary}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Book on WhatsApp"

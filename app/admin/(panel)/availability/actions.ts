@@ -8,6 +8,7 @@ export type BlockState = { error?: string; ok?: boolean };
 function revalidate() {
   revalidatePath("/admin/availability");
   revalidatePath("/rooms");
+  revalidatePath("/rooms/[slug]", "page");
   revalidatePath("/booking");
 }
 

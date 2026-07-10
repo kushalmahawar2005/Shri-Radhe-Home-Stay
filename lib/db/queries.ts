@@ -114,6 +114,67 @@ export async function deleteBooking(id: number) {
   await db.delete(bookings).where(eq(bookings.id, id));
 }
 
+export async function updateBookingPayment(
+  id: number,
+  data: {
+    paymentStatus?: string;
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+  }
+) {
+  const updateData: Record<string, unknown> = {};
+  if (data.paymentStatus !== undefined) updateData.paymentStatus = data.paymentStatus;
+  if (data.razorpayOrderId !== undefined) updateData.razorpayOrderId = data.razorpayOrderId;
+  if (data.razorpayPaymentId !== undefined) updateData.razorpayPaymentId = data.razorpayPaymentId;
+  await db.update(bookings).set(updateData).where(eq(bookings.id, id));
+}
+
+/**
+ * Marks the booking tied to a Razorpay order as paid + confirmed. Keyed by
+ * the server-stored `razorpayOrderId` (NOT a client-supplied id) so a caller
+ * can't mark an arbitrary booking paid. Confirming it also blocks the dates
+ * on the public calendar. Returns the booking id, or null if none matched.
+ */
+export async function markBookingPaidByOrderId(
+  orderId: string,
+  paymentId: string
+) {
+  const [row] = await db
+    .update(bookings)
+    .set({
+      paymentStatus: "paid",
+      razorpayPaymentId: paymentId,
+      status: "confirmed",
+    })
+    .where(eq(bookings.razorpayOrderId, orderId))
+    .returning({ id: bookings.id });
+  return row ?? null;
+}
+
+/** Marks the booking tied to a Razorpay order as payment-failed. */
+export async function markBookingPaymentFailedByOrderId(orderId: string) {
+  const [row] = await db
+    .update(bookings)
+    .set({ paymentStatus: "failed" })
+    .where(eq(bookings.razorpayOrderId, orderId))
+    .returning({ id: bookings.id });
+  return row ?? null;
+}
+
+export async function getBookingById(id: number) {
+  const [row] = await db
+    .select({
+      booking: bookings,
+      roomName: rooms.name,
+      roomSlug: rooms.slug,
+    })
+    .from(bookings)
+    .leftJoin(rooms, eq(bookings.roomId, rooms.id))
+    .where(eq(bookings.id, id))
+    .limit(1);
+  return row ?? null;
+}
+
 /**
  * Returns availability-blocking rows for a room: manual blocks and
  * confirmed bookings. `checkOut` is treated as exclusive (guest leaves

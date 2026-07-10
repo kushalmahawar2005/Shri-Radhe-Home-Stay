@@ -13,6 +13,7 @@ function revalidate() {
   revalidatePath("/admin");
   // Confirming/cancelling changes room availability on the public site.
   revalidatePath("/rooms");
+  revalidatePath("/rooms/[slug]", "page");
   revalidatePath("/booking");
 }
 

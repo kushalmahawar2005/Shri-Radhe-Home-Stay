@@ -1,7 +1,7 @@
 "use client";
 
 import { Star, Quote } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, type Testimonial } from "@/lib/site-config";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/reveal";
 import {
@@ -12,7 +12,13 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 
-export function Testimonials({ compact = false }: { compact?: boolean }) {
+export function Testimonials({
+  compact = false,
+  items = siteConfig.testimonials as unknown as Testimonial[],
+}: {
+  compact?: boolean;
+  items?: Testimonial[];
+}) {
   return (
     <div id="testimonials">
       <SectionHeading
@@ -25,7 +31,7 @@ export function Testimonials({ compact = false }: { compact?: boolean }) {
       <Reveal className="mt-8">
         <Carousel opts={{ loop: true }} className="mx-auto max-w-xl">
           <CarouselContent>
-            {siteConfig.testimonials.map((t, i) => (
+            {items.map((t, i) => (
               <CarouselItem key={i}>
                 <figure className="relative rounded-2xl border border-gold/30 bg-cream-light p-6 text-center shadow-card">
                   <Quote
