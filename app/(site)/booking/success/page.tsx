@@ -19,7 +19,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Booking Received",
   description:
-    "Thank you! Your booking request at Shri Radha Home Stay has been received. Our team will contact you shortly to confirm your stay.",
+    "Thank you! Your booking request at Shri Radha Villa Stay has been received. Our team will contact you shortly to confirm your stay.",
   robots: { index: false, follow: false },
   alternates: { canonical: "/booking/success" },
 };

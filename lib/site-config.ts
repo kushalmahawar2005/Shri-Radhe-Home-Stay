@@ -1,6 +1,6 @@
 /**
  * ────────────────────────────────────────────────────────────────────────
- *  SHRI RADHA HOME STAY — single source of truth.
+ *  SHRI RADHA VILLA STAY — single source of truth.
  *
  *  Non-coders: edit ONLY this file to change phones, address, links,
  *  rooms, facilities and nearby places. Everything on the website reads
@@ -53,21 +53,21 @@ const E164_SECONDARY = "+919799496789";
 
 /** Pre-filled WhatsApp booking message. */
 const WHATSAPP_MESSAGE =
-  "Jai Shri Krishna, I'd like to book a stay at Shri Radha Home Stay. Please share availability and details.";
+  "Jai Shri Krishna, I'd like to book a stay at Shri Radha Villa Stay. Please share availability and details.";
 
 export const siteConfig = {
-  name: "Shri Radha Home Stay",
+  name: "Shri Radha Villa Stay",
   shortName: "Shri Radha",
   tagline: "Stay With Peace & Devotion",
   description:
-    "A serene, family-friendly homestay in Nathdwara, just an 8 minute walk from the Shrinathji Temple. 3 AC rooms with attached bathrooms, 24x7 hot water, free WiFi and warm hospitality.",
+    "A serene, family-friendly villa in Nathdwara, just an 8 minute walk from the Shrinathji Temple. 3 AC rooms with attached bathrooms, 24x7 hot water, free WiFi and warm hospitality.",
   intro:
     "Experience a comfortable stay near Shrinathji Temple with modern amenities, spiritual surroundings and authentic Nathdwara hospitality.",
 
   // ── Public site URL (override via NEXT_PUBLIC_SITE_URL) ──
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://shriradhahomestay.com",
+    "https://shreeradhehomestay.in",
 
   // ── Logo image (shown next to the wordmark in navbar & footer) ──
   // Drop your file in /public and put its path here, e.g. "/logo.png".
@@ -160,7 +160,7 @@ export const siteConfig = {
       slug: "deluxe",
       name: "Deluxe Room",
       image: "/images/02.jpg",
-      alt: "Deluxe AC room with comfortable bedding at Shri Radha Home Stay",
+      alt: "Deluxe AC room with comfortable bedding at Shri Radha Villa Stay",
       blurb:
         "A cosy, well-appointed AC room perfect for couples and solo pilgrims seeking a peaceful stay near the temple.",
       features: ["AC", "Attached Bathroom", "Free WiFi", "2 Guests"],
@@ -198,7 +198,7 @@ export const siteConfig = {
       slug: "family",
       name: "Family Room",
       image: "/images/r3.jpg",
-      alt: "Spacious family room with multiple beds at Shri Radha Home Stay",
+      alt: "Spacious family room with multiple beds at Shri Radha Villa Stay",
       blurb:
         "A spacious, family-friendly room with room to relax together after darshan — ideal for families travelling with children or elders.",
       features: ["Spacious", "Family Friendly", "AC", "3–4 Guests"],
@@ -530,11 +530,11 @@ export const attractionCategories: ("All Places" | AttractionCategory)[] = [
 export const about = {
   tagline: "A Home, Where Devotion Meets Comfort.",
   intro:
-    "Shri Radha Home Stay is a humble initiative born out of love, devotion and a desire to provide a peaceful and comfortable stay for devotees visiting the holy town of Nathdwara.",
+    "Shri Radha Villa Stay is a humble initiative born out of love, devotion and a desire to provide a peaceful and comfortable stay for devotees visiting the holy town of Nathdwara.",
   story: [
     "Nathdwara is not just a destination, it is an emotion for every devotee of Lord Shrinathji. Over the years, we realised that visitors come here not only for darshan but also for peace, blessings and a break from their busy lives.",
     "With this thought, we opened the doors of our home to guests, creating them like family and ensuring they feel the same warmth, care and positivity that we value in our own lives.",
-    "Today, Shri Radha Home Stay is more than just a place to stay — it is an experience of devotion, comfort and heartfelt hospitality.",
+    "Today, Shri Radha Villa Stay is more than just a place to stay — it is an experience of devotion, comfort and heartfelt hospitality.",
   ],
   storyBadges: [
     { icon: "Footprints", title: "Close to Shrinathji Temple", sub: "Just 8 Minutes Walk" },
@@ -560,7 +560,7 @@ export const about = {
  * ──────────────────────────────────────────────────────────────────── */
 export const faqs = [
   {
-    q: "How far is the Shri Radha Home Stay from the Shrinathji Temple?",
+    q: "How far is the Shri Radha Villa Stay from the Shrinathji Temple?",
     a: "We are located just an 8 minute walk from the Shrinathji Temple, making it perfect for early-morning darshan.",
   },
   {
@@ -568,7 +568,7 @@ export const faqs = [
     a: "Yes, we provide safe and secure parking for our guests, including cars and two-wheelers.",
   },
   {
-    q: "Is WiFi available at the homestay?",
+    q: "Is WiFi available at the villa?",
     a: "Yes, free high-speed WiFi is available in all rooms and common areas.",
   },
   {

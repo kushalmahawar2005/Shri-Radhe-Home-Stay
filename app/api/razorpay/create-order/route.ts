@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Online payment isn't set up yet. Please choose Pay at Homestay or contact us.",
+            "Online payment isn't set up yet. Please choose Pay at Villa or contact us.",
         },
         { status: 503 }
       );

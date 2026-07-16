@@ -23,7 +23,7 @@ function RoomCard({ room }: { room: Room }) {
   return (
     <motion.article
       variants={fadeUpVariants}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-gold/30 bg-cream-light shadow-card transition-shadow hover:shadow-nav"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-gold/30 bg-cream-light shadow-card ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1.5 hover:shadow-nav hover:ring-gold/50"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
@@ -36,7 +36,9 @@ function RoomCard({ room }: { room: Room }) {
           blurDataURL={BLUR_DATA_URL}
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <span className="absolute right-3 top-3 rounded-full bg-emerald/90 px-3 py-1 text-xs font-semibold text-cream-light">
+        {/* soft gradient for badge legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+        <span className="absolute right-3 top-3 rounded-full border border-gold/50 bg-emerald/90 px-3 py-1 text-xs font-semibold text-cream-light shadow-soft backdrop-blur-sm">
           {room.priceNight} / night
         </span>
       </div>
@@ -45,11 +47,15 @@ function RoomCard({ room }: { room: Room }) {
         <h3 className="font-serif text-2xl font-semibold text-ink">
           {room.name}
         </h3>
+        {/* gold divider accent */}
+        <span className="mt-2 block h-px w-12 bg-gradient-to-r from-gold to-transparent transition-all duration-300 group-hover:w-20" />
 
-        <ul className="mt-3 flex-1 space-y-2">
+        <ul className="mt-4 flex-1 space-y-2.5">
           {room.features.map((f) => (
-            <li key={f} className="flex items-center gap-2 text-sm text-ink/75">
-              <Check className="h-4 w-4 shrink-0 text-emerald" />
+            <li key={f} className="flex items-center gap-2.5 text-sm text-ink/75">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald/10">
+                <Check className="h-3 w-3 text-emerald" />
+              </span>
               {f}
             </li>
           ))}

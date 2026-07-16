@@ -24,10 +24,10 @@ export function Logo({
         <Image
           src={_logo}
           alt={`${_name} logo`}
-          width={44}
-          height={44}
+          width={80}
+          height={80}
           priority
-          className="h-11 w-11 object-contain"
+          className="-ml-2 mt-0 h-14 w-14 object-contain md:-mt-1 md:h-16 md:w-16"
         />
       ) : (
         <FeatherMark
@@ -45,11 +45,11 @@ export function Logo({
         </span>
         <span
           className={cn(
-            "text-[0.6rem] font-semibold uppercase tracking-[0.32em]",
+            "text-[0.7rem] font-semibold uppercase tracking-[0.32em]",
             invert ? "text-gold-light" : "text-gold-dark"
           )}
         >
-          Home Stay
+          Villa Stay
         </span>
       </span>
     </span>

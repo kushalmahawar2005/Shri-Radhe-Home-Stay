@@ -52,7 +52,7 @@ export async function CtaBand() {
           <div className="relative ml-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl border-4 border-cream-light/20 ring-1 ring-gold/40">
             <Image
               src="/images/p1.png"
-              alt="Shrinathji Temple in Nathdwara, a short walk from the homestay"
+              alt="Shrinathji Temple in Nathdwara, a short walk from the villa"
               fill
               loading="lazy"
               sizes="(max-width: 768px) 0px, 40vw"

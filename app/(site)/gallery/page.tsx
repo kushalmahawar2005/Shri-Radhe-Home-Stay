@@ -11,7 +11,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Explore the beauty, comfort and spiritual essence of Shri Radha Home Stay, Nathdwara — rooms, terrace, reception, temple views and surroundings.",
+    "Explore the beauty, comfort and spiritual essence of Shri Radha Villa Stay, Nathdwara — rooms, terrace, reception, temple views and surroundings.",
   alternates: { canonical: "/gallery" },
 };
 
@@ -24,7 +24,7 @@ export default async function GalleryPage() {
           <SectionHeading
             eyebrow="Our Moments"
             title="Gallery"
-            subtitle="Explore the beauty, comfort and spiritual essence of Shri Radha Home Stay and Nathdwara."
+            subtitle="Explore the beauty, comfort and spiritual essence of Shri Radha Villa Stay and Nathdwara."
           />
         </div>
       </section>
@@ -43,7 +43,7 @@ export default async function GalleryPage() {
               Capture Memories, Cherish Moments
             </h2>
             <p className="mt-1 text-ink/70">
-              Experience peace, devotion and comfort at Shri Radha Home Stay.
+              Experience peace, devotion and comfort at Shri Radha Villa Stay.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">

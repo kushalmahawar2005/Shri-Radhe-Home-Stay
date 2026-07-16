@@ -11,7 +11,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Nearby Attractions",
   description:
-    "Explore the divine, historic and naturally beautiful places near Shri Radha Home Stay — Shrinathji Temple, Statue of Belief, Haldighati, Kumbhalgarh Fort, Eklingji and Udaipur.",
+    "Explore the divine, historic and naturally beautiful places near Shri Radha Villa Stay — Shrinathji Temple, Statue of Belief, Haldighati, Kumbhalgarh Fort, Eklingji and Udaipur.",
   alternates: { canonical: "/attractions" },
 };
 
@@ -25,7 +25,7 @@ export default async function AttractionsPage() {
             eyebrow="Explore Nathdwara"
             title="Nearby Attractions"
             highlight="Attractions"
-            subtitle="Explore the divine, historic and naturally beautiful places near Shri Radha Home Stay."
+            subtitle="Explore the divine, historic and naturally beautiful places near Shri Radha Villa Stay."
           />
         </div>
       </section>

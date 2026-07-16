@@ -14,7 +14,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Our Rooms",
   description:
-    "Explore the AC rooms at Shri Radha Home Stay, Nathdwara — Deluxe, Family and Premium rooms with attached bathrooms, 24x7 hot water and free WiFi. Prices on request.",
+    "Explore the AC rooms at Shri Radha Villa Stay, Nathdwara — Deluxe, Family and Premium rooms with attached bathrooms, 24x7 hot water and free WiFi. Prices on request.",
   alternates: { canonical: "/rooms" },
 };
 

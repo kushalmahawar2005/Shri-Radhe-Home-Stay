@@ -51,7 +51,7 @@ export function BookingSummary() {
       <figure className="relative aspect-[4/3] overflow-hidden rounded-xl border border-gold/30">
         <Image
           src={matched?.image ?? "/images/room-deluxe.jpg"}
-          alt={matched?.alt ?? "Room at Shri Radha Home Stay"}
+          alt={matched?.alt ?? "Room at Shri Radha Villa Stay"}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           placeholder="blur"

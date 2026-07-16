@@ -3,13 +3,20 @@ import { siteConfig } from "@/lib/site-config";
 import { Icon } from "@/components/icon";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/reveal";
-import { PeacockFeather, Lotus } from "@/components/decor";
+import { Lotus } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
 export function About() {
   return (
     <section id="about" className="relative overflow-hidden bg-cream py-16 md:py-24">
-      <PeacockFeather className="pointer-events-none absolute -right-6 top-16 h-72 opacity-[0.08]" />
+      <Image
+        src="/peacock.jpeg"
+        alt=""
+        aria-hidden="true"
+        width={340}
+        height={510}
+        className="pointer-events-none absolute -right-14 -top-12 hidden h-auto w-64 mix-blend-multiply lg:block"
+      />
 
       <div className="container">
         <SectionHeading
@@ -24,7 +31,7 @@ export function About() {
             <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-gold/40 shadow-card">
               <Image
                 src="/images/building.jpg"
-                alt="Exterior of the Shri Radha Home Stay building in Nathdwara"
+                alt="Exterior of the Shri Radha Villa Stay building in Nathdwara"
                 fill
                 loading="lazy"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -39,7 +46,7 @@ export function About() {
           {/* text + pills */}
           <Reveal delay={0.1}>
             <p className="text-lg leading-relaxed text-ink/80">
-              Located near Shrinathji Temple, Shri Radha Home Stay offers a
+              Located near Shrinathji Temple, Shri Radha Villa Stay offers a
               peaceful and comfortable environment for devotees and travellers
               visiting Nathdwara. Enjoy spotless AC rooms, 24x7 hot water,
               free WiFi and the warmth of a true home — just a short walk from

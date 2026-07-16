@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Shri Radha Home Stay",
-    "Nathdwara homestay",
+    "Shri Radha Villa Stay",
+    "Nathdwara villa stay",
     "stay near Shrinathji Temple",
     "Nathdwara hotel",
     "AC rooms Nathdwara",

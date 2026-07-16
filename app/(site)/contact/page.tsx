@@ -12,7 +12,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Contact & Location",
   description:
-    "Contact Shri Radha Home Stay, Nathdwara. Call or WhatsApp 8619301401 / 9799496789. Located on Haldighati Road, a 5–8 minute walk from Shrinathji Temple.",
+    "Contact Shri Radha Villa Stay, Nathdwara. Call or WhatsApp 8619301401 / 9799496789. Located on Haldighati Road, a 5–8 minute walk from Shrinathji Temple.",
   alternates: { canonical: "/contact" },
 };
 

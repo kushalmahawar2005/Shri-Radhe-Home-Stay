@@ -196,7 +196,7 @@ export function BookingForm({
         rzp.open();
         return; // wait for handler
       } else {
-        // Pay at homestay flow
+        // Pay at villa flow
         const result = await submitBookingRequest({
           roomSlug: room,
           checkIn,
@@ -437,7 +437,7 @@ export function BookingForm({
                 className="accent-emerald"
               />
               <div>
-                <p className="font-semibold text-ink">Pay at Homestay</p>
+                <p className="font-semibold text-ink">Pay at Villa</p>
                 <p className="text-xs text-ink/60">Request a booking and pay when you arrive. Subject to confirmation.</p>
               </div>
             </label>
@@ -461,7 +461,7 @@ export function BookingForm({
           </Button>
         </div>
         <p className="text-center text-xs text-ink/50">
-          Choose <span className="font-medium text-ink/70">Pay at Homestay</span>{" "}
+          Choose <span className="font-medium text-ink/70">Pay at Villa</span>{" "}
           to request a booking with no advance, or pay a ₹
           {siteConfig.advanceAmount} advance online to confirm instantly. We
           &apos;ll always reach out over a call or WhatsApp to finalise details.

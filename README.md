@@ -1,7 +1,7 @@
-# Shri Radha Home Stay — Website
+# Shri Radha Villa Stay — Website
 
-A fast, fully‑static marketing website for **Shri Radha Home Stay**, Nathdwara
-(Rajasthan) — a homestay beside the Shrinathji Temple.
+A fast, fully‑static marketing website for **Shri Radha Villa Stay**, Nathdwara
+(Rajasthan) — a villa beside the Shrinathji Temple.
 
 > _Stay With Peace & Devotion._
 
@@ -58,7 +58,7 @@ touch any component.
 
 ### A few things to set
 
-1. **Google Maps embed** — open Google Maps → find the homestay → _Share_ →
+1. **Google Maps embed** — open Google Maps → find the villa → _Share_ →
    _Embed a map_ → copy the `src` URL → paste into
    `siteConfig.links.mapsEmbed`. Also update `mapsDirections`.
 2. **Exact coordinates** — update `address.lat` / `address.lng` (used by the
@@ -168,7 +168,7 @@ scripts/gen-placeholders.py
 
 ## 📞 Business info
 
-- **Shri Radha Home Stay**, Haldighati Road, Kumbhalgarh Road, Nathdwara, Rajasthan
+- **Shri Radha Villa Stay**, Haldighati Road, Kumbhalgarh Road, Nathdwara, Rajasthan
 - Phone / WhatsApp: **8619301401**, **9799496789**
 - Instagram: **@shriradhehomestay_**
 - 5–8 minute walk to **Shrinathji Temple**

@@ -2,7 +2,7 @@
   "name": "shri-radha-home-stay",
   "version": "1.0.0",
   "private": true,
-  "description": "Website + admin panel for Shri Radha Home Stay, Nathdwara — Next.js, Neon Postgres, Vercel Blob.",
+  "description": "Website + admin panel for Shri Radha Villa Stay, Nathdwara — Next.js, Neon Postgres, Vercel Blob.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

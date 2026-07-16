@@ -27,7 +27,7 @@ export async function Footer() {
             logo={brand.logo}
           />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/70">
-            {brand.tagline}. A peaceful homestay near Shrinathji Temple,
+            {brand.tagline}. A peaceful villa near Shrinathji Temple,
             Nathdwara.
           </p>
           <Lotus className="mt-5 h-7 w-12 text-gold-light" />

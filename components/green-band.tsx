@@ -13,11 +13,12 @@ export function GreenBand() {
     <section
       aria-label="Highlights"
       className="relative bg-emerald text-cream-light"
+      style={{ overflow: "visible" }}
     >
       <Toran className="absolute inset-x-0 top-0 h-6 w-full text-gold/60" />
 
       {/* Bal Krishna — half inside the band, half rising above it */}
-      <div className="pointer-events-none absolute bottom-0 left-0 z-20 hidden h-80 w-52 md:block lg:left-[2%]">
+      <div className="pointer-events-none absolute -bottom-20 left-0 z-20 hidden h-[34rem] w-80 md:block lg:left-[2%] xl:h-[40rem] xl:w-96">
         <Image
           src="/images/krishna.png"
           alt="Bal Krishna with butter pot"

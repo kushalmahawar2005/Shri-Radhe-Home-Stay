@@ -56,7 +56,7 @@ export function Navbar({
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-sm font-medium text-ink/80 transition-colors hover:text-emerald"
+                className="text-base font-medium text-ink/80 transition-colors hover:text-emerald"
               >
                 {item.label}
               </Link>

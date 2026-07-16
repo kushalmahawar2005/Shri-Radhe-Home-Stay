@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Suspense } from "react";
 import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
@@ -16,7 +17,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Book Your Stay",
   description:
-    "Book your stay at Shri Radha Home Stay, Nathdwara. Choose your room, dates and guests — we confirm availability and the best price directly over call or WhatsApp.",
+    "Book your stay at Shri Radha Villa Stay, Nathdwara. Choose your room, dates and guests — we confirm availability and the best price directly over call or WhatsApp.",
   alternates: { canonical: "/booking" },
 };
 
@@ -29,13 +30,21 @@ export default async function BookingPage() {
   ]);
   return (
     <>
-      <section className="bg-cream-gradient py-14 md:py-20">
-        <div className="container">
+      <section className="relative overflow-hidden bg-cream-gradient py-14 md:py-20">
+        <Image
+          src="/rangoli.png"
+          alt=""
+          aria-hidden="true"
+          width={220}
+          height={220}
+          className="pointer-events-none absolute right-8 top-1/2 hidden h-auto w-48 -translate-y-1/2 opacity-90 lg:block xl:w-60"
+        />
+        <div className="container relative">
           <SectionHeading
             eyebrow="Reserve Your Room"
             title="Book Your Stay"
             highlight="Book"
-            subtitle="Experience comfort, devotion and warm hospitality at Shri Radha Home Stay, Nathdwara."
+            subtitle="Experience comfort, devotion and warm hospitality at Shri Radha Villa Stay, Nathdwara."
           />
         </div>
       </section>

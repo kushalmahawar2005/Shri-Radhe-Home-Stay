@@ -1,15 +1,37 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CalendarCheck, ArrowRight, Star } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import { HangingBells, PeacockFeather, TempleLineArt } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
+/** Room photos that auto-cycle in the hero showcase. */
+const HERO_SLIDES = [
+  "/images/3.jpg",
+  "/images/01.jpg",
+  "/images/r1.jpg",
+  "/images/c1.jpg",
+  "/images/room-deluxe.jpg",
+  "/images/room-premium.jpg",
+  "/images/room-family.jpg",
+];
+
 export function Hero() {
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
+      4000
+    );
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section
       id="home"
@@ -51,7 +73,7 @@ export function Hero() {
           >
             Shri Radha
             <br />
-            Home Stay
+            Villa Stay
           </h1>
 
           <p className="mt-4 font-serif text-2xl italic text-gold-dark sm:text-3xl">
@@ -86,16 +108,42 @@ export function Hero() {
           className="relative"
         >
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-4 border-cream-light shadow-card ring-1 ring-gold/40">
-            <Image
-              src="/images/3.jpg"
-              alt="Comfortable AC room with a temple-town view at Shri Radha Home Stay"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              placeholder="blur"
-              blurDataURL={BLUR_DATA_URL}
-              className="object-cover"
-            />
+            <AnimatePresence>
+              <motion.div
+                key={slide}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={HERO_SLIDES[slide]}
+                  alt="Comfortable AC room at Shri Radha Villa Stay"
+                  fill
+                  priority={slide === 0}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
+                  className="object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            {/* slide dots */}
+            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+              {HERO_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Show room photo ${i + 1}`}
+                  onClick={() => setSlide(i)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === slide ? "w-5 bg-cream-light" : "w-1.5 bg-cream-light/60"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* gold trust badge */}
@@ -106,7 +154,7 @@ export function Hero() {
               ))}
             </span>
             <span className="mt-1 text-xs font-semibold tracking-wide">
-              Trusted by Pilgrims
+              Trusted by Tourists
             </span>
           </div>
         </motion.div>

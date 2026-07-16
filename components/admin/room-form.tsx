@@ -228,7 +228,7 @@ export function RoomForm({ initial }: { initial?: RoomFormData }) {
             name="alt"
             defaultValue={data.alt}
             className={`mt-1 ${field}`}
-            placeholder="Deluxe AC room at Shri Radha Home Stay"
+            placeholder="Deluxe AC room at Shri Radha Villa Stay"
           />
         </label>
         <div className="mt-4">

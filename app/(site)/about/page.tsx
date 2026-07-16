@@ -16,7 +16,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Shri Radha Home Stay is a family-run homestay in Nathdwara — born out of love and devotion to give pilgrims a peaceful, comfortable stay near Shrinathji Temple.",
+    "Shri Radha Villa Stay is a family-run villa in Nathdwara — born out of love and devotion to give pilgrims a peaceful, comfortable stay near Shrinathji Temple.",
   alternates: { canonical: "/about" },
 };
 
@@ -114,7 +114,7 @@ export default async function AboutPage() {
               <figure className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
                 <Image
                   src={about.hosts[0].image}
-                  alt="The host family of Shri Radha Home Stay"
+                  alt="The host family of Shri Radha Villa Stay"
                   fill
                   loading="lazy"
                   sizes="(max-width: 1024px) 100vw, 60vw"
@@ -215,7 +215,7 @@ export default async function AboutPage() {
             <figure className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
               <Image
                 src="/images/room-premium.jpg"
-                alt="A comfortable room at Shri Radha Home Stay"
+                alt="A comfortable room at Shri Radha Villa Stay"
                 fill
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"

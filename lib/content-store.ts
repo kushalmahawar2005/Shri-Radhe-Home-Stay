@@ -188,7 +188,7 @@ export const getContent = cache(
  * saved, falling back to `site-config` field-by-field.
  */
 const WHATSAPP_MESSAGE =
-  "Jai Shri Krishna, I'd like to book a stay at Shri Radha Home Stay. Please share availability and details.";
+  "Jai Shri Krishna, I'd like to book a stay at Shri Radha Villa Stay. Please share availability and details.";
 
 function toE164(raw: string): string {
   const d = (raw ?? "").replace(/\D/g, "");
