@@ -51,7 +51,7 @@ export async function CtaBand() {
         <Reveal delay={0.1} className="relative hidden md:block">
           <div className="relative ml-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl border-4 border-cream-light/20 ring-1 ring-gold/40">
             <Image
-              src="/images/temple.jpg"
+              src="/images/p1.png"
               alt="Shrinathji Temple in Nathdwara, a short walk from the villa"
               fill
               loading="lazy"

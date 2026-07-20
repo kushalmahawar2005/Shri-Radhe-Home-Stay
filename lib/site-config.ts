@@ -321,25 +321,25 @@ export const siteConfig = {
     {
       name: "Shrinathji Temple",
       distance: "8 Min Walk",
-      image: "/images/nearby-shrinathji.jpg",
+      image: "/images/shrenathji.jpg",
       alt: "Shrinathji Temple, Nathdwara",
     },
     {
       name: "Statue of Belief",
       distance: "Short Drive",
-      image: "/images/nearby-statue.jpg",
+      image: "/images/statue.jpg",
       alt: "Statue of Belief (Vishwas Swaroopam), Nathdwara",
     },
     {
       name: "Haldighati",
       distance: "Nearby",
-      image: "/images/nearby-haldighati.jpg",
+      image: "/images/haldighati.jpg",
       alt: "Haldighati historic battlefield site near Nathdwara",
     },
     {
       name: "Kumbhalgarh Fort",
       distance: "Day Trip",
-      image: "/images/nearby-kumbhalgarh.jpg",
+      image: "/images/kumbalgarh.jpg",
       alt: "Kumbhalgarh Fort, a UNESCO World Heritage site",
     },
   ] satisfies Nearby[],
@@ -446,7 +446,7 @@ export const attractions: Attraction[] = [
     category: "Temple",
     blurb:
       "The heart of devotion in Nathdwara. Dedicated to Lord Shrinathji (Krishna), this sacred temple is one of the most important pilgrimage sites for Vaishnav devotees.",
-    image: "/images/nearby-shrinathji.jpg",
+    image: "/images/shrenathji.jpg",
     alt: "Shrinathji Temple, Nathdwara",
     byCar: "1.2 km",
     byBike: "5 Min",
@@ -458,7 +458,7 @@ export const attractions: Attraction[] = [
     category: "Spiritual",
     blurb:
       "A symbol of faith and inspiration — the tallest statue of Lord Shiva in the world, standing 351 feet tall on the outskirts of Nathdwara.",
-    image: "/images/nearby-statue.jpg",
+    image: "/images/statue.jpg",
     alt: "Statue of Belief (Vishwas Swaroopam), Nathdwara",
     byCar: "4.5 km",
     byBike: "10 Min",
@@ -470,7 +470,7 @@ export const attractions: Attraction[] = [
     category: "Historical",
     blurb:
       "The historic land of bravery, famous for the battle of Maharana Pratap and Chetak. This place is a symbol of Rajput valour and pride.",
-    image: "/images/nearby-haldighati.jpg",
+    image: "/images/haldighati.jpg",
     alt: "Haldighati historic battlefield site near Nathdwara",
     byCar: "18 km",
     byBike: "30 Min",
@@ -482,7 +482,7 @@ export const attractions: Attraction[] = [
     category: "Historical",
     blurb:
       "A UNESCO World Heritage Site and a magnificent fort with massive walls, running rivers and a rich history of Mewar.",
-    image: "/images/nearby-kumbhalgarh.jpg",
+    image: "/images/kumbalgarh.jpg",
     alt: "Kumbhalgarh Fort, a UNESCO World Heritage site",
     byCar: "48 km",
     byBike: "75 Min",
