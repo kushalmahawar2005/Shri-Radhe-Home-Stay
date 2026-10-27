@@ -14,6 +14,7 @@ export function SectionHeading({
   align = "center",
   className,
   invert = false,
+  as: Heading = "h2",
 }: {
   eyebrow?: string;
   title: string;
@@ -22,6 +23,8 @@ export function SectionHeading({
   align?: "center" | "left";
   className?: string;
   invert?: boolean;
+  /** Use `as="h1"` when this heading is the page's main title. */
+  as?: "h1" | "h2";
 }) {
   const titleParts = highlight
     ? title.split(new RegExp(`(${highlight})`, "i"))
@@ -43,7 +46,7 @@ export function SectionHeading({
         </Eyebrow>
       ) : null}
       <Flourish className={align === "left" ? "lg:ml-0" : undefined} />
-      <h2
+      <Heading
         className={cn(
           "font-serif text-3xl font-bold leading-tight sm:text-4xl md:text-[2.6rem]",
           invert ? "text-cream-light" : "text-ink"
@@ -58,7 +61,7 @@ export function SectionHeading({
             <span key={i}>{part}</span>
           )
         )}
-      </h2>
+      </Heading>
       {subtitle ? (
         <p
           className={cn(

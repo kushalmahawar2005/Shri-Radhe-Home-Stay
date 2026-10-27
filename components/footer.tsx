@@ -5,6 +5,15 @@ import { getBrand, getContact, getRooms } from "@/lib/content-store";
 import { Logo } from "@/components/logo";
 import { Lotus } from "@/components/decor";
 
+/**
+ * Keyword landing pages. They are not in the top nav (it would crowd), so
+ * the footer is what gives them a site-wide internal link.
+ */
+const GUIDE_LINKS = [
+  { label: "Stay Near Shrinathji Temple", href: "/stay-near-shrinathji-temple" },
+  { label: "Nathdwara Travel Guide", href: "/nathdwara-guide" },
+];
+
 export async function Footer() {
   const [brand, contact, rooms] = await Promise.all([
     getBrand(),
@@ -39,7 +48,7 @@ export async function Footer() {
             Quick Links
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
-            {nav.map((item) => (
+            {[...nav, ...GUIDE_LINKS].map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -61,7 +70,7 @@ export async function Footer() {
             {rooms.map((room) => (
               <li key={room.slug}>
                 <Link
-                  href="/rooms"
+                  href={`/rooms/${room.slug}`}
                   className="transition-colors hover:text-gold-light"
                 >
                   {room.name}

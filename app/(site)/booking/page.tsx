@@ -5,6 +5,8 @@ import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
 import { BookingForm } from "@/components/booking-form";
 import { bookingPerks } from "@/lib/site-config";
+import { breadcrumbSchema } from "@/lib/seo";
+import { Schema } from "@/components/json-ld";
 import {
   getRooms,
   getBlockedRanges,
@@ -15,10 +17,16 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Book Your Stay",
+  title: "Book Online — Room Booking in Nathdwara",
   description:
-    "Book your stay at Shri Radha Villa Stay, Nathdwara. Choose your room, dates and guests — we confirm availability and the best price directly over call or WhatsApp.",
-  alternates: { canonical: "/booking" },
+    "Book a room online at Shri Radha Villa Stay, Nathdwara. Pick your dates, room and guests, pay a small advance and get instant confirmation — or book over WhatsApp for the best direct price.",
+  keywords: [
+    "Nathdwara hotel booking online",
+    "book room near Shrinathji Temple",
+    "Nathdwara room booking",
+    "online booking home stay Nathdwara",
+  ],
+  alternates: { canonical: "/booking/" },
 };
 
 export default async function BookingPage() {
@@ -30,6 +38,13 @@ export default async function BookingPage() {
   ]);
   return (
     <>
+      <Schema
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Book Your Stay", path: "/booking" },
+        ])}
+      />
+
       <section className="relative overflow-hidden bg-cream-gradient py-14 md:py-20">
         <Image
           src="/rangoli.png"
@@ -41,8 +56,9 @@ export default async function BookingPage() {
         />
         <div className="container relative">
           <SectionHeading
+            as="h1"
             eyebrow="Reserve Your Room"
-            title="Book Your Stay"
+            title="Book Your Stay in Nathdwara"
             highlight="Book"
             subtitle="Experience comfort, devotion and warm hospitality at Shri Radha Villa Stay, Nathdwara."
           />

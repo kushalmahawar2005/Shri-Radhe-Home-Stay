@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Phone, MessageCircle, MapPin, Instagram, Clock, Plus } from "lucide-react";
 import { getBrand, getContact, getFaqs } from "@/lib/content-store";
+import { breadcrumbSchema, faqSchema } from "@/lib/seo";
+import { Schema } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactForm } from "@/components/contact-form";
@@ -10,10 +12,15 @@ import { Reveal } from "@/components/reveal";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Contact & Location",
+  title: "Contact & Location — Home Stay in Nathdwara",
   description:
-    "Contact Shri Radha Villa Stay, Nathdwara. Call or WhatsApp 8619301401 / 9799496789. Located on Haldighati Road, a 5–8 minute walk from Shrinathji Temple.",
-  alternates: { canonical: "/contact" },
+    "Contact Shri Radha Villa Stay, Nathdwara. Call or WhatsApp 8619301401 / 9799496789 for room availability and the best price. Haldighati Road, Nathdwara — an 8 minute walk from Shrinathji Temple.",
+  keywords: [
+    "Nathdwara home stay contact number",
+    "hotel booking number Nathdwara",
+    "Shrinathji Temple nearby stay address",
+  ],
+  alternates: { canonical: "/contact/" },
 };
 
 export default async function ContactPage() {
@@ -26,11 +33,22 @@ export default async function ContactPage() {
 
   return (
     <>
+      {/* The Q&A below is visible on this page, so the FAQ rich result is
+          eligible here (it is not emitted site-wide). */}
+      {faqs.length ? <Schema data={faqSchema(faqs)} /> : null}
+      <Schema
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
+
       <section className="bg-cream-gradient py-14 md:py-20">
         <div className="container">
           <SectionHeading
+            as="h1"
             eyebrow="Get in Touch"
-            title="Contact & Location"
+            title="Contact & Location — Nathdwara"
             highlight="Contact"
             subtitle="Have a question or ready to book? Call, WhatsApp or drop us a message — we usually reply within minutes."
           />

@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check, MessageCircle, Users, ArrowRight, CalendarCheck } from "lucide-react";
 import { getRooms, getContact } from "@/lib/content-store";
+import { breadcrumbSchema } from "@/lib/seo";
+import { Schema } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { Facilities } from "@/components/facilities";
@@ -12,24 +14,40 @@ import { BLUR_DATA_URL } from "@/lib/utils";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Our Rooms",
+  title: "AC Rooms in Nathdwara Near Shrinathji Temple",
   description:
-    "Explore the AC rooms at Shri Radha Villa Stay, Nathdwara — Deluxe, Family and Premium rooms with attached bathrooms, 24x7 hot water and free WiFi. Prices on request.",
-  alternates: { canonical: "/rooms" },
+    "Deluxe, Family and Premium AC rooms at Shri Radha Villa Stay, Nathdwara — attached bathrooms, 24x7 hot water, free WiFi and free parking, an 8 minute walk from Shrinathji Temple. See per-night rates and book direct.",
+  keywords: [
+    "AC rooms in Nathdwara",
+    "rooms near Shrinathji Temple",
+    "family room Nathdwara",
+    "deluxe room Nathdwara",
+    "Nathdwara room booking",
+    "budget rooms Nathdwara",
+  ],
+  alternates: { canonical: "/rooms/" },
 };
 
 export default async function RoomsPage() {
   const [rooms, contact] = await Promise.all([getRooms(), getContact()]);
   return (
     <>
+      <Schema
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Rooms", path: "/rooms" },
+        ])}
+      />
+
       {/* page header */}
       <section className="bg-cream-gradient py-14 md:py-20">
         <div className="container">
           <SectionHeading
+            as="h1"
             eyebrow="Accommodation"
-            title="Our Comfortable Rooms"
-            highlight="Comfortable"
-            subtitle="Every room is air-conditioned with an attached bathroom, 24x7 hot water, free WiFi and fresh, clean linen. Prices are kept on request — message us for the best rate for your dates."
+            title="AC Rooms in Nathdwara, Near Shrinathji Temple"
+            highlight="AC Rooms"
+            subtitle="Every room is air-conditioned with an attached bathroom, 24x7 hot water, free WiFi and fresh, clean linen — an 8 minute walk from Shrinathji Temple. Book direct on WhatsApp for the best rate for your dates."
           />
         </div>
       </section>

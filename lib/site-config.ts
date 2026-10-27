@@ -55,6 +55,27 @@ const E164_SECONDARY = "+919799496789";
 const WHATSAPP_MESSAGE =
   "Jai Shri Krishna, I'd like to book a stay at Shri Radha Villa Stay. Please share availability and details.";
 
+/** The live domain. Every canonical, sitemap URL and schema @id builds on it. */
+const PRODUCTION_URL = "https://shreeradhehomestay.in";
+
+/**
+ * Resolves the public site URL.
+ *
+ * A localhost value leaking into a production build would put
+ * `http://localhost:3000` into the sitemap, every canonical tag and every
+ * JSON-LD id — which de-indexes the whole site. So in production a localhost
+ * override is ignored and the real domain wins.
+ */
+function resolveSiteUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "");
+  const isLocal = !!configured && /^https?:\/\/(localhost|127\.0\.0\.1)/.test(configured);
+
+  if (configured && !(isLocal && process.env.NODE_ENV === "production")) {
+    return configured;
+  }
+  return PRODUCTION_URL;
+}
+
 export const siteConfig = {
   name: "Shri Radha Villa Stay",
   shortName: "Shri Radha",
@@ -65,9 +86,7 @@ export const siteConfig = {
     "Experience a comfortable stay near Shrinathji Temple with modern amenities, spiritual surroundings and authentic Nathdwara hospitality.",
 
   // ── Public site URL (override via NEXT_PUBLIC_SITE_URL) ──
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://shreeradhehomestay.in",
+  url: resolveSiteUrl(),
 
   // ── Logo image (shown next to the wordmark in navbar & footer) ──
   // Drop your file in /public and put its path here, e.g. "/logo.png".

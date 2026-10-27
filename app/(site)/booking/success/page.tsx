@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Thank you! Your booking request at Shri Radha Villa Stay has been received. Our team will contact you shortly to confirm your stay.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/booking/success" },
+  alternates: { canonical: "/booking/success/" },
 };
 
 const steps = [

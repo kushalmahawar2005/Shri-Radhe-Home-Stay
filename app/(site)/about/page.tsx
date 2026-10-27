@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Star, MessageCircle } from "lucide-react";
 import { about } from "@/lib/site-config";
 import { getBrand, getContact } from "@/lib/content-store";
+import { breadcrumbSchema } from "@/lib/seo";
+import { Schema } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/section-heading";
 import { Icon } from "@/components/icon";
@@ -14,16 +16,28 @@ import { BLUR_DATA_URL } from "@/lib/utils";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "About Our Family-Run Home Stay in Nathdwara",
   description:
-    "Shri Radha Villa Stay is a family-run villa in Nathdwara — born out of love and devotion to give pilgrims a peaceful, comfortable stay near Shrinathji Temple.",
-  alternates: { canonical: "/about" },
+    "Shri Radha Villa Stay is a family-run home stay in Nathdwara — born out of love and devotion to give pilgrims a peaceful, clean and comfortable stay an 8 minute walk from Shrinathji Temple.",
+  keywords: [
+    "family run homestay Nathdwara",
+    "about Shri Radha Villa Stay",
+    "trusted home stay Nathdwara",
+  ],
+  alternates: { canonical: "/about/" },
 };
 
 export default async function AboutPage() {
   const [brand, contact] = await Promise.all([getBrand(), getContact()]);
   return (
     <>
+      <Schema
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About Us", path: "/about" },
+        ])}
+      />
+
       {/* ── page header ── */}
       <section className="bg-cream-gradient py-14 md:py-20">
         <div className="container grid items-center gap-10 lg:grid-cols-2">

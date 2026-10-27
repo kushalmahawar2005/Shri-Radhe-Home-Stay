@@ -18,6 +18,13 @@ import {
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import {
+  absoluteUrl,
+  breadcrumbSchema,
+  priceNumber,
+  SITE_URL,
+} from "@/lib/seo";
+import { Schema } from "@/components/json-ld";
+import {
   getRooms,
   getRoomBySlug,
   getBlockedRanges,
@@ -44,11 +51,26 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const room = await getRoomBySlug(params.slug);
-  if (!room) return { title: "Room Not Found" };
+  if (!room) return { title: "Room Not Found", robots: { index: false } };
+  const title = `${room.name} in Nathdwara — ${room.priceNight}/Night`;
+  const description = `${room.name} at ${siteConfig.name}, Nathdwara — ${room.blurb} ${room.guests}, ${room.bed}, ${room.size}. From ${room.priceNight} per night, an ${siteConfig.templeWalkTime} from Shrinathji Temple.`;
   return {
-    title: room.name,
-    description: `${room.name} at ${siteConfig.name}, Nathdwara — ${room.blurb} From ${room.priceNight}/night.`,
-    alternates: { canonical: `/rooms/${room.slug}` },
+    title,
+    description,
+    keywords: [
+      `${room.name} Nathdwara`,
+      "rooms near Shrinathji Temple",
+      "AC room Nathdwara booking",
+      `${room.guests} room Nathdwara`,
+    ],
+    alternates: { canonical: `/rooms/${room.slug}/` },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: absoluteUrl(`/rooms/${room.slug}`),
+      images: [{ url: room.image, alt: room.alt }],
+    },
   };
 }
 
@@ -75,8 +97,53 @@ export default async function RoomDetailPage({
     { icon: Maximize, label: room.size },
   ];
 
+  // HotelRoom + Offer makes the nightly rate eligible for rich results, and
+  // ties this page back to the site-wide Hotel entity in the root layout.
+  const roomSchema = {
+    "@context": "https://schema.org",
+    "@type": "HotelRoom",
+    name: `${room.name} — ${brand.name}, Nathdwara`,
+    description: room.blurb,
+    url: absoluteUrl(`/rooms/${room.slug}`),
+    image: Array.from(new Set([room.image, ...room.gallery])).map((src) =>
+      src.startsWith("http") ? src : `${SITE_URL}${src}`
+    ),
+    bed: { "@type": "BedDetails", typeOfBed: room.bed },
+    occupancy: { "@type": "QuantitativeValue", name: room.guests },
+    floorSize: { "@type": "QuantitativeValue", name: room.size },
+    amenityFeature: room.amenities.map((a) => ({
+      "@type": "LocationFeatureSpecification",
+      name: a,
+      value: true,
+    })),
+    containedInPlace: { "@id": `${SITE_URL}/#lodging` },
+    offers: {
+      "@type": "Offer",
+      price: priceNumber(room.priceNight),
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+      url: absoluteUrl("/booking"),
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: priceNumber(room.priceNight),
+        priceCurrency: "INR",
+        unitCode: "DAY",
+        unitText: "per night",
+      },
+    },
+  };
+
   return (
     <>
+      <Schema data={roomSchema} />
+      <Schema
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Rooms", path: "/rooms" },
+          { name: room.name, path: `/rooms/${room.slug}` },
+        ])}
+      />
+
       {/* breadcrumb + header */}
       <section className="bg-cream-gradient pb-10 pt-8 md:pb-12">
         <div className="container">

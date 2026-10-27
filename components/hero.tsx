@@ -74,6 +74,10 @@ export function Hero() {
             Shri Radha
             <br />
             Villa Stay
+            {/* Part of the H1 on purpose — it is what people search for. */}
+            <span className="mt-3 block font-sans text-sm font-semibold uppercase tracking-[0.22em] text-emerald sm:text-base">
+              Home Stay in Nathdwara
+            </span>
           </h1>
 
           <p className="mt-4 font-serif text-2xl italic text-gold-dark sm:text-3xl">

@@ -9,19 +9,29 @@ import { Nearby } from "@/components/nearby";
 import { Testimonials } from "@/components/testimonials";
 import { FindUs } from "@/components/find-us";
 import { CtaBand } from "@/components/cta-band";
-import { getRooms, getTestimonials } from "@/lib/content-store";
+import { SeoIntro } from "@/components/seo-intro";
+import { FaqAccordion } from "@/components/faq-accordion";
+import { SectionHeading } from "@/components/section-heading";
+import { Schema } from "@/components/json-ld";
+import { faqSchema } from "@/lib/seo";
+import { getRooms, getTestimonials, getFaqs } from "@/lib/content-store";
 
 // Rendered on the server with rooms from the DB; refreshed hourly and
 // on-demand whenever the admin saves a room.
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [rooms, testimonials] = await Promise.all([
+  const [rooms, testimonials, faqs] = await Promise.all([
     getRooms(),
     getTestimonials(),
+    getFaqs(),
   ]);
   return (
     <>
+      {/* The FAQ section below is visible on this page, so the rich result
+          is eligible here. */}
+      {faqs.length ? <Schema data={faqSchema(faqs)} /> : null}
+
       <Hero />
       <QuickFacts />
       <About />
@@ -37,6 +47,21 @@ export default async function HomePage() {
           <Testimonials compact items={testimonials} />
         </div>
       </section>
+
+      <SeoIntro />
+
+      {faqs.length ? (
+        <section className="bg-cream-alt py-14 md:py-20">
+          <div className="container">
+            <SectionHeading
+              eyebrow="Before You Book"
+              title="Frequently Asked Questions"
+              highlight="Questions"
+            />
+            <FaqAccordion faqs={faqs} />
+          </div>
+        </section>
+      ) : null}
 
       <FindUs />
       <CtaBand />
