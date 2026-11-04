@@ -256,7 +256,12 @@ export const getBrand = cache(async (): Promise<BrandView> => {
     logo: siteConfig.logo,
   };
   const raw = await getContent<Partial<BrandView>>("brand", fallback);
-  return { ...fallback, ...raw };
+  const brand = { ...fallback, ...raw };
+  // A saved pre-redesign default should follow the current source logo.
+  if (brand.logo === "/logo.jpg" || brand.logo === "/images/logo.jpg") {
+    brand.logo = fallback.logo;
+  }
+  return brand;
 });
 
 export const getContact = cache(async (): Promise<ContactView> => {

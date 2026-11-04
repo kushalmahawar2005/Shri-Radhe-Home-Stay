@@ -40,8 +40,9 @@ export default async function HomePage() {
       <DivineEnergy />
 
       {/* Facilities · Nearby Attractions · Guest reviews — three-column row */}
-      <section className="bg-cream-alt py-16 md:py-24">
-        <div className="container grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-3 lg:items-start">
+      <section className="heritage-wash relative isolate overflow-hidden bg-cream-alt py-16 md:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-cream-alt/70" aria-hidden="true" />
+        <div className="container relative z-10 grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-3 lg:items-start">
           <Facilities compact />
           <Nearby compact />
           <Testimonials compact items={testimonials} />
@@ -51,8 +52,9 @@ export default async function HomePage() {
       <SeoIntro />
 
       {faqs.length ? (
-        <section className="bg-cream-alt py-14 md:py-20">
-          <div className="container">
+        <section className="heritage-wash relative isolate overflow-hidden bg-cream-alt py-14 md:py-20">
+          <div className="pointer-events-none absolute inset-0 bg-cream-alt/65" aria-hidden="true" />
+          <div className="container relative z-10">
             <SectionHeading
               eyebrow="Before You Book"
               title="Frequently Asked Questions"

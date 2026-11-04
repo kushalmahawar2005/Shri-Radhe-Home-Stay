@@ -52,11 +52,11 @@ export async function JsonLd() {
   );
 
   const photos = [
+    "/images/og-image.jpg",
+    "/images/room-deluxe-enhanced.webp",
+    "/images/room-family-enhanced.webp",
+    "/images/room-premium-enhanced.webp",
     "/images/building.jpg",
-    "/images/room-deluxe.jpg",
-    "/images/room-premium.jpg",
-    "/images/room-family.jpg",
-    "/images/terrace.jpg",
   ].map((p) => `${SITE_URL}${p}`);
 
   const hotel = {
@@ -194,11 +194,26 @@ export async function JsonLd() {
     publisher: { "@id": orgId },
   };
 
+  const homePage = {
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: `Stay in Nathdwara Near Shrinathji Temple | ${name}`,
+    isPartOf: { "@id": siteId },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      contentUrl: `${SITE_URL}/images/og-image.jpg`,
+      width: 1200,
+      height: 630,
+      caption: `Guest room at ${name} in Nathdwara`,
+    },
+  };
+
   return (
     <Schema
       data={{
         "@context": "https://schema.org",
-        "@graph": [hotel, organization, website],
+        "@graph": [hotel, organization, website, homePage],
       }}
     />
   );

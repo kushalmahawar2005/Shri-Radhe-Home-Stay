@@ -32,6 +32,8 @@ export function absoluteUrl(path = "/"): string {
 
 /** Core commercial cluster — highest-intent "book a stay" searches. */
 export const CORE_KEYWORDS = [
+  "stay in Nathdwara",
+  "stay at Nathdwara",
   "home stay in Nathdwara",
   "homestay Nathdwara",
   "home stay near Nathdwara",

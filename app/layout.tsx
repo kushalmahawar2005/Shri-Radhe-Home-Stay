@@ -21,7 +21,7 @@ const mukta = Mukta({
 });
 
 /** Keyword-forward default title — the phrase people actually search for. */
-const DEFAULT_TITLE = `Home Stay in Nathdwara Near Shrinathji Temple | ${siteConfig.name}`;
+const DEFAULT_TITLE = `Stay in Nathdwara Near Shrinathji Temple | ${siteConfig.name}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name}, Nathdwara`,
+        alt: `Guest room at ${siteConfig.name} in Nathdwara`,
       },
     ],
   },
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: DEFAULT_TITLE,
     description: siteConfig.description,
-    images: ["/images/og-image.jpg"],
+    images: [{ url: "/images/og-image.jpg", width: 1200, height: 630, alt: `Guest room at ${siteConfig.name} in Nathdwara` }],
   },
   robots: {
     index: true,
@@ -79,8 +79,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "64x64" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "64x64" },
     ],
     apple: "/apple-touch-icon.png",
   },

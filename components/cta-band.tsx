@@ -3,7 +3,6 @@ import { Phone, MessageCircle } from "lucide-react";
 import { getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/reveal";
-import { Toran } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
 export async function CtaBand() {
@@ -11,10 +10,8 @@ export async function CtaBand() {
   return (
     <section
       aria-label="Book your stay"
-      className="relative overflow-hidden bg-emerald text-cream-light"
+      className="relative overflow-hidden border-y border-gold/40 bg-[radial-gradient(ellipse_at_82%_15%,rgba(199,162,74,0.18),transparent_38%),#1e4a3c] text-cream-light"
     >
-      <Toran className="absolute inset-x-0 top-0 h-6 w-full text-gold/60" />
-
       <div className="container grid items-center gap-8 py-14 md:grid-cols-2 md:py-16">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-gold-light">

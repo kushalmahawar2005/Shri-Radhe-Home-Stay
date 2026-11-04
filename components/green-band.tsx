@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
 import { Icon } from "@/components/icon";
-import { Toran } from "@/components/decor";
 import { RevealGroup } from "@/components/reveal";
 import { fadeUpVariants } from "@/components/reveal";
 import { motion } from "framer-motion";
@@ -11,41 +9,36 @@ import { motion } from "framer-motion";
 export function GreenBand() {
   return (
     <section
-      aria-label="Highlights"
-      className="relative bg-emerald text-cream-light"
-      style={{ overflow: "visible" }}
+      aria-label="Stay highlights"
+      className="relative overflow-hidden border-y border-[#caa856]/45 bg-[#1e4a3c] text-[#fff8e9]"
     >
-      <Toran className="absolute inset-x-0 top-0 h-6 w-full text-gold/60" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_12%_50%,rgba(216,184,112,0.15),transparent_30%),radial-gradient(ellipse_at_92%_10%,rgba(255,255,255,0.06),transparent_32%)]" aria-hidden="true" />
+      <div className="container relative grid gap-8 py-9 md:grid-cols-[0.8fr_2fr] md:items-center md:gap-12 md:py-11">
+        <div className="max-w-sm">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e1c57f]">The little comforts</p>
+          <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight text-[#fff8e9] sm:text-3xl">
+            Make more room for darshan.
+          </h2>
+        </div>
 
-      {/* Bal Krishna — half inside the band, half rising above it */}
-      <div className="pointer-events-none absolute -bottom-20 left-0 z-20 hidden h-[34rem] w-80 md:block lg:left-[2%] xl:h-[40rem] xl:w-96">
-        <Image
-          src="/images/krishna.png"
-          alt="Bal Krishna with butter pot"
-          fill
-          sizes="220px"
-          className="object-contain object-bottom drop-shadow-[0_10px_18px_rgba(0,0,0,0.35)]"
-        />
-      </div>
-
-      <div className="container grid items-center gap-8 py-12 md:grid-cols-[auto,1fr] md:py-14">
-        {/* spacer reserving room for the Krishna illustration */}
-        <div className="hidden h-44 w-48 md:block" aria-hidden="true" />
-
-        <RevealGroup className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-          {siteConfig.highlights.map((h) => (
+        <RevealGroup className="grid grid-cols-2 gap-x-5 gap-y-6 lg:grid-cols-4 lg:gap-5">
+          {siteConfig.highlights.map((highlight) => (
             <motion.div
-              key={h.label}
+              key={highlight.label}
               variants={fadeUpVariants}
-              className="flex flex-col items-center gap-2 text-center md:items-start md:text-left"
+              className="flex items-center gap-3 border-l border-[#e1c57f]/35 pl-3 sm:pl-4"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/40 bg-emerald-light/40">
-                <Icon name={h.icon} className="h-6 w-6 text-gold-light" />
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#e1c57f]/40 bg-white/[0.06] text-[#f0d487]">
+                <Icon name={highlight.icon} className="h-5 w-5" />
               </span>
-              <span className="mt-1 font-serif text-lg font-semibold text-cream-light">
-                {h.label}
+              <span>
+                <span className="block font-serif text-base font-semibold leading-tight text-[#fff8e9] sm:text-lg">
+                  {highlight.label}
+                </span>
+                <span className="mt-1 block text-xs text-[#fff8e9]/65 sm:text-sm">
+                  {highlight.sub}
+                </span>
               </span>
-              <span className="text-sm text-cream/70">{h.sub}</span>
             </motion.div>
           ))}
         </RevealGroup>

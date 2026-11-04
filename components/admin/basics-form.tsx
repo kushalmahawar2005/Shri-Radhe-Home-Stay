@@ -106,7 +106,7 @@ export function BasicsForm({ data }: { data: BasicsData }) {
           <Label name="templeWalkTime" defaultValue={brand.templeWalkTime}>
             Temple walk time
           </Label>
-          <Label name="logo" defaultValue={brand.logo ?? ""}>Logo path (e.g. /logo.jpg)</Label>
+          <Label name="logo" defaultValue={brand.logo ?? ""}>Logo path (e.g. /logo-brand.webp)</Label>
         </div>
         <label className="mt-4 block text-sm font-medium text-ink/80">
           Short description (SEO / hero)

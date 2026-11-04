@@ -81,17 +81,17 @@ export const siteConfig = {
   shortName: "Shri Radha",
   tagline: "Stay With Peace & Devotion",
   description:
-    "A serene, family-friendly villa in Nathdwara, just an 8 minute walk from the Shrinathji Temple. 3 AC rooms with attached bathrooms, 24x7 hot water, free WiFi and warm hospitality.",
+    "Book a family-friendly homestay in Nathdwara, an 8-minute walk from Shrinathji Temple. AC rooms, attached bathrooms, free Wi-Fi and parking at Shri Radha Villa Stay.",
   intro:
     "Experience a comfortable stay near Shrinathji Temple with modern amenities, spiritual surroundings and authentic Nathdwara hospitality.",
 
   // ── Public site URL (override via NEXT_PUBLIC_SITE_URL) ──
   url: resolveSiteUrl(),
 
-  // ── Logo image (shown next to the wordmark in navbar & footer) ──
+  // ── Transparent brand emblem used in the navbar, footer and structured data ──
   // Drop your file in /public and put its path here, e.g. "/logo.png".
   // Set to null to fall back to the built-in gold feather/leaf mark.
-  logo: "/logo.jpg" as string | null,
+  logo: "/logo-brand.webp" as string | null,
 
   // ── NAP (Name / Address / Phone) ──
   address: {
@@ -178,7 +178,7 @@ export const siteConfig = {
     {
       slug: "deluxe",
       name: "Deluxe Room",
-      image: "/images/02.jpg",
+      image: "/images/room-deluxe-enhanced.webp",
       alt: "Deluxe AC room with comfortable bedding at Shri Radha Villa Stay",
       blurb:
         "A cosy, well-appointed AC room perfect for couples and solo pilgrims seeking a peaceful stay near the temple.",
@@ -190,7 +190,7 @@ export const siteConfig = {
       bed: "King Size Bed",
       size: "180 sq.ft",
       gallery: [
-        "/images/01.jpg",
+        "/images/room-deluxe-enhanced.webp",
         "/images/02.jpg",
         "/images/03.jpg",
         "/images/BathroomB.jpg",
@@ -216,7 +216,7 @@ export const siteConfig = {
     {
       slug: "family",
       name: "Family Room",
-      image: "/images/r3.jpg",
+      image: "/images/room-family-enhanced.webp",
       alt: "Spacious family room with multiple beds at Shri Radha Villa Stay",
       blurb:
         "A spacious, family-friendly room with room to relax together after darshan — ideal for families travelling with children or elders.",
@@ -228,7 +228,7 @@ export const siteConfig = {
       bed: "2 King Size Beds",
       size: "300 sq.ft",
       gallery: [
-        "/images/r1.jpg",
+        "/images/room-family-enhanced.webp",
         "/images/r2.jpg",
         "/images/r3.jpg",
         "/images/BathroomC.jpg",
@@ -254,7 +254,7 @@ export const siteConfig = {
     {
       slug: "premium",
       name: "Premium Room",
-      image: "/images/c1.jpg",
+      image: "/images/room-premium-enhanced.webp",
       alt: "Premium room with temple town view and luxury bedding",
       blurb:
         "Our finest room with a temple-town view and luxury bedding, for guests who want an elevated, restful stay.",
@@ -266,7 +266,7 @@ export const siteConfig = {
       bed: "King Size Bed",
       size: "240 sq.ft",
       gallery: [
-        "/images/c1.jpg",
+        "/images/room-premium-enhanced.webp",
         "/images/c2.jpg",
         "/images/c3.jpg",
         "/images/BathroomA.jpg",
@@ -295,21 +295,21 @@ export const siteConfig = {
   divineEnergy: [
     {
       title: "Shrinathji Darshan",
-      caption: "Experience Divine Peace and Blessings",
-      image: "/images/darshan.jpg",
-      alt: "Shrinathji deity darshan in Nathdwara",
+      caption: "A traditional Pichwai-inspired view of Shrinathji",
+      image: "/images/divine-shrinathji-illustration.webp",
+      alt: "AI-created Pichwai-style illustration of Shrinathji, lotuses and peacocks",
     },
     {
       title: "Bhajan & Spiritual Atmosphere",
-      caption: "Start your day with positivity and peace",
-      image: "/images/bhajan.jpg",
-      alt: "Devotees singing bhajans in a spiritual atmosphere",
+      caption: "An evening of music, prayer and quiet reflection",
+      image: "/images/divine-bhajan-illustration.webp",
+      alt: "AI-created watercolor illustration of a small evening bhajan in a haveli courtyard",
     },
     {
       title: "Traditional Nathdwara Culture",
-      caption: "Experience the rich heritage and devotion",
-      image: "/images/culture.jpg",
-      alt: "Traditional Pichwai art and Nathdwara culture",
+      caption: "The intricate colours and craft of Pichwai art",
+      image: "/images/divine-pichwai-illustration.webp",
+      alt: "AI-created illustration of a Nathdwara artist painting a Pichwai cloth",
     },
   ],
 
@@ -340,26 +340,26 @@ export const siteConfig = {
     {
       name: "Shrinathji Temple",
       distance: "8 Min Walk",
-      image: "/images/shrenathji.jpg",
-      alt: "Shrinathji Temple, Nathdwara",
+      image: "/images/nearby-temple-illustration.webp",
+      alt: "AI-created watercolor illustration inspired by Nathdwara temple architecture",
     },
     {
       name: "Statue of Belief",
       distance: "Short Drive",
-      image: "/images/statue.jpg",
-      alt: "Statue of Belief (Vishwas Swaroopam), Nathdwara",
+      image: "/images/nearby-statue-illustration.webp",
+      alt: "AI-created watercolor illustration inspired by the Statue of Belief in Nathdwara",
     },
     {
       name: "Haldighati",
       distance: "Nearby",
-      image: "/images/haldighati.jpg",
-      alt: "Haldighati historic battlefield site near Nathdwara",
+      image: "/images/nearby-haldighati-illustration.webp",
+      alt: "AI-created watercolor illustration of the ochre Aravalli landscape at Haldighati",
     },
     {
       name: "Kumbhalgarh Fort",
       distance: "Day Trip",
-      image: "/images/kumbalgarh.jpg",
-      alt: "Kumbhalgarh Fort, a UNESCO World Heritage site",
+      image: "/images/nearby-kumbhalgarh-illustration.webp",
+      alt: "AI-created watercolor illustration inspired by Kumbhalgarh Fort and its Aravalli ridge",
     },
   ] satisfies Nearby[],
 
@@ -409,22 +409,22 @@ export type GalleryImage = {
 };
 
 export const galleryImages: GalleryImage[] = [
-  { src: "/images/room-deluxe.jpg", alt: "Deluxe AC room", category: "Rooms" },
-  { src: "/images/building.jpg", alt: "Heritage-style building exterior", category: "Exterior" },
-  { src: "/images/room-premium.jpg", alt: "Premium room interior", category: "Rooms" },
-  { src: "/images/hero-room.jpg", alt: "Reception and lobby area", category: "Reception" },
-  { src: "/images/food.jpg", alt: "Dining and terrace seating", category: "Terrace" },
-  { src: "/images/nearby-shrinathji.jpg", alt: "Shrinathji Temple, Nathdwara", category: "Temple" },
-  { src: "/images/terrace.jpg", alt: "Open terrace with seating", category: "Terrace" },
-  { src: "/images/room-family.jpg", alt: "Spacious family room", category: "Rooms" },
-  { src: "/images/nearby-statue.jpg", alt: "Statue of Belief, Nathdwara", category: "Surroundings" },
-  { src: "/images/darshan.jpg", alt: "Shrinathji darshan", category: "Temple" },
-  { src: "/images/culture.jpg", alt: "Traditional Pichwai art and culture", category: "Surroundings" },
-  { src: "/images/nearby-kumbhalgarh.jpg", alt: "Kumbhalgarh Fort", category: "Surroundings" },
-  { src: "/images/temple.jpg", alt: "Temple town view", category: "Temple" },
-  { src: "/images/03.jpg", alt: "Comfortable bedding and decor", category: "Rooms" },
-  { src: "/images/nearby-haldighati.jpg", alt: "Haldighati historic site", category: "Surroundings" },
-  { src: "/images/bhajan.jpg", alt: "Bhajan and spiritual atmosphere", category: "Temple" },
+  { src: "/images/room-deluxe-enhanced.webp", alt: "Deluxe room at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/room-family-enhanced.webp", alt: "Family room at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/room-premium-enhanced.webp", alt: "Premium room at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/r2.jpg", alt: "A guest room with comfortable furnishings", category: "Rooms" },
+  { src: "/images/r3.jpg", alt: "A family room with sleeping and seating space", category: "Rooms" },
+  { src: "/images/02.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/03.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/c2.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/c3.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
+  { src: "/images/nearby-temple-illustration.webp", alt: "Illustration inspired by Nathdwara temple architecture", category: "Temple" },
+  { src: "/images/divine-shrinathji-illustration.webp", alt: "Pichwai-style illustration of Shrinathji", category: "Temple" },
+  { src: "/images/divine-bhajan-illustration.webp", alt: "Illustration of an evening bhajan in a haveli courtyard", category: "Temple" },
+  { src: "/images/divine-pichwai-illustration.webp", alt: "Illustration of a Pichwai artist at work", category: "Surroundings" },
+  { src: "/images/nearby-statue-illustration.webp", alt: "Illustration inspired by the Statue of Belief", category: "Surroundings" },
+  { src: "/images/nearby-haldighati-illustration.webp", alt: "Illustrated Haldighati landscape", category: "Surroundings" },
+  { src: "/images/nearby-kumbhalgarh-illustration.webp", alt: "Illustration inspired by Kumbhalgarh Fort", category: "Surroundings" },
 ];
 
 export const galleryCategories: ("All" | GalleryCategory)[] = [
@@ -465,8 +465,8 @@ export const attractions: Attraction[] = [
     category: "Temple",
     blurb:
       "The heart of devotion in Nathdwara. Dedicated to Lord Shrinathji (Krishna), this sacred temple is one of the most important pilgrimage sites for Vaishnav devotees.",
-    image: "/images/shrenathji.jpg",
-    alt: "Shrinathji Temple, Nathdwara",
+    image: "/images/nearby-temple-illustration.webp",
+    alt: "AI-created watercolor illustration inspired by Nathdwara temple architecture",
     byCar: "1.2 km",
     byBike: "5 Min",
     byWalk: "8 Min Walk",
@@ -477,8 +477,8 @@ export const attractions: Attraction[] = [
     category: "Spiritual",
     blurb:
       "A symbol of faith and inspiration — the tallest statue of Lord Shiva in the world, standing 351 feet tall on the outskirts of Nathdwara.",
-    image: "/images/statue.jpg",
-    alt: "Statue of Belief (Vishwas Swaroopam), Nathdwara",
+    image: "/images/nearby-statue-illustration.webp",
+    alt: "AI-created watercolor illustration inspired by the Statue of Belief in Nathdwara",
     byCar: "4.5 km",
     byBike: "10 Min",
     byWalk: "—",
@@ -489,8 +489,8 @@ export const attractions: Attraction[] = [
     category: "Historical",
     blurb:
       "The historic land of bravery, famous for the battle of Maharana Pratap and Chetak. This place is a symbol of Rajput valour and pride.",
-    image: "/images/haldighati.jpg",
-    alt: "Haldighati historic battlefield site near Nathdwara",
+    image: "/images/nearby-haldighati-illustration.webp",
+    alt: "AI-created watercolor illustration of the Aravalli landscape at Haldighati",
     byCar: "18 km",
     byBike: "30 Min",
     byWalk: "—",
@@ -501,8 +501,8 @@ export const attractions: Attraction[] = [
     category: "Historical",
     blurb:
       "A UNESCO World Heritage Site and a magnificent fort with massive walls, running rivers and a rich history of Mewar.",
-    image: "/images/kumbalgarh.jpg",
-    alt: "Kumbhalgarh Fort, a UNESCO World Heritage site",
+    image: "/images/nearby-kumbhalgarh-illustration.webp",
+    alt: "AI-created watercolor illustration inspired by Kumbhalgarh Fort",
     byCar: "48 km",
     byBike: "75 Min",
     byWalk: "—",

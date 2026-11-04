@@ -37,6 +37,19 @@
 }
 
 @layer utilities {
+  /* A quiet haveli-jali wash, drawn from the hand-painted room borders. */
+  .heritage-wash {
+    background-image: url("/images/heritage-jaali.svg"),
+      radial-gradient(ellipse at 50% 0%, rgba(199, 162, 74, 0.1), transparent 62%);
+    background-position: center, center;
+    background-size: 260px 260px, cover;
+  }
+
+  .hero-art-fade {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%);
+  }
+
   /* Honour users who prefer reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *,

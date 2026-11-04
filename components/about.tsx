@@ -3,21 +3,11 @@ import { siteConfig } from "@/lib/site-config";
 import { Icon } from "@/components/icon";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/reveal";
-import { Lotus } from "@/components/decor";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
 export function About() {
   return (
     <section id="about" className="relative overflow-hidden bg-cream py-16 md:py-24">
-      <Image
-        src="/peacock.jpeg"
-        alt=""
-        aria-hidden="true"
-        width={340}
-        height={510}
-        className="pointer-events-none absolute -right-14 -top-12 hidden h-auto w-64 mix-blend-multiply lg:block"
-      />
-
       <div className="container">
         <SectionHeading
           eyebrow="About Us"
@@ -40,7 +30,6 @@ export function About() {
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
-            <Lotus className="absolute -bottom-5 left-6 h-10 w-16" />
           </Reveal>
 
           {/* text + pills */}

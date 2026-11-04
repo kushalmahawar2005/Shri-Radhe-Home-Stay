@@ -5,43 +5,43 @@ import { motion } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
 import { SectionHeading } from "@/components/section-heading";
 import { RevealGroup, fadeUpVariants } from "@/components/reveal";
-import { BLUR_DATA_URL } from "@/lib/utils";
 
 export function DivineEnergy() {
   return (
-    <section id="divine-energy" className="bg-cream py-16 md:py-24">
+    <section id="divine-energy" className="relative overflow-hidden bg-[#fffdf7] py-16 md:py-20">
       <div className="container">
         <SectionHeading
-          eyebrow="Gallery"
-          title="Feel the Divine Energy of Nathdwara"
-          highlight="Divine Energy"
+          eyebrow="A little Nathdwara magic"
+          title="A Town Filled With Art & Devotion"
+          highlight="Art & Devotion"
+          subtitle="From the first darshan to the colours of Pichwai, Nathdwara has a beauty all its own."
         />
 
-        <RevealGroup className="mt-12 grid gap-7 md:grid-cols-3">
-          {siteConfig.divineEnergy.map((item) => (
+        <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {siteConfig.divineEnergy.map((item, index) => (
             <motion.figure
               key={item.title}
               variants={fadeUpVariants}
-              className="group relative overflow-hidden rounded-2xl border border-gold/30 shadow-card"
+              className="group overflow-hidden rounded-[1.6rem] border border-[#e7dcc1] bg-[#f8f2e6] shadow-[0_16px_42px_-30px_rgba(47,42,31,0.4)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_-30px_rgba(47,42,31,0.48)]"
             >
-              <div className="relative aspect-[4/5]">
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#eee4ce]">
                 <Image
                   src={item.image}
                   alt={item.alt}
                   fill
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  placeholder="blur"
-                  blurDataURL={BLUR_DATA_URL}
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
+                <span className="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-white/55 bg-[#fffdf2]/85 font-serif text-sm font-semibold text-emerald shadow-sm backdrop-blur-sm">
+                  0{index + 1}
+                </span>
               </div>
-              <figcaption className="absolute inset-x-0 bottom-0 p-5 text-cream-light">
-                <h3 className="font-serif text-xl font-semibold">
+              <figcaption className="px-5 pb-5 pt-4 sm:px-6 sm:pb-6">
+                <h3 className="font-serif text-xl font-semibold leading-tight text-[#33291e] sm:text-2xl">
                   {item.title}
                 </h3>
-                <p className="mt-1 text-sm text-cream/85">{item.caption}</p>
+                <p className="mt-2 text-sm leading-6 text-ink/70">{item.caption}</p>
               </figcaption>
             </motion.figure>
           ))}

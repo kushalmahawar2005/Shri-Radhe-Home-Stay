@@ -23,8 +23,9 @@ export async function SeoIntro() {
     : null;
 
   return (
-    <section className="bg-cream py-14 md:py-20">
-      <div className="container">
+    <section className="heritage-wash relative isolate overflow-hidden bg-cream py-14 md:py-20">
+      <div className="pointer-events-none absolute inset-0 bg-cream/75" aria-hidden="true" />
+      <div className="container relative z-10">
         <SectionHeading
           eyebrow="Nathdwara, Rajasthan"
           title="A Home Stay in Nathdwara, Near Shrinathji Temple"
