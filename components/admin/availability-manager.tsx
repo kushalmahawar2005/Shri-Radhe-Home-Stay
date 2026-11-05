@@ -179,7 +179,7 @@ export function AvailabilityManager({
                         onClick={() => tap(date)}
                         aria-label={`${nice(date)}${r ? (r.kind === "block" ? ", not available" : ", guest booking") : ", free"}`}
                         className={cn(
-                          "flex aspect-square min-h-10 items-center justify-center rounded-lg text-sm font-medium transition",
+                          "flex h-10 w-full min-w-0 items-center justify-center rounded-lg text-sm font-medium transition sm:h-11",
                           past ? "cursor-not-allowed bg-transparent text-ink/25" : dayClass(date),
                           date === today && "outline outline-2 outline-offset-1 outline-emerald",
                         )}

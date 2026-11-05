@@ -9,6 +9,10 @@ export const metadata: Metadata = {
 
 // The admin panel always reflects live data.
 export const dynamic = "force-dynamic";
+// The Neon driver queries the database with fetch(), and Next.js keeps fetch
+// responses in its Data Cache. Never read from it here, or the panel can show
+// rows from before an edit (e.g. old room names) on some refreshes.
+export const fetchCache = "force-no-store";
 
 export default async function PanelLayout({
   children,
