@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getContentRow } from "@/lib/db/queries";
 import { siteConfig, faqs as defaultFaqs } from "@/lib/site-config";
 import { BasicsForm, type BasicsData } from "@/components/admin/basics-form";
@@ -5,14 +6,16 @@ import { FaqEditor } from "@/components/admin/faq-editor";
 import { TestimonialEditor } from "@/components/admin/testimonial-editor";
 
 type Faq = { q: string; a: string };
-type Testimonial = {
-  quote: string;
-  author: string;
-  location: string;
-  rating: number;
-};
+type Testimonial = { quote: string; author: string; location: string; rating: number };
 
-export default async function ContentPage() {
+const tabs = [
+  { id: "business", label: "Business" },
+  { id: "faqs", label: "FAQs" },
+  { id: "reviews", label: "Guest reviews" },
+];
+
+export default async function ContentPage({ searchParams }: { searchParams: { section?: string } }) {
+  const section = tabs.some((tab) => tab.id === searchParams.section) ? searchParams.section! : "business";
   const [brand, contact, faqs, testimonials] = await Promise.all([
     getContentRow<BasicsData["brand"]>("brand"),
     getContentRow<BasicsData["contact"]>("contact"),
@@ -22,25 +25,16 @@ export default async function ContentPage() {
 
   const basics: BasicsData = {
     brand: brand ?? {
-      name: siteConfig.name,
-      shortName: siteConfig.shortName,
-      tagline: siteConfig.tagline,
-      description: siteConfig.description,
-      intro: siteConfig.intro,
-      templeWalkTime: siteConfig.templeWalkTime,
-      logo: siteConfig.logo,
+      name: siteConfig.name, shortName: siteConfig.shortName, tagline: siteConfig.tagline,
+      description: siteConfig.description, intro: siteConfig.intro,
+      templeWalkTime: siteConfig.templeWalkTime, logo: siteConfig.logo,
     },
     contact: contact ?? {
-      phones: {
-        primary: siteConfig.phones.primary,
-        secondary: siteConfig.phones.secondary,
-      },
+      phones: { primary: siteConfig.phones.primary, secondary: siteConfig.phones.secondary },
       address: siteConfig.address,
       links: {
-        instagram: siteConfig.links.instagram,
-        instagramHandle: siteConfig.links.instagramHandle,
-        facebook: siteConfig.links.facebook,
-        mapsEmbed: siteConfig.links.mapsEmbed,
+        instagram: siteConfig.links.instagram, instagramHandle: siteConfig.links.instagramHandle,
+        facebook: siteConfig.links.facebook, mapsEmbed: siteConfig.links.mapsEmbed,
         mapsDirections: siteConfig.links.mapsDirections,
       },
     },
@@ -48,39 +42,23 @@ export default async function ContentPage() {
 
   return (
     <div>
-      <h1 className="font-serif text-2xl font-bold text-ink">Site Content</h1>
-      <p className="mt-1 text-sm text-ink/55">
-        Phone, address, links, FAQs aur reviews edit karo. Save karte hi website
-        update ho jaayegi.
-      </p>
+      <p className="text-sm font-semibold text-emerald">Manage your website</p>
+      <h1 className="mt-1 font-serif text-2xl font-bold text-ink sm:text-3xl">Website content</h1>
+      <p className="mt-1 text-sm text-ink/55">Choose what you want to update.</p>
 
-      <nav className="mt-5 flex flex-wrap gap-2 text-sm">
-        <a href="#basics" className="rounded-full bg-emerald/10 px-3 py-1.5 font-medium text-emerald">
-          Contact & basics
-        </a>
-        <a href="#faqs" className="rounded-full bg-emerald/10 px-3 py-1.5 font-medium text-emerald">
-          FAQs
-        </a>
-        <a href="#reviews" className="rounded-full bg-emerald/10 px-3 py-1.5 font-medium text-emerald">
-          Reviews
-        </a>
+      <nav aria-label="Website content sections" className="mt-5 grid grid-cols-3 gap-1 rounded-2xl border border-gold/20 bg-cream-light p-1.5 sm:gap-2 sm:p-2">
+        {tabs.map((tab) => (
+          <Link key={tab.id} href={`/admin/content?section=${tab.id}`} aria-current={section === tab.id ? "page" : undefined} className={`flex min-h-11 items-center justify-center rounded-xl px-1 text-center text-xs font-semibold sm:px-3 sm:text-sm ${section === tab.id ? "bg-emerald text-white" : "text-ink/65 hover:bg-emerald/10"}`}>
+            {tab.label}
+          </Link>
+        ))}
       </nav>
 
-      <section id="basics" className="mt-8 scroll-mt-6">
-        <BasicsForm data={basics} />
-      </section>
-
-      <section id="faqs" className="mt-12 scroll-mt-6">
-        <h2 className="mb-4 font-serif text-xl font-bold text-ink">FAQs</h2>
-        <FaqEditor initial={faqs ?? defaultFaqs} />
-      </section>
-
-      <section id="reviews" className="mt-12 scroll-mt-6">
-        <h2 className="mb-4 font-serif text-xl font-bold text-ink">
-          Guest Reviews
-        </h2>
-        <TestimonialEditor initial={testimonials ?? [...siteConfig.testimonials]} />
-      </section>
+      <div className="mt-5">
+        {section === "business" ? <BasicsForm data={basics} /> : null}
+        {section === "faqs" ? <section><h2 className="mb-1 font-serif text-xl font-bold text-ink">Frequently asked questions</h2><p className="mb-4 text-sm text-ink/55">Add or edit the answers guests see on your website.</p><FaqEditor initial={faqs ?? defaultFaqs} /></section> : null}
+        {section === "reviews" ? <section><h2 className="mb-1 font-serif text-xl font-bold text-ink">Guest reviews</h2><p className="mb-4 text-sm text-ink/55">Manage the reviews shown on your website.</p><TestimonialEditor initial={testimonials ?? [...siteConfig.testimonials]} /></section> : null}
+      </div>
     </div>
   );
 }

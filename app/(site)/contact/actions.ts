@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { isDbConfigured } from "@/lib/db";
 import { createMessage } from "@/lib/db/queries";
+import { notifyAdminsQuickly } from "@/lib/push";
 
 export type ContactResult = { ok: boolean; error?: string };
 
@@ -21,7 +22,14 @@ export async function submitContactMessage(
   const parsed = schema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid" };
   try {
-    await createMessage(parsed.data);
+    const row = await createMessage(parsed.data);
+    const preview = parsed.data.message.replace(/\s+/g, " ").slice(0, 120);
+    await notifyAdminsQuickly({
+      title: `💬 New message from ${parsed.data.name || "a visitor"}`,
+      body: preview,
+      url: "/admin/bookings/?view=messages",
+      tag: `message-${row.id}`,
+    });
     return { ok: true };
   } catch {
     return { ok: false, error: "save-failed" };

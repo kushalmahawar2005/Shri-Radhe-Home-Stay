@@ -33,7 +33,7 @@ export function SectionHeading({
   return (
     <Reveal
       className={cn(
-        "flex flex-col gap-3",
+        "flex flex-col gap-2 sm:gap-3",
         align === "center"
           ? "items-center text-center"
           : "items-center text-center lg:items-start lg:text-left",
@@ -41,14 +41,14 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <Eyebrow className={invert ? "text-gold-light" : undefined}>
+        <Eyebrow className={cn("hidden sm:inline-flex", invert && "text-gold-light")}>
           {eyebrow}
         </Eyebrow>
       ) : null}
-      <Flourish className={align === "left" ? "lg:ml-0" : undefined} />
+      <Flourish className={cn("hidden sm:block", align === "left" && "lg:ml-0")} />
       <Heading
         className={cn(
-          "font-serif text-3xl font-bold leading-tight sm:text-4xl md:text-[2.6rem]",
+          "font-serif text-2xl font-bold leading-tight sm:text-4xl md:text-[2.6rem]",
           invert ? "text-cream-light" : "text-ink"
         )}
       >
@@ -65,7 +65,7 @@ export function SectionHeading({
       {subtitle ? (
         <p
           className={cn(
-            "max-w-2xl text-base leading-relaxed",
+            "max-w-2xl text-sm leading-5 sm:text-base sm:leading-relaxed",
             invert ? "text-cream/80" : "text-ink/70"
           )}
         >

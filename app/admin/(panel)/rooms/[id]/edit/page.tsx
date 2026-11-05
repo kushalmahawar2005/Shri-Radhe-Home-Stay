@@ -40,13 +40,12 @@ export default async function EditRoomPage({
     <div>
       <Link
         href="/admin/rooms"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-ink/55 hover:text-emerald"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 text-sm text-ink/55 hover:text-emerald"
       >
         <ChevronLeft className="h-4 w-4" /> Back to rooms
       </Link>
-      <h1 className="mb-6 font-serif text-2xl font-bold text-ink">
-        Edit Room — {room.name}
-      </h1>
+      <h1 className="mb-1 font-serif text-2xl font-bold text-ink">Edit {room.name}</h1>
+      <p className="mb-5 text-sm text-ink/55">Update the room details shown on your website.</p>
       <RoomForm initial={initial} />
     </div>
   );

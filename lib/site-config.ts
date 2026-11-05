@@ -76,12 +76,29 @@ function resolveSiteUrl(): string {
   return PRODUCTION_URL;
 }
 
+/** Facilities included with every room (confirmed by the owners). */
+export const COMMON_AMENITIES = [
+  "Complimentary Tea, Coffee & Milk",
+  "Free WiFi",
+  "Private Parking",
+  "24-Hour Hot & Cold Water",
+  "Mineral Water",
+  "Attached Bathroom with Geyser",
+] as const;
+const AC_AMENITIES = ["Air Conditioner", ...COMMON_AMENITIES] as const;
+const NON_AC_AMENITIES = ["Ceiling Fan", ...COMMON_AMENITIES] as const;
+
+/** `/images/rooms/<slug>/01.webp` … `NN.webp` */
+function roomPhotos(slug: string, count: number): string[] {
+  return Array.from({ length: count }, (_, i) => `/images/rooms/${slug}/${String(i + 1).padStart(2, "0")}.webp`);
+}
+
 export const siteConfig = {
   name: "Shri Radha Villa Stay",
   shortName: "Shri Radha",
   tagline: "Stay With Peace & Devotion",
   description:
-    "Book a family-friendly homestay in Nathdwara, an 8-minute walk from Shrinathji Temple. AC rooms, attached bathrooms, free Wi-Fi and parking at Shri Radha Villa Stay.",
+    "Book a family-friendly homestay in Nathdwara, an 8-minute walk from Shrinathji Temple. 7 AC & non-AC rooms with attached bathrooms, free tea & coffee, Wi-Fi and parking at Shri Radha Villa Stay.",
   intro:
     "Experience a comfortable stay near Shrinathji Temple with modern amenities, spiritual surroundings and authentic Nathdwara hospitality.",
 
@@ -157,10 +174,10 @@ export const siteConfig = {
   quickFacts: [
     { icon: "MapPin", label: "Nathdwara, Rajasthan" },
     { icon: "Footprints", label: "8 Min Walk to Shrinathji Temple" },
-    { icon: "Snowflake", label: "3 AC Rooms" },
+    { icon: "Snowflake", label: "7 Rooms · AC & Non-AC" },
     { icon: "Bath", label: "Attached Bathrooms" },
     { icon: "Wifi", label: "Free WiFi" },
-    { icon: "Car", label: "Parking Available" },
+    { icon: "Car", label: "Private Parking" },
   ] satisfies Facility[],
 
   // ── About feature pills ──
@@ -174,120 +191,145 @@ export const siteConfig = {
   ] satisfies Facility[],
 
   // ── Rooms ──
+  // Every room includes complimentary tea, coffee & milk, free WiFi, private
+  // parking, 24-hour hot & cold water, mineral water and an attached bathroom
+  // with geyser (as confirmed by the owners, Nov 2026).
   rooms: [
     {
-      slug: "deluxe",
-      name: "Deluxe Room",
-      image: "/images/room-deluxe-enhanced.webp",
-      alt: "Deluxe AC room with comfortable bedding at Shri Radha Villa Stay",
-      blurb:
-        "A cosy, well-appointed AC room perfect for couples and solo pilgrims seeking a peaceful stay near the temple.",
-      features: ["AC", "Attached Bathroom", "Free WiFi", "2 Guests"],
-      guests: "2 Guests",
-      price: "On Request",
-      priceNight: "₹2,500",
-      tagline: "Comfort, Peace & Devotion",
-      bed: "King Size Bed",
-      size: "180 sq.ft",
-      gallery: [
-        "/images/room-deluxe-enhanced.webp",
-        "/images/02.jpg",
-        "/images/03.jpg",
-        "/images/BathroomB.jpg",
-      ],
-      amenities: [
-        "Air Conditioner",
-        "Free High-Speed WiFi",
-        "King Size Bed",
-        "LED Television",
-        "Attached Bathroom",
-        "Hot & Cold Water",
-        "Daily Housekeeping",
-        "Room Service",
-        "Wardrobe",
-        "Seating Area",
-      ],
-      highlights: [
-        "Temple Town View",
-        "Peaceful Environment",
-        "Ideal for Couples & Pilgrims",
-      ],
-    },
-    {
-      slug: "family",
-      name: "Family Room",
-      image: "/images/room-family-enhanced.webp",
-      alt: "Spacious family room with multiple beds at Shri Radha Villa Stay",
-      blurb:
-        "A spacious, family-friendly room with room to relax together after darshan — ideal for families travelling with children or elders.",
-      features: ["Spacious", "Family Friendly", "AC", "3–4 Guests"],
-      guests: "3–4 Guests",
-      price: "On Request",
-      priceNight: "₹3,000",
-      tagline: "Space, Comfort & Togetherness",
-      bed: "2 King Size Beds",
-      size: "300 sq.ft",
-      gallery: [
-        "/images/room-family-enhanced.webp",
-        "/images/r2.jpg",
-        "/images/r3.jpg",
-        "/images/BathroomC.jpg",
-      ],
-      amenities: [
-        "Air Conditioner",
-        "Free High-Speed WiFi",
-        "2 King Size Beds",
-        "LED Television",
-        "Attached Bathroom",
-        "Hot & Cold Water",
-        "Daily Housekeeping",
-        "Room Service",
-        "Extra Bedding",
-        "Spacious Seating",
-      ],
-      highlights: [
-        "Spacious Layout",
-        "Ideal for Families",
-        "Room for Children & Elders",
-      ],
-    },
-    {
-      slug: "premium",
-      name: "Premium Room",
+      slug: "radha-rani",
+      name: "Radha Rani",
       image: "/images/room-premium-enhanced.webp",
-      alt: "Premium room with temple town view and luxury bedding",
+      alt: "Radha Rani AC room with a large bed and sitting area at Shri Radha Villa Stay",
       blurb:
-        "Our finest room with a temple-town view and luxury bedding, for guests who want an elevated, restful stay.",
-      features: ["Temple Town View", "Luxury Bedding", "AC", "5–6 Guests"],
-      guests: "5–6 Guests",
+        "Our largest AC room, with space for five adults — ideal for bigger families and groups visiting Shrinathji together.",
+      features: ["AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "5 Guests"],
+      guests: "5 Adults",
       price: "On Request",
-      priceNight: "₹3,500",
-      tagline: "Luxury, Calm & Devotion",
-      bed: "King Size Bed",
-      size: "240 sq.ft",
+      priceNight: "₹4,500",
+      tagline: "Spacious AC Room for Big Families",
+      bed: "Double Bed + Extra Bedding",
+      size: "",
       gallery: [
         "/images/room-premium-enhanced.webp",
         "/images/c2.jpg",
         "/images/c3.jpg",
         "/images/BathroomA.jpg",
       ],
-      amenities: [
-        "Air Conditioner",
-        "Free High-Speed WiFi",
-        "King Size Bed",
-        "LED Television",
-        "Attached Bathroom",
-        "Hot & Cold Water",
-        "Daily Housekeeping",
-        "Room Service",
-        "Premium Bedding",
-        "Balcony / View",
+      amenities: [...AC_AMENITIES],
+      highlights: ["Sleeps 5 Adults", "Our Largest Room", "Ideal for Big Families"],
+    },
+    {
+      slug: "makhan-chor",
+      name: "Makhan Chor",
+      image: "/images/rooms/makhan-chor/01.webp",
+      alt: "Makhan Chor AC room with two double beds at Shri Radha Villa Stay",
+      blurb:
+        "A freshly renovated AC room with two double beds and traditional Rajasthani wall art — comfortable for four adults.",
+      features: ["AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "4 Guests"],
+      guests: "4 Adults",
+      price: "On Request",
+      priceNight: "₹4,200",
+      tagline: "Newly Renovated AC Room",
+      bed: "2 Double Beds",
+      size: "",
+      gallery: roomPhotos("makhan-chor", 8),
+      amenities: [...AC_AMENITIES],
+      highlights: ["Newly Renovated", "Two Double Beds", "Rajasthani Wall Art"],
+    },
+    {
+      slug: "bal-gopal",
+      name: "Bal Gopal",
+      image: "/images/room-family-enhanced.webp",
+      alt: "Bal Gopal AC room with a loft bed that children love at Shri Radha Villa Stay",
+      blurb:
+        "A cheerful AC room with a loft-style bed that children love — for three adults and one child.",
+      features: ["AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "3 Adults + 1 Child"],
+      guests: "3 Adults + 1 Child",
+      price: "On Request",
+      priceNight: "₹4,000",
+      tagline: "Fun AC Room for Families with Kids",
+      bed: "Double Bed + Loft Bed",
+      size: "",
+      gallery: [
+        "/images/room-family-enhanced.webp",
+        "/images/r2.jpg",
+        "/images/r3.jpg",
+        "/images/BathroomC.jpg",
       ],
-      highlights: [
-        "Temple Town View",
-        "Luxury Interiors",
-        "Elevated Restful Stay",
-      ],
+      amenities: [...AC_AMENITIES],
+      highlights: ["Loft Bed Kids Love", "Family Friendly", "Cheerful Interiors"],
+    },
+    {
+      slug: "madhuvan",
+      name: "Madhuvan",
+      image: "/images/rooms/madhuvan/03.webp",
+      alt: "Madhuvan room with two double beds and sunflower wall decor at Shri Radha Villa Stay",
+      blurb:
+        "A bright, airy room with two double beds and sunflower décor — room for four adults at a simple, honest price.",
+      features: ["Non-AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "4 Guests"],
+      guests: "4 Adults",
+      price: "On Request",
+      priceNight: "₹4,000",
+      tagline: "Bright Room for Four",
+      bed: "2 Double Beds",
+      size: "",
+      gallery: roomPhotos("madhuvan", 7),
+      amenities: [...NON_AC_AMENITIES],
+      highlights: ["Sleeps 4 Adults", "Two Double Beds", "Bright & Airy"],
+    },
+    {
+      slug: "radhika-rajkunj",
+      name: "Radhika Rajkunj",
+      image: "/images/rooms/radhika-rajkunj/03.webp",
+      alt: "Radhika Rajkunj room with two double beds and a sitting corner at Shri Radha Villa Stay",
+      blurb:
+        "A spacious room with two double beds and its own cane-chair sitting corner — comfortable for four adults.",
+      features: ["Non-AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "4 Guests"],
+      guests: "4 Adults",
+      price: "On Request",
+      priceNight: "₹4,000",
+      tagline: "Spacious Room with a Sitting Corner",
+      bed: "2 Double Beds",
+      size: "",
+      gallery: roomPhotos("radhika-rajkunj", 7),
+      amenities: [...NON_AC_AMENITIES],
+      highlights: ["Sleeps 4 Adults", "Private Sitting Corner", "Spacious Layout"],
+    },
+    {
+      slug: "kishori-kripa",
+      name: "Kishori Kripa",
+      image: "/images/rooms/kishori-kripa/06.webp",
+      alt: "Kishori Kripa room with traditional painted walls at Shri Radha Villa Stay",
+      blurb:
+        "A peaceful room with hand-painted Rajasthani borders — for three adults and one child.",
+      features: ["Non-AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "3 Adults + 1 Child"],
+      guests: "3 Adults + 1 Child",
+      price: "On Request",
+      priceNight: "₹4,000",
+      tagline: "Peaceful Room with Traditional Art",
+      bed: "Double Bed + Single Bed",
+      size: "",
+      gallery: roomPhotos("kishori-kripa", 7),
+      amenities: [...NON_AC_AMENITIES],
+      highlights: ["Hand-Painted Walls", "Family Friendly", "Quiet & Peaceful"],
+    },
+    {
+      slug: "kanupriya",
+      name: "Kanupriya",
+      image: "/images/rooms/kanupriya/02.webp",
+      alt: "Kanupriya room with colourful butterfly wall decor at Shri Radha Villa Stay",
+      blurb:
+        "A colourful, cosy room with butterfly décor and a dressing area — for three adults and one child.",
+      features: ["Non-AC", "Attached Bath + Geyser", "Tea, Coffee & Milk", "3 Adults + 1 Child"],
+      guests: "3 Adults + 1 Child",
+      price: "On Request",
+      priceNight: "₹4,000",
+      tagline: "Colourful, Cosy Family Room",
+      bed: "Double Bed + Single Bed",
+      size: "",
+      gallery: roomPhotos("kanupriya", 9),
+      amenities: [...NON_AC_AMENITIES],
+      highlights: ["Colourful Décor", "Dressing Area", "Family Friendly"],
     },
   ] satisfies Room[],
 
@@ -315,16 +357,17 @@ export const siteConfig = {
 
   // ── Facilities (10 line-icon tiles) ──
   facilities: [
-    { icon: "Snowflake", label: "AC Rooms" },
-    { icon: "Droplets", label: "24x7 Water" },
+    { icon: "Snowflake", label: "AC & Non-AC Rooms" },
+    { icon: "Droplets", label: "24x7 Hot & Cold Water" },
     { icon: "Bath", label: "Attached Bathrooms" },
     { icon: "Wifi", label: "Free WiFi" },
-    { icon: "Car", label: "Parking" },
+    { icon: "Car", label: "Private Parking" },
+    { icon: "Coffee", label: "Tea, Coffee & Milk" },
+    { icon: "GlassWater", label: "Mineral Water" },
     { icon: "Sun", label: "Terrace Area" },
     { icon: "ConciergeBell", label: "Reception" },
     { icon: "CarTaxiFront", label: "Taxi Service" },
     { icon: "Users", label: "Family Stay" },
-    { icon: "BedDouble", label: "Clean Linen" },
   ] satisfies Facility[],
 
   // ── Green highlight band ──
@@ -394,13 +437,8 @@ export type SiteConfig = typeof siteConfig;
 /* ──────────────────────────────────────────────────────────────────────
  *  GALLERY — filterable photo grid (/gallery)
  * ──────────────────────────────────────────────────────────────────── */
-export type GalleryCategory =
-  | "Rooms"
-  | "Exterior"
-  | "Terrace"
-  | "Reception"
-  | "Temple"
-  | "Surroundings";
+/** Gallery photos are grouped by room name (e.g. "Madhuvan"). */
+export type GalleryCategory = string;
 
 export type GalleryImage = {
   src: string;
@@ -408,33 +446,18 @@ export type GalleryImage = {
   category: GalleryCategory;
 };
 
-export const galleryImages: GalleryImage[] = [
-  { src: "/images/room-deluxe-enhanced.webp", alt: "Deluxe room at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/room-family-enhanced.webp", alt: "Family room at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/room-premium-enhanced.webp", alt: "Premium room at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/r2.jpg", alt: "A guest room with comfortable furnishings", category: "Rooms" },
-  { src: "/images/r3.jpg", alt: "A family room with sleeping and seating space", category: "Rooms" },
-  { src: "/images/02.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/03.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/c2.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/c3.jpg", alt: "Room interior at Shri Radha Villa Stay", category: "Rooms" },
-  { src: "/images/nearby-temple-illustration.webp", alt: "Illustration inspired by Nathdwara temple architecture", category: "Temple" },
-  { src: "/images/divine-shrinathji-illustration.webp", alt: "Pichwai-style illustration of Shrinathji", category: "Temple" },
-  { src: "/images/divine-bhajan-illustration.webp", alt: "Illustration of an evening bhajan in a haveli courtyard", category: "Temple" },
-  { src: "/images/divine-pichwai-illustration.webp", alt: "Illustration of a Pichwai artist at work", category: "Surroundings" },
-  { src: "/images/nearby-statue-illustration.webp", alt: "Illustration inspired by the Statue of Belief", category: "Surroundings" },
-  { src: "/images/nearby-haldighati-illustration.webp", alt: "Illustrated Haldighati landscape", category: "Surroundings" },
-  { src: "/images/nearby-kumbhalgarh-illustration.webp", alt: "Illustration inspired by Kumbhalgarh Fort", category: "Surroundings" },
-];
+/** The gallery shows every photo of every room, grouped by room. */
+export const galleryImages: GalleryImage[] = siteConfig.rooms.flatMap((room) =>
+  room.gallery.map((src, i) => ({
+    src,
+    alt: `${room.name} room at Shri Radha Villa Stay — photo ${i + 1}`,
+    category: room.name,
+  })),
+);
 
 export const galleryCategories: ("All" | GalleryCategory)[] = [
   "All",
-  "Rooms",
-  "Exterior",
-  "Terrace",
-  "Reception",
-  "Temple",
-  "Surroundings",
+  ...siteConfig.rooms.map((room) => room.name),
 ];
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -465,8 +488,8 @@ export const attractions: Attraction[] = [
     category: "Temple",
     blurb:
       "The heart of devotion in Nathdwara. Dedicated to Lord Shrinathji (Krishna), this sacred temple is one of the most important pilgrimage sites for Vaishnav devotees.",
-    image: "/images/nearby-temple-illustration.webp",
-    alt: "AI-created watercolor illustration inspired by Nathdwara temple architecture",
+    image: "/images/shrinathji-temple-photo.webp",
+    alt: "Entrance to Shrinathji Temple in Nathdwara",
     byCar: "1.2 km",
     byBike: "5 Min",
     byWalk: "8 Min Walk",
@@ -513,7 +536,7 @@ export const attractions: Attraction[] = [
     category: "Temple",
     blurb:
       "A divine abode of Lord Shiva — an ancient temple dedicated to Lord Eklingji, the presiding deity of Mewar.",
-    image: "/images/temple.jpg",
+    image: "/images/eklingji-temple-photo.webp",
     alt: "Eklingji Temple near Nathdwara",
     byCar: "22 km",
     byBike: "35 Min",
@@ -525,8 +548,8 @@ export const attractions: Attraction[] = [
     category: "City & Culture",
     blurb:
       "The City of Lakes — a beautiful city known for its lakes, palaces, gardens and royal heritage, perfect for a day trip from Nathdwara.",
-    image: "/images/building.jpg",
-    alt: "Udaipur, the City of Lakes",
+    image: "/images/udaipur-lake-pichola.webp",
+    alt: "Lake Pichola and Jag Mandir in Udaipur",
     byCar: "48 km",
     byBike: "70 Min",
     byWalk: "—",
@@ -587,6 +610,14 @@ export const faqs = [
     a: "Yes, we provide safe and secure parking for our guests, including cars and two-wheelers.",
   },
   {
+    q: "Are all rooms air-conditioned?",
+    a: "We have 7 rooms: Radha Rani, Makhan Chor and Bal Gopal are AC rooms, while Madhuvan, Radhika Rajkunj, Kishori Kripa and Kanupriya are non-AC rooms. Every room has an attached bathroom with geyser.",
+  },
+  {
+    q: "Are tea and coffee included?",
+    a: "Yes. Tea, coffee and milk are complimentary in every room, along with mineral water.",
+  },
+  {
     q: "Is WiFi available at the villa?",
     a: "Yes, free high-speed WiFi is available in all rooms and common areas.",
   },
@@ -603,9 +634,20 @@ export const faqs = [
 /* ──────────────────────────────────────────────────────────────────────
  *  BOOKING — trust badges shown on the booking page/success page
  * ──────────────────────────────────────────────────────────────────── */
+/** Guest choices offered on the availability card and booking form. */
+export const guestOptions = [
+  "1 Adult",
+  "2 Adults",
+  "2 Adults + 1 Child",
+  "3 Adults",
+  "3 Adults + 1 Child",
+  "4 Adults",
+  "5 Adults",
+] as const;
+
 export const bookingPerks = [
   { icon: "Footprints", title: "8 Min Walk", sub: "to Shrinathji Temple" },
-  { icon: "Snowflake", title: "AC Rooms", sub: "Clean & comfortable" },
+  { icon: "Coffee", title: "Free Tea & Coffee", sub: "In every room" },
   { icon: "Flower2", title: "Peaceful", sub: "Spiritual environment" },
   { icon: "HeartHandshake", title: "Best Price", sub: "Honest & transparent" },
 ];

@@ -8,11 +8,11 @@ export async function FindUs() {
   const [brand, contact] = await Promise.all([getBrand(), getContact()]);
   const { address, phones, links } = contact;
   return (
-    <section id="find-us" className="bg-cream-alt py-16 md:py-24">
+    <section id="find-us" className="bg-cream-alt py-5 sm:py-16 md:py-24">
       <div className="container">
         <SectionHeading eyebrow="Location" title="Find Us Here" highlight="Here" />
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
+        <div className="mt-5 sm:mt-12 grid gap-8 md:grid-cols-2">
           {/* details */}
           <Reveal className="flex flex-col justify-center rounded-2xl border border-gold/30 bg-cream-light p-7 shadow-card">
             <h3 className="font-serif text-2xl font-semibold text-emerald">

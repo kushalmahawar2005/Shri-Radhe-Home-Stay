@@ -33,7 +33,7 @@ export function ListInput({
         {value.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="inline-flex items-center gap-1.5 rounded-full bg-emerald/10 px-3 py-1 text-sm text-emerald"
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-emerald/10 px-3 py-1 text-sm text-emerald"
           >
             {item}
             <button
@@ -41,7 +41,7 @@ export function ListInput({
               onClick={() => onChange(value.filter((_, j) => j !== i))}
               aria-label={`Remove ${item}`}
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-4 w-4" />
             </button>
           </span>
         ))}
@@ -57,12 +57,12 @@ export function ListInput({
             }
           }}
           placeholder={placeholder}
-          className="w-full max-w-xs rounded-lg border border-gold/40 bg-white px-3 py-2 text-sm text-ink"
+          className="min-h-11 w-full min-w-0 max-w-xs rounded-lg border border-gold/40 bg-white px-3 py-2 text-base text-ink sm:text-sm"
         />
         <button
           type="button"
           onClick={add}
-          className="inline-flex items-center gap-1 rounded-lg border border-emerald/40 px-3 py-2 text-sm font-medium text-emerald hover:bg-emerald/10"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-lg border border-emerald/40 px-3 text-sm font-medium text-emerald hover:bg-emerald/10"
         >
           <Plus className="h-4 w-4" /> Add
         </button>

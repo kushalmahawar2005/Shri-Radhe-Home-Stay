@@ -18,10 +18,10 @@ export default async function PanelLayout({
   const session = await requireAdmin();
 
   return (
-    <div className="flex min-h-screen bg-cream font-sans text-ink">
+    <div className="flex min-h-screen flex-col bg-cream font-sans text-ink md:flex-row">
       <AdminSidebar email={session.email} />
       <div className="flex-1 overflow-x-hidden">
-        <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
+        <main className="mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 sm:py-8">{children}</main>
       </div>
     </div>
   );

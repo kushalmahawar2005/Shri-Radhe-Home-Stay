@@ -6,7 +6,6 @@ import { getRooms, getContact } from "@/lib/content-store";
 import { breadcrumbSchema } from "@/lib/seo";
 import { Schema } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
-import { SectionHeading } from "@/components/section-heading";
 import { Facilities } from "@/components/facilities";
 import { Reveal } from "@/components/reveal";
 import { BLUR_DATA_URL } from "@/lib/utils";
@@ -14,14 +13,14 @@ import { BLUR_DATA_URL } from "@/lib/utils";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "AC Rooms in Nathdwara Near Shrinathji Temple",
+  title: "AC & Non-AC Rooms in Nathdwara Near Shrinathji Temple",
   description:
-    "Deluxe, Family and Premium AC rooms at Shri Radha Villa Stay, Nathdwara — attached bathrooms, 24x7 hot water, free WiFi and free parking, an 8 minute walk from Shrinathji Temple. See per-night rates and book direct.",
+    "7 AC and non-AC rooms at Shri Radha Villa Stay, Nathdwara — attached bathrooms with geyser, free tea & coffee, 24x7 hot water, free WiFi and free parking, an 8 minute walk from Shrinathji Temple. See per-night rates and book direct.",
   keywords: [
     "AC rooms in Nathdwara",
     "rooms near Shrinathji Temple",
     "family room Nathdwara",
-    "deluxe room Nathdwara",
+    "non AC rooms Nathdwara",
     "Nathdwara room booking",
     "budget rooms Nathdwara",
   ],
@@ -40,51 +39,48 @@ export default async function RoomsPage() {
       />
 
       {/* page header */}
-      <section className="bg-cream-gradient py-14 md:py-20">
+      <section className="bg-cream-gradient pb-3 pt-5 sm:pb-6 sm:pt-10 md:pt-12">
         <div className="container">
-          <SectionHeading
-            as="h1"
-            eyebrow="Accommodation"
-            title="AC Rooms in Nathdwara, Near Shrinathji Temple"
-            highlight="AC Rooms"
-            subtitle="Every room is air-conditioned with an attached bathroom, 24x7 hot water, free WiFi and fresh, clean linen — an 8 minute walk from Shrinathji Temple. Book direct on WhatsApp for the best rate for your dates."
-          />
+          <h1 className="font-serif text-3xl font-bold leading-tight text-emerald sm:text-4xl">AC &amp; Non-AC Rooms</h1>
+          <p className="mt-1 text-sm leading-5 text-ink/65 sm:mt-2 sm:text-base">7 rooms, an 8-minute walk from Shrinathji Temple.</p>
+          <p className="mt-2 text-xs leading-5 text-ink/60 sm:text-sm">Attached bath · Hot water · Free WiFi · Tea &amp; coffee</p>
         </div>
       </section>
 
       {/* room rows */}
-      <section className="bg-cream py-14 md:py-20">
-        <div className="container flex flex-col gap-12">
+      <section className="bg-cream pb-8 pt-2 md:py-10">
+        <div className="container grid grid-cols-2 gap-3 sm:gap-5 md:flex md:flex-col md:gap-10">
           {rooms.map((room, i) => (
             <Reveal
               key={room.slug}
-              className={`grid items-center gap-8 md:grid-cols-2 ${
+              className={`flex h-full min-w-0 flex-col overflow-hidden rounded-[1rem] border border-gold/30 bg-cream-light shadow-soft md:grid md:items-center md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:grid-cols-2 ${
                 i % 2 === 1 ? "md:[&>figure]:order-2" : ""
               }`}
             >
-              <figure className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
+              <figure className="group relative aspect-[4/3] shrink-0 overflow-hidden md:rounded-2xl md:border md:border-gold/30 md:shadow-card">
                 <Image
                   src={room.image}
                   alt={room.alt}
                   fill
                   loading={i === 0 ? "eager" : "lazy"}
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="50vw"
                   placeholder="blur"
                   blurDataURL={BLUR_DATA_URL}
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-[center_65%] transition-transform duration-700 group-hover:scale-105"
                 />
               </figure>
 
-              <div>
-                <h2 className="font-serif text-3xl font-bold text-ink">
+              <div className="flex min-w-0 flex-1 flex-col p-3 sm:p-4 md:p-0">
+                <h2 className="font-serif text-xl font-bold leading-5 text-ink md:text-3xl md:leading-tight">
                   {room.name}
                 </h2>
-                <p className="mt-1 flex items-center gap-2 text-sm text-gold-dark">
-                  <Users className="h-4 w-4" /> {room.guests}
+                <p className="mt-2 text-xs leading-4 text-gold-dark md:mt-1 md:flex md:items-center md:gap-2 md:text-sm">
+                  <Users className="hidden h-4 w-4 shrink-0 md:block" />
+                  <span className="md:hidden">{room.features[0]} · </span>{room.guests}
                 </p>
-                <p className="mt-4 text-ink/80">{room.blurb}</p>
+                <p className="mt-4 hidden text-ink/80 md:block">{room.blurb}</p>
 
-                <ul className="mt-5 grid grid-cols-2 gap-2">
+                <ul className="mt-5 hidden grid-cols-2 gap-2 md:grid">
                   {room.features.map((f) => (
                     <li
                       key={f}
@@ -96,25 +92,25 @@ export default async function RoomsPage() {
                   ))}
                 </ul>
 
-                <p className="mt-6 text-sm text-ink/70">
-                  <span className="font-serif text-2xl font-bold text-emerald">
+                <p className="mt-2 text-[11px] text-ink/70 md:mt-6 md:text-sm">
+                  <span className="font-serif text-xl font-bold text-emerald md:text-2xl">
                     {room.priceNight}
                   </span>{" "}
                   / night
                 </p>
 
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <Button asChild variant="primary" size="sm">
-                    <Link href={`/rooms/${room.slug}`}>
+                <div className="mt-auto flex flex-wrap items-center gap-3 pt-3 md:mt-4 md:pt-0">
+                  <Button asChild variant="primary" size="sm" className="h-10 min-w-0 w-full gap-1 px-2 text-[11px] tracking-normal md:h-9 md:w-auto md:gap-2 md:px-4 md:text-sm md:tracking-wide">
+                    <Link href={`/rooms/${room.slug}`} aria-label={`View ${room.name} details`}>
                       View Details <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button asChild variant="gold" size="sm">
+                  <Button asChild variant="gold" size="sm" className="hidden md:inline-flex">
                     <Link href={`/booking?room=${room.slug}`}>
                       <CalendarCheck className="h-4 w-4" /> Check Availability
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="sm">
+                  <Button asChild variant="outline" size="sm" className="hidden md:inline-flex">
                     <a
                       href={contact.links.whatsappPrimary}
                       target="_blank"
@@ -131,7 +127,7 @@ export default async function RoomsPage() {
       </section>
 
       {/* facilities recap */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-6 md:py-14">
         <div className="container">
           <Facilities />
         </div>

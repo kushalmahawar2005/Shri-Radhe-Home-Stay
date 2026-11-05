@@ -8,7 +8,7 @@ import { RevealGroup, fadeUpVariants } from "@/components/reveal";
 
 export function DivineEnergy() {
   return (
-    <section id="divine-energy" className="relative overflow-hidden bg-[#fffdf7] py-16 md:py-20">
+    <section id="divine-energy" className="relative overflow-hidden bg-[#fffdf7] py-5 sm:py-16 md:py-20">
       <div className="container">
         <SectionHeading
           eyebrow="A little Nathdwara magic"
@@ -17,7 +17,7 @@ export function DivineEnergy() {
           subtitle="From the first darshan to the colours of Pichwai, Nathdwara has a beauty all its own."
         />
 
-        <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <RevealGroup className="mt-5 sm:mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {siteConfig.divineEnergy.map((item, index) => (
             <motion.figure
               key={item.title}

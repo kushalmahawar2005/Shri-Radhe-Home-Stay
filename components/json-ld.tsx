@@ -53,7 +53,7 @@ export async function JsonLd() {
 
   const photos = [
     "/images/og-image.jpg",
-    "/images/room-deluxe-enhanced.webp",
+    "/images/rooms/makhan-chor/01.webp",
     "/images/room-family-enhanced.webp",
     "/images/room-premium-enhanced.webp",
     "/images/building.jpg",

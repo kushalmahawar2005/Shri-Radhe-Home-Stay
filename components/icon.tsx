@@ -15,6 +15,8 @@ import {
   CarTaxiFront,
   BedDouble,
   Landmark,
+  Coffee,
+  GlassWater,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,6 +41,8 @@ const icons: Record<string, LucideIcon> = {
   CarTaxiFront,
   BedDouble,
   Landmark,
+  Coffee,
+  GlassWater,
 };
 
 export function Icon({

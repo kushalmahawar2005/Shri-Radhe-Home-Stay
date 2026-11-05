@@ -45,7 +45,7 @@ export default async function BookingPage() {
         ])}
       />
 
-      <section className="relative overflow-hidden bg-cream-gradient py-14 md:py-20">
+      <section className="relative overflow-hidden bg-cream-gradient py-5 sm:py-14 md:py-20">
         <Image
           src="/rangoli.png"
           alt=""
@@ -65,7 +65,7 @@ export default async function BookingPage() {
         </div>
       </section>
 
-      <section className="bg-cream py-12 md:py-16">
+      <section className="bg-cream py-5 sm:py-12 md:py-16">
         <div className="container">
           <Suspense fallback={<div className="h-40" />}>
             <BookingForm
@@ -79,7 +79,7 @@ export default async function BookingPage() {
       </section>
 
       {/* trust badges */}
-      <section className="bg-cream-alt py-12 md:py-14">
+      <section className="bg-cream-alt py-5 sm:py-12 md:py-14">
         <div className="container grid grid-cols-2 gap-4 lg:grid-cols-4">
           {bookingPerks.map((p) => (
             <div

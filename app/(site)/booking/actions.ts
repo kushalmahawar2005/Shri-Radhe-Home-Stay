@@ -2,10 +2,13 @@
 
 import { z } from "zod";
 import { isDbConfigured } from "@/lib/db";
+import { notifyAdminsQuickly, shortDate } from "@/lib/push";
 import {
   createBooking,
+  getRoomById,
   getRoomIdBySlug,
   isRoomAvailable,
+  listRooms,
 } from "@/lib/db/queries";
 
 export type BookingResult = {
@@ -62,8 +65,57 @@ export async function submitBookingRequest(
       source: "web",
       paymentMode: data.paymentMode,
     });
+    const room = roomId ? await getRoomById(roomId).catch(() => null) : null;
+    await notifyAdminsQuickly({
+      title: available ? "🛎️ New booking request" : "⚠️ Booking request — dates look taken",
+      body: `${data.name || "A guest"} · ${room?.name ?? data.roomSlug} · ${shortDate(data.checkIn)} → ${shortDate(data.checkOut)} · ${data.guests || "guests not set"} · Pay at villa`,
+      url: "/admin/bookings/",
+      tag: `booking-${result.id}`,
+    });
     return { ok: true, available, bookingId: result.id };
   } catch {
     return { ok: false, error: "save-failed" };
+  }
+}
+
+export type AvailabilityResult =
+  | { status: "available" }
+  | { status: "booked"; alternatives: { slug: string; name: string; priceNight: string }[] }
+  | { status: "unknown" };
+
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Live availability check for one room (pages are cached, so the client's
+ * blocked-date list can be up to an hour old). When the room is taken, also
+ * returns the other published rooms that are free for the same dates.
+ */
+export async function checkRoomAvailability(input: {
+  roomSlug: string;
+  checkIn: string;
+  checkOut: string;
+}): Promise<AvailabilityResult> {
+  const { roomSlug, checkIn, checkOut } = input;
+  if (!DATE.test(checkIn) || !DATE.test(checkOut) || checkOut <= checkIn) {
+    return { status: "unknown" };
+  }
+  if (!isDbConfigured()) return { status: "unknown" };
+
+  try {
+    const rooms = (await listRooms()).filter((r) => r.published);
+    const target = rooms.find((r) => r.slug === roomSlug);
+    if (!target) return { status: "unknown" };
+    if (await isRoomAvailable(target.id, checkIn, checkOut)) return { status: "available" };
+
+    const others = rooms.filter((r) => r.id !== target.id);
+    const free = await Promise.all(others.map((r) => isRoomAvailable(r.id, checkIn, checkOut)));
+    return {
+      status: "booked",
+      alternatives: others
+        .filter((_, i) => free[i])
+        .map((r) => ({ slug: r.slug, name: r.name, priceNight: r.priceNight })),
+    };
+  } catch {
+    return { status: "unknown" };
   }
 }

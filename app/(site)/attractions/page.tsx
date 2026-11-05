@@ -6,7 +6,6 @@ import { attractions } from "@/lib/site-config";
 import { breadcrumbSchema, SITE_URL } from "@/lib/seo";
 import { Schema } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
-import { SectionHeading } from "@/components/section-heading";
 import { AttractionsList } from "@/components/attractions-list";
 
 export const revalidate = 3600;
@@ -65,26 +64,28 @@ export default async function AttractionsPage() {
         ])}
       />
 
-      <section className="bg-cream-gradient py-14 md:py-20">
+      <section className="bg-cream-gradient pb-3 pt-5 sm:pb-6 sm:pt-10 md:pt-12">
         <div className="container">
-          <SectionHeading
-            as="h1"
-            eyebrow="Explore Nathdwara"
-            title="Places to Visit In and Around Nathdwara"
-            highlight="Places to Visit"
-            subtitle="Explore the divine, historic and naturally beautiful places near Shri Radha Villa Stay."
-          />
+          <h1 className="font-serif text-3xl font-bold leading-tight text-emerald sm:text-4xl">Places to Visit</h1>
+          <p className="mt-1 text-sm leading-5 text-ink/65 sm:mt-2 sm:text-base">Temples, heritage and day trips near Nathdwara.</p>
         </div>
       </section>
 
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream pb-10 pt-1 sm:pb-14 sm:pt-4 md:pb-20">
         <div className="container">
           <AttractionsList />
+          <p className="mt-5 text-xs leading-5 text-ink/55">
+            Photo credits: <a href="https://commons.wikimedia.org/wiki/File:Gateway_To_Temple,_Nathdwara.jpg" className="underline" target="_blank" rel="noopener noreferrer">Shrinathji entrance — Papertree, public domain</a>;{' '}
+            <a href="https://commons.wikimedia.org/wiki/File:EklingJi_Temple.jpg" className="underline" target="_blank" rel="noopener noreferrer">Eklingji — Karora23</a>,{' '}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" className="underline" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>;{' '}
+            <a href="https://commons.wikimedia.org/wiki/File:Lake_Pichola,_Udaipur.jpg" className="underline" target="_blank" rel="noopener noreferrer">Udaipur — Clément Bardot</a>,{' '}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" className="underline" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. Images resized and cropped for display.
+          </p>
         </div>
       </section>
 
       {/* trip-planning CTA */}
-      <section className="bg-cream-alt py-12 md:py-16">
+      <section className="bg-cream-alt py-5 sm:py-12 md:py-16">
         <div className="container flex flex-col items-center justify-between gap-6 rounded-2xl border border-gold/30 bg-cream-light px-8 py-8 text-center shadow-card md:flex-row md:text-left">
           <div>
             <h2 className="font-serif text-2xl font-bold text-ink">

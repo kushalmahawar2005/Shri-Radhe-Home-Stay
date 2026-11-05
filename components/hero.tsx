@@ -12,11 +12,11 @@ import { BLUR_DATA_URL } from "@/lib/utils";
 /** Property photographs supplied by the owners. */
 const HERO_SLIDES = [
   { src: "/images/room-family-enhanced.webp", alt: "A bright family room with a comfortable bed and sitting area" },
-  { src: "/images/room-deluxe-enhanced.webp", alt: "A spacious guest room with a bed and sofa" },
+  { src: "/images/building.jpg", alt: "Front view of Shri Radha Villa Stay with its red Rajasthani facade" },
   { src: "/images/room-premium-enhanced.webp", alt: "A colourful family room at Shri Radha Villa Stay" },
-  { src: "/images/r2.jpg", alt: "An air-conditioned room with thoughtful furnishings" },
-  { src: "/images/02.jpg", alt: "A welcoming room with a sitting area for guests" },
-  { src: "/images/03.jpg", alt: "A comfortable guest room in Nathdwara" },
+  { src: "/images/rooms/makhan-chor/01.webp", alt: "Makhan Chor room with two double beds" },
+  { src: "/images/rooms/radhika-rajkunj/03.webp", alt: "Radhika Rajkunj room with two double beds" },
+  { src: "/images/rooms/kanupriya/02.webp", alt: "Kanupriya room with colourful butterfly decor" },
 ];
 
 export function Hero() {
@@ -61,7 +61,7 @@ export function Hero() {
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-ink/75 sm:text-base sm:leading-7">
-            A warm, family-friendly home stay for your Nathdwara visit — with comfortable AC rooms and an easy walk to the temple.
+            A warm, family-friendly home stay for your Nathdwara visit — with comfortable AC & non-AC rooms and an easy walk to the temple.
           </p>
 
           <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
@@ -130,7 +130,7 @@ export function Hero() {
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4">
             <div className="group relative min-h-[150px] overflow-hidden rounded-[1.35rem] border-[5px] border-white bg-[#eee5d2] shadow-card sm:min-h-0 sm:flex-1 sm:rounded-[1.6rem] sm:border-[6px]">
-              <Image src="/images/room-deluxe-enhanced.webp" alt="A welcoming room with a comfortable bed and seating" fill sizes="(max-width: 768px) 50vw, 30vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src="/images/rooms/madhuvan/03.webp" alt="Madhuvan room with two double beds and sunflower decor" fill sizes="(max-width: 768px) 50vw, 30vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#13251d]/75 to-transparent px-3 pb-3 pt-9 text-xs font-semibold text-white sm:px-4 sm:pb-4 sm:text-sm">Comfort for the whole family</div>
             </div>
             <div className="group relative min-h-[150px] overflow-hidden rounded-[1.35rem] border-[5px] border-white bg-[#eee5d2] shadow-card sm:min-h-0 sm:flex-1 sm:rounded-[1.6rem] sm:border-[6px]">
@@ -143,7 +143,7 @@ export function Hero() {
         <div className="mx-auto mt-5 flex max-w-4xl flex-wrap justify-center gap-x-6 gap-y-2 border-t border-gold/20 pt-4 text-xs font-medium text-ink/70 sm:gap-x-9 sm:text-sm">
           <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-gold-dark" aria-hidden="true" />8-minute temple walk</span>
           <span className="inline-flex items-center gap-2"><Wifi className="h-4 w-4 text-gold-dark" aria-hidden="true" />Free WiFi</span>
-          <span className="inline-flex items-center gap-2">AC rooms · Attached bathrooms</span>
+          <span className="inline-flex items-center gap-2">AC & non-AC rooms · Free tea & coffee</span>
         </div>
       </div>
 

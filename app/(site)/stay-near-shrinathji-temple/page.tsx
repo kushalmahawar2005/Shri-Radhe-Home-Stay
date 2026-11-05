@@ -30,7 +30,7 @@ export const revalidate = 3600;
 
 const TITLE = "Stay Near Shrinathji Temple, Nathdwara — 8 Minute Walk";
 const DESCRIPTION =
-  "Looking for a stay near Shrinathji Temple in Nathdwara? Shri Radha Villa Stay is an 8 minute walk from the temple — clean AC rooms with attached bathrooms, 24x7 hot water, free WiFi and free parking. Book direct on call or WhatsApp for the best rate.";
+  "Looking for a stay near Shrinathji Temple in Nathdwara? Shri Radha Villa Stay is an 8 minute walk from the temple — clean AC & non-AC rooms with attached bathrooms, 24x7 hot water, free tea & coffee, WiFi and private parking. Book direct on call or WhatsApp for the best rate.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -148,7 +148,7 @@ export default async function StayNearTemplePage() {
       />
 
       {/* ── hero ── */}
-      <section className="bg-cream-gradient py-14 md:py-20">
+      <section className="bg-cream-gradient py-5 sm:py-14 md:py-20">
         <div className="container grid items-center gap-10 lg:grid-cols-2">
           <Reveal className="flex flex-col gap-4">
             <Eyebrow>Nathdwara, Rajasthan</Eyebrow>
@@ -158,8 +158,9 @@ export default async function StayNearTemplePage() {
             </h1>
             <p className="max-w-xl leading-relaxed text-ink/75">
               {brand.name} is a family-run home stay inside Nathdwara temple
-              town, about 1.2 km from the Shrinathji Temple. Clean AC rooms with
-              attached bathrooms, 24x7 hot water, free WiFi and free parking —
+              town, about 1.2 km from the Shrinathji Temple. Clean AC and non-AC rooms
+              with attached bathrooms, 24x7 hot water, free tea and coffee, free
+              WiFi and private parking —
               so you can walk to every darshan instead of arranging transport.
             </p>
             <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -196,7 +197,7 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── why walking distance matters ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Why Location Matters"
@@ -205,7 +206,7 @@ export default async function StayNearTemplePage() {
             subtitle="Nathdwara is a temple town, and the difference between staying inside it and staying on the highway shows up on every single darshan."
           />
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-5 sm:mt-12 grid gap-6 md:grid-cols-2">
             {WALKING_BENEFITS.map((b) => (
               <Reveal
                 key={b.title}
@@ -225,7 +226,7 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── distance table ── */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Distances"
@@ -233,7 +234,7 @@ export default async function StayNearTemplePage() {
             highlight="Far"
           />
 
-          <div className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-gold/30 bg-cream-light shadow-card">
+          <div className="mx-auto mt-5 sm:mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-gold/30 bg-cream-light shadow-card">
             <table className="w-full min-w-[30rem] text-left text-sm">
               <caption className="sr-only">
                 Distances and travel times from {brand.name} to Shrinathji
@@ -279,16 +280,16 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── rooms ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Rooms & Rates"
             title="Rooms Near Shrinathji Temple"
             highlight="Rooms"
-            subtitle={`Every room is air-conditioned with an attached bathroom, 24x7 hot water, free WiFi, LED TV and daily housekeeping. Rates start at ${cheapest.priceNight} a night.`}
+            subtitle={`Choose from 7 AC and non-AC rooms, each with an attached bathroom and geyser, 24x7 hot and cold water, free WiFi, mineral water and complimentary tea, coffee and milk. Rates start at ${cheapest.priceNight} a night.`}
           />
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-5 sm:mt-12 grid gap-6 md:grid-cols-3">
             {rooms.map((room) => (
               <Reveal
                 key={room.slug}
@@ -311,7 +312,7 @@ export default async function StayNearTemplePage() {
                     {room.name}
                   </h3>
                   <p className="mt-1 text-sm text-gold-dark">
-                    {room.guests} · {room.bed} · {room.size}
+                    {[room.guests, room.bed, room.size].filter(Boolean).join(" · ")}
                   </p>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-ink/70">
                     {room.blurb}
@@ -334,14 +335,14 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── what's included ── */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Included"
             title="What Every Booking Includes"
             highlight="Every"
           />
-          <ul className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
+          <ul className="mx-auto mt-5 sm:mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
             {siteConfig.facilities.map((f) => (
               <li
                 key={f.label}
@@ -356,7 +357,7 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Good to Know"
@@ -368,7 +369,7 @@ export default async function StayNearTemplePage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="bg-emerald py-14 text-center md:py-16">
+      <section className="bg-emerald py-5 sm:py-14 text-center md:py-16">
         <div className="container">
           <h2 className="font-serif text-3xl font-bold text-cream-light sm:text-4xl">
             Book Your Stay Near Shrinathji Temple

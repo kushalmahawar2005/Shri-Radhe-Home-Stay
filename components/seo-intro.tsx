@@ -23,7 +23,7 @@ export async function SeoIntro() {
     : null;
 
   return (
-    <section className="heritage-wash relative isolate overflow-hidden bg-cream py-14 md:py-20">
+    <section className="heritage-wash relative isolate overflow-hidden bg-cream py-5 sm:py-14 md:py-20">
       <div className="pointer-events-none absolute inset-0 bg-cream/75" aria-hidden="true" />
       <div className="container relative z-10">
         <SectionHeading
@@ -32,7 +32,7 @@ export async function SeoIntro() {
           highlight="Home Stay"
         />
 
-        <div className="mx-auto mt-10 flex max-w-3xl flex-col gap-5 leading-relaxed text-ink/75">
+        <div className="mx-auto mt-5 sm:mt-10 flex max-w-3xl flex-col gap-5 leading-relaxed text-ink/75">
           <Reveal>
             <p>
               {brand.name} is a family-run home stay in Nathdwara, the temple
@@ -50,30 +50,32 @@ export async function SeoIntro() {
 
           <Reveal>
             <p>
-              We keep three rooms — a{" "}
+              We keep seven rooms, each named after Shri Krishna and Radha
+              Rani. Three are air-conditioned —{" "}
               <Link
-                href="/rooms/deluxe"
+                href="/rooms/radha-rani"
                 className="font-medium text-emerald underline underline-offset-4"
               >
-                Deluxe Room
+                Radha Rani
               </Link>{" "}
-              for couples and solo pilgrims, a{" "}
+              for groups of five,{" "}
               <Link
-                href="/rooms/family"
+                href="/rooms/makhan-chor"
                 className="font-medium text-emerald underline underline-offset-4"
               >
-                Family Room
+                Makhan Chor
               </Link>{" "}
-              that sleeps three to four, and a{" "}
+              for four and{" "}
               <Link
-                href="/rooms/premium"
+                href="/rooms/bal-gopal"
                 className="font-medium text-emerald underline underline-offset-4"
               >
-                Premium Room
+                Bal Gopal
               </Link>{" "}
-              with a temple-town view. Every room is air-conditioned with an
-              attached bathroom, 24x7 hot water, free high-speed WiFi, an LED TV
-              and daily housekeeping. Parking is free and on-site, and we can
+              for families with a child — and four non-AC rooms for three to
+              four guests. Every room has an attached bathroom with geyser, 24x7
+              hot and cold water, free WiFi, mineral water and complimentary
+              tea, coffee and milk. Parking is private and on-site, and we can
               arrange a taxi for Haldighati, Eklingji, Kumbhalgarh or Udaipur.
             </p>
           </Reveal>

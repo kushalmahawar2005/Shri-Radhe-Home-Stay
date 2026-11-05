@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/seo";
+import { getRooms } from "@/lib/content-store";
 
-export const dynamic = "force-static";
+// Rebuilt hourly so rooms added in the admin panel appear automatically.
+export const revalidate = 3600;
 
 type Entry = {
   path: string;
@@ -27,10 +28,11 @@ const PAGES: Entry[] = [
   { path: "/contact", priority: 0.7, changeFrequency: "yearly" },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
+  const rooms = await getRooms();
 
-  const roomPages: MetadataRoute.Sitemap = siteConfig.rooms.map((room) => ({
+  const roomPages: MetadataRoute.Sitemap = rooms.map((room) => ({
     url: absoluteUrl(`/rooms/${room.slug}`),
     lastModified,
     changeFrequency: "monthly",

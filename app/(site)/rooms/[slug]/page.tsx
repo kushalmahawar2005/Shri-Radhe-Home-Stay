@@ -53,14 +53,16 @@ export async function generateMetadata({
   const room = await getRoomBySlug(params.slug);
   if (!room) return { title: "Room Not Found", robots: { index: false } };
   const title = `${room.name} in Nathdwara — ${room.priceNight}/Night`;
-  const description = `${room.name} at ${siteConfig.name}, Nathdwara — ${room.blurb} ${room.guests}, ${room.bed}, ${room.size}. From ${room.priceNight} per night, an ${siteConfig.templeWalkTime} from Shrinathji Temple.`;
+  const isNonAc = room.features.some((f) => /non[\s-]?ac/i.test(f));
+  const facts = [isNonAc ? "Non-AC" : "AC", room.guests, room.bed, room.size].filter(Boolean).join(", ");
+  const description = `${room.name} at ${siteConfig.name}, Nathdwara — ${room.blurb} ${facts}. From ${room.priceNight} per night incl. tea & coffee, an ${siteConfig.templeWalkTime} from Shrinathji Temple.`;
   return {
     title,
     description,
     keywords: [
       `${room.name} Nathdwara`,
       "rooms near Shrinathji Temple",
-      "AC room Nathdwara booking",
+      isNonAc ? "budget room Nathdwara" : "AC room Nathdwara booking",
       `${room.guests} room Nathdwara`,
     ],
     alternates: { canonical: `/rooms/${room.slug}/` },
@@ -90,12 +92,13 @@ export default async function RoomDetailPage({
 
   const others = allRooms.filter((r) => r.slug !== room.slug);
 
+  const isNonAc = room.features.some((f) => /non[\s-]?ac/i.test(f));
   const quickFacts = [
-    { icon: Snowflake, label: "AC Room" },
+    { icon: Snowflake, label: isNonAc ? "Non-AC Room" : "AC Room" },
     { icon: Users, label: room.guests },
     { icon: BedDouble, label: room.bed },
     { icon: Maximize, label: room.size },
-  ];
+  ].filter((fact) => fact.label.trim() !== "");
 
   // HotelRoom + Offer makes the nightly rate eligible for rich results, and
   // ties this page back to the site-wide Hotel entity in the root layout.
@@ -108,9 +111,9 @@ export default async function RoomDetailPage({
     image: Array.from(new Set([room.image, ...room.gallery])).map((src) =>
       src.startsWith("http") ? src : `${SITE_URL}${src}`
     ),
-    bed: { "@type": "BedDetails", typeOfBed: room.bed },
+    ...(room.bed ? { bed: { "@type": "BedDetails", typeOfBed: room.bed } } : {}),
     occupancy: { "@type": "QuantitativeValue", name: room.guests },
-    floorSize: { "@type": "QuantitativeValue", name: room.size },
+    ...(room.size ? { floorSize: { "@type": "QuantitativeValue", name: room.size } } : {}),
     amenityFeature: room.amenities.map((a) => ({
       "@type": "LocationFeatureSpecification",
       name: a,
@@ -145,11 +148,11 @@ export default async function RoomDetailPage({
       />
 
       {/* breadcrumb + header */}
-      <section className="bg-cream-gradient pb-10 pt-8 md:pb-12">
+      <section className="bg-cream-gradient pb-4 pt-4 md:pb-12 md:pt-8">
         <div className="container">
           <nav
             aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-1 text-sm text-ink/55"
+            className="flex flex-wrap items-center gap-1 text-xs text-ink/55 sm:text-sm"
           >
             <Link href="/" className="hover:text-emerald">
               Home
@@ -162,16 +165,16 @@ export default async function RoomDetailPage({
             <span className="text-emerald">{room.name}</span>
           </nav>
 
-          <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="mt-3 flex flex-col gap-2 md:mt-5 md:gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <h1 className="font-serif text-4xl font-bold text-ink sm:text-5xl">
+              <h1 className="font-serif text-3xl font-bold leading-tight text-ink sm:text-5xl">
                 {room.name}
               </h1>
-              <p className="mt-1 font-serif text-xl italic text-gold-dark">
+              <p className="mt-1 font-serif text-base italic leading-snug text-gold-dark sm:text-xl">
                 {room.tagline}
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-5 text-sm">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:gap-5 sm:text-sm">
               <span className="flex items-center gap-1.5 font-medium text-ink/75">
                 <Star className="h-4 w-4 fill-gold text-gold" /> Loved by Guests
               </span>
@@ -185,10 +188,10 @@ export default async function RoomDetailPage({
       </section>
 
       {/* main two-column layout */}
-      <section className="bg-cream py-10 md:py-14">
-        <div className="container grid gap-10 lg:grid-cols-[1.7fr_1fr] lg:items-start">
-          {/* LEFT */}
-          <div className="flex flex-col gap-10">
+      <section className="bg-cream pb-8 pt-2 md:py-14">
+        <div className="container grid min-w-0 gap-5 md:gap-8 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:items-start">
+          {/* Photos and essential facts come before booking on mobile. */}
+          <div className="min-w-0 space-y-3 lg:col-start-1 lg:row-start-1 md:space-y-6">
             {/* gallery */}
             <Reveal>
               <RoomGallery
@@ -198,97 +201,24 @@ export default async function RoomDetailPage({
             </Reveal>
 
             {/* quick facts */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="flex flex-wrap gap-2 sm:grid sm:grid-cols-4 sm:gap-3">
               {quickFacts.map((f) => (
                 <div
                   key={f.label}
-                  className="flex items-center gap-2 rounded-xl border border-gold/30 bg-cream-light px-4 py-3 text-sm font-medium text-ink/75 shadow-soft"
+                  className="flex items-center gap-1.5 rounded-lg border border-gold/30 bg-cream-light px-2.5 py-2 text-xs font-medium text-ink/75 sm:gap-2 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm"
                 >
-                  <f.icon className="h-5 w-5 text-emerald" />
+                  <f.icon className="h-4 w-4 shrink-0 text-emerald sm:h-5 sm:w-5" />
                   {f.label}
                 </div>
               ))}
             </div>
 
-            {/* about */}
-            <Reveal>
-              <h2 className="font-serif text-2xl font-bold text-ink">
-                About This Room
-              </h2>
-              <Flourish className="ml-0 mt-2" />
-              <p className="mt-4 leading-relaxed text-ink/80">{room.blurb}</p>
-              <p className="mt-3 leading-relaxed text-ink/80">
-                Designed for a relaxing stay, this room comes with all modern
-                amenities and a beautiful view of the temple town. Wake up to a
-                peaceful morning and step out for darshan in minutes.
-              </p>
-            </Reveal>
-
-            {/* amenities + highlights */}
-            <div className="grid gap-8 sm:grid-cols-2">
-              <Reveal>
-                <h3 className="font-serif text-xl font-semibold text-emerald">
-                  Room Amenities
-                </h3>
-                <ul className="mt-4 grid gap-2">
-                  {room.amenities.map((a) => (
-                    <li
-                      key={a}
-                      className="flex items-center gap-2 text-sm text-ink/75"
-                    >
-                      <Check className="h-4 w-4 shrink-0 text-emerald" />
-                      {a}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <h3 className="font-serif text-xl font-semibold text-emerald">
-                  Room Highlights
-                </h3>
-                <ul className="mt-4 grid gap-2">
-                  {room.highlights.map((h) => (
-                    <li
-                      key={h}
-                      className="flex items-center gap-2 text-sm text-ink/75"
-                    >
-                      <Star className="h-4 w-4 shrink-0 fill-gold text-gold" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            </div>
-
-            {/* policy boxes */}
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
-                <h3 className="flex items-center gap-2 font-serif text-lg font-semibold text-ink">
-                  <ShieldCheck className="h-5 w-5 text-emerald" /> Cancellation
-                  Policy
-                </h3>
-                <ul className="mt-3 space-y-1.5 text-sm text-ink/70">
-                  <li>· Free cancellation before 24 hours of check-in.</li>
-                  <li>· No refund for cancellations made within 24 hours.</li>
-                </ul>
-              </div>
-              <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
-                <h3 className="flex items-center gap-2 font-serif text-lg font-semibold text-ink">
-                  <Info className="h-5 w-5 text-emerald" /> Important
-                  Information
-                </h3>
-                <ul className="mt-3 space-y-1.5 text-sm text-ink/70">
-                  <li>· Early check-in or late check-out subject to availability.</li>
-                  <li>· For any special request, please contact us in advance.</li>
-                </ul>
-              </div>
-            </div>
           </div>
 
           {/* RIGHT — sticky sidebar */}
-          <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
+          <aside id="room-booking" className="flex min-w-0 scroll-mt-24 flex-col gap-4 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:gap-6">
             <div>
-              <div className="mb-4 flex items-baseline gap-1 rounded-2xl border border-gold/30 bg-emerald px-6 py-4 text-cream-light shadow-card">
+              <div className="mb-3 flex items-baseline gap-1 rounded-xl border border-gold/30 bg-emerald px-4 py-2.5 sm:mb-4 sm:rounded-2xl sm:px-6 sm:py-4 text-cream-light shadow-card">
                 <span className="font-serif text-3xl font-bold">
                   {room.priceNight}
                 </span>
@@ -303,6 +233,7 @@ export default async function RoomDetailPage({
               />
             </div>
 
+            <div className="hidden lg:contents">
             <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
               <h3 className="flex items-center gap-2 font-serif text-lg font-semibold text-emerald">
                 <Phone className="h-5 w-5" /> Need Help?
@@ -352,12 +283,91 @@ export default async function RoomDetailPage({
                 — Rajesh Sharma
               </figcaption>
             </figure>
+            </div>
           </aside>
+
+          <div className="flex min-w-0 flex-col gap-5 lg:col-start-1 lg:row-start-2 md:gap-8">
+            {/* about */}
+            <Reveal>
+              <h2 className="font-serif text-2xl font-bold text-ink">
+                About This Room
+              </h2>
+              <Flourish className="ml-0 mt-2 hidden sm:block" />
+              <p className="mt-2 text-sm leading-6 text-ink/80 sm:mt-4 sm:text-base">{room.blurb}</p>
+              <p className="mt-2 text-sm leading-6 text-ink/80 sm:mt-3 sm:text-base">
+                Tea, coffee and milk are on us, along with free WiFi, mineral
+                water and round-the-clock hot water. Wake up to a peaceful
+                morning and walk to Shrinathji darshan in minutes.
+              </p>
+            </Reveal>
+
+            {/* amenities + highlights */}
+            <div className="grid gap-5 sm:grid-cols-2 sm:gap-8">
+              <Reveal>
+                <h3 className="font-serif text-xl font-semibold text-emerald">
+                  Room Amenities
+                </h3>
+                <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-1 sm:mt-4">
+                  {room.amenities.map((a) => (
+                    <li
+                      key={a}
+                      className="flex items-start gap-1.5 text-xs leading-5 text-ink/75 sm:items-center sm:gap-2 sm:text-sm"
+                    >
+                      <Check className="h-4 w-4 shrink-0 text-emerald" />
+                      {a}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <h3 className="font-serif text-xl font-semibold text-emerald">
+                  Room Highlights
+                </h3>
+                <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-1 sm:mt-4">
+                  {room.highlights.map((h) => (
+                    <li
+                      key={h}
+                      className="flex items-start gap-1.5 text-xs leading-5 text-ink/75 sm:items-center sm:gap-2 sm:text-sm"
+                    >
+                      <Star className="h-4 w-4 shrink-0 fill-gold text-gold" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            </div>
+
+            {/* policy boxes */}
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
+                <h3 className="flex items-center gap-2 font-serif text-lg font-semibold text-ink">
+                  <ShieldCheck className="h-5 w-5 text-emerald" /> Cancellation
+                  Policy
+                </h3>
+                <ul className="mt-3 space-y-1.5 text-sm text-ink/70">
+                  <li>· Free cancellation before 24 hours of check-in.</li>
+                  <li>· No refund for cancellations made within 24 hours.</li>
+                </ul>
+              </div>
+              <div className="rounded-2xl border border-gold/30 bg-cream-light p-5 shadow-soft">
+                <h3 className="flex items-center gap-2 font-serif text-lg font-semibold text-ink">
+                  <Info className="h-5 w-5 text-emerald" /> Important
+                  Information
+                </h3>
+                <ul className="mt-3 space-y-1.5 text-sm text-ink/70">
+                  <li>· Early check-in or late check-out subject to availability.</li>
+                  <li>· For any special request, please contact us in advance.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </section>
 
       {/* you may also like */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <h2 className="text-center font-serif text-3xl font-bold text-ink">
             You May Also <span className="text-emerald">Like</span>

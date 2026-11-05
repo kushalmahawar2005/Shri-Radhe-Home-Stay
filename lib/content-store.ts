@@ -12,7 +12,7 @@
  */
 import "server-only";
 import { cache } from "react";
-import { and, asc, eq, gte, or } from "drizzle-orm";
+import { and, asc, eq, gte, inArray, or } from "drizzle-orm";
 
 import { db, isDbConfigured } from "@/lib/db";
 import {
@@ -126,7 +126,7 @@ export const getBlockedRanges = cache(
           and(
             or(
               eq(bookingsTable.kind, "block"),
-              eq(bookingsTable.status, "confirmed")
+              inArray(bookingsTable.status, ["confirmed", "checked_in", "checked_out"])
             ),
             gte(bookingsTable.checkOut, todayKey)
           )

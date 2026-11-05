@@ -20,7 +20,7 @@ export async function saveBasicsAction(
   formData: FormData
 ): Promise<ContentState> {
   const primary = s(formData, "phonePrimary");
-  if (!primary) return { error: "Primary phone number zaroori hai." };
+  if (!primary) return { error: "Add a main phone number to continue." };
 
   const brand = {
     name: s(formData, "name"),
@@ -58,7 +58,7 @@ export async function saveBasicsAction(
     await setContent("brand", brand);
     await setContent("contact", contact);
   } catch {
-    return { error: "Save nahi hua. Dobara try karo." };
+    return { error: "Your changes could not be saved. Please try again." };
   }
   revalidateAll();
   return { ok: true };
@@ -83,7 +83,7 @@ export async function saveFaqsAction(
   try {
     await setContent("faqs", faqs);
   } catch {
-    return { error: "Save nahi hua." };
+    return { error: "FAQs could not be saved. Please try again." };
   }
   revalidateAll();
   return { ok: true };
@@ -102,7 +102,7 @@ export async function saveTestimonialsAction(
   try {
     await setContent("testimonials", items);
   } catch {
-    return { error: "Save nahi hua." };
+    return { error: "Reviews could not be saved. Please try again." };
   }
   revalidateAll();
   return { ok: true };

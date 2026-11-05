@@ -27,7 +27,7 @@ export function Logo({
           width={80}
           height={80}
           priority
-          className="-ml-2 mt-0 h-14 w-14 object-contain md:-mt-1 md:h-16 md:w-16"
+          className="h-11 w-11 shrink-0 rounded-full object-contain ring-1 ring-gold/40 md:h-12 md:w-12"
         />
       ) : (
         <FeatherMark

@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CalendarCheck, MessageCircle, Check } from "lucide-react";
-import { siteConfig, type Room } from "@/lib/site-config";
+import { AlertCircle, CalendarCheck, MessageCircle, Check } from "lucide-react";
+import { siteConfig, guestOptions, type Room } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
 import {
   DateRangePicker,
   type BlockedRange,
 } from "@/components/ui/date-range-picker";
 import { BLUR_DATA_URL, cn } from "@/lib/utils";
-import { submitBookingRequest } from "@/app/(site)/booking/actions";
+import { checkRoomAvailability, submitBookingRequest } from "@/app/(site)/booking/actions";
 
 function overlaps(from: string, to: string, blocked: BlockedRange[]) {
   if (!from || !to) return false;
@@ -48,6 +48,45 @@ export function BookingForm({
 
   const selectedRoom =
     rooms.find((r) => r.slug === room) ?? rooms[0];
+
+  const datesRef = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const submitErrorRef = useRef<HTMLParagraphElement>(null);
+  const [submitError, setSubmitError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  // Arriving from a room page with the room and dates already chosen —
+  // skip straight to the guest details instead of making them scroll.
+  useEffect(() => {
+    if (search.get("room") && search.get("checkin") && search.get("checkout")) {
+      const t = window.setTimeout(() => {
+        detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        nameRef.current?.focus({ preventScroll: true });
+      }, 150);
+      return () => window.clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /** Shows an error and scrolls the guest to where it needs fixing. */
+  function fail(message: string, where: "dates" | "phone" | "submit") {
+    setSubmitting(false);
+    if (where === "dates") {
+      setDateError(message);
+      setSubmitError(message);
+      datesRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else if (where === "phone") {
+      setPhoneError(message);
+      phoneRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      phoneRef.current?.focus({ preventScroll: true });
+    } else {
+      setSubmitError(message);
+      // Wait for the message to render before scrolling to it.
+      window.setTimeout(() => submitErrorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+    }
+  }
 
   const blockedForRoom = blockedRanges[room] ?? [];
 
@@ -94,18 +133,33 @@ export function BookingForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    setSubmitError("");
+    setPhoneError("");
     if (!checkIn || !checkOut) {
-      setDateError("Please choose your check-in and check-out dates.");
+      fail("Please choose your check-in and check-out dates.", "dates");
       return;
     }
     if (overlaps(checkIn, checkOut, blockedForRoom)) {
-      setDateError(
-        "Some of those dates are already booked. Please pick another range."
-      );
+      fail("Some of those dates are already booked. Please pick another range.", "dates");
+      return;
+    }
+    if (phone.replace(/\D/g, "").length < 10) {
+      fail("Please enter a valid 10-digit mobile number.", "phone");
       return;
     }
     setDateError("");
     setSubmitting(true);
+
+    // Live check — the calendar's booked dates may be a little out of date.
+    const live = await checkRoomAvailability({ roomSlug: room, checkIn, checkOut });
+    if (live.status === "booked") {
+      const alt = live.alternatives.map((a) => a.name).join(", ");
+      fail(
+        `${selectedRoom.name} was just booked for these dates.${alt ? ` Free for your dates: ${alt}.` : " Please choose other dates."}`,
+        "dates",
+      );
+      return;
+    }
 
     try {
       if (paymentMode === "online") {
@@ -127,8 +181,7 @@ export function BookingForm({
         
         const data = await res.json();
         if (!res.ok) {
-          setDateError(data.error || "Failed to create order");
-          setSubmitting(false);
+          fail(data.error || "We couldn't start the payment. Please try again.", "submit");
           return;
         }
 
@@ -144,8 +197,7 @@ export function BookingForm({
 
         const loaded = await loadScript();
         if (!loaded) {
-          setDateError("Failed to load Razorpay SDK. Are you online?");
-          setSubmitting(false);
+          fail("The payment window couldn't load. Please check your internet and try again.", "submit");
           return;
         }
 
@@ -172,10 +224,10 @@ export function BookingForm({
                 verifyData.bookingId ?? data.bookingId
               );
               params.set("paymentStatus", "paid");
+              if (verifyData.clash) params.set("review", "1");
               router.push(`/booking/success?${params.toString()}`);
             } else {
-              setDateError("Payment verification failed.");
-              setSubmitting(false);
+              fail("We couldn't verify your payment. If money was deducted, please call us — we'll sort it out.", "submit");
             }
           },
           prefill: {
@@ -190,8 +242,7 @@ export function BookingForm({
 
         const rzp = new (window as any).Razorpay(options);
         rzp.on("payment.failed", function (response: any) {
-          setDateError(response.error.description);
-          setSubmitting(false);
+          fail(response.error?.description || "Payment failed. Please try again.", "submit");
         });
         rzp.open();
         return; // wait for handler
@@ -214,8 +265,7 @@ export function BookingForm({
             result.error === "invalid"
               ? "Please check your details and try again."
               : "We couldn't submit your request just now. Please call or message us on WhatsApp and we'll book it for you.";
-          setDateError(friendly);
-          setSubmitting(false);
+          fail(friendly, "submit");
           return;
         }
         
@@ -223,8 +273,7 @@ export function BookingForm({
         router.push(`/booking/success?${params.toString()}`);
       }
     } catch (err) {
-      setDateError("An unexpected error occurred.");
-      setSubmitting(false);
+      fail("Something went wrong. Please try again, or book on WhatsApp.", "submit");
     }
   }
 
@@ -242,7 +291,7 @@ export function BookingForm({
       {/* LEFT — details */}
       <div className="flex flex-col gap-8">
         {/* dates */}
-        <div className="rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
+        <div ref={datesRef} className="scroll-mt-28 rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
           <h2 className="font-serif text-xl font-semibold text-emerald">
             Stay Dates
           </h2>
@@ -258,6 +307,8 @@ export function BookingForm({
                 onChange={(ci, co) => {
                   setCheckIn(ci);
                   setCheckOut(co);
+                  setDateError("");
+                  setSubmitError("");
                 }}
               />
             </div>
@@ -268,16 +319,13 @@ export function BookingForm({
                 onChange={(e) => setGuests(e.target.value)}
                 className={inputCls}
               >
-                <option>1 Adult</option>
-                <option>2 Adults</option>
-                <option>2 Adults, 1 Child</option>
-                <option>3 Adults</option>
-                <option>4+ Guests</option>
+                {(guestOptions as readonly string[]).includes(guests) ? null : <option>{guests}</option>}
+                {guestOptions.map((g) => <option key={g}>{g}</option>)}
               </select>
             </label>
           </div>
           {dateError ? (
-            <p className="mt-3 text-xs font-medium text-red-600">{dateError}</p>
+            <p role="alert" className="mt-3 flex items-start gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700"><AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />{dateError}</p>
           ) : (
             <p className="mt-3 text-xs text-ink/50">
               Greyed-out dates are already booked for{" "}
@@ -294,10 +342,11 @@ export function BookingForm({
           <h2 className="font-serif text-xl font-semibold text-emerald">
             Select Room Type
           </h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {rooms.map((r) => {
               const isSelected = room === r.slug;
-              const capacity = r.features.find((f) => /guest/i.test(f));
+              const capacity = r.guests || r.features.find((f) => /guest/i.test(f));
+              const acLabel = r.features.find((f) => /^(non[\s-]?)?ac$/i.test(f.trim()));
               return (
                 <button
                   key={r.slug}
@@ -337,6 +386,9 @@ export function BookingForm({
                     <p className="font-serif text-base font-semibold text-ink">
                       {r.name}
                     </p>
+                    {acLabel && (
+                      <p className="text-xs font-medium text-ink/55">{acLabel} room</p>
+                    )}
                     <p className="mt-auto pt-1 text-sm font-semibold text-gold-dark">
                       {r.priceNight}{" "}
                       <span className="font-normal text-ink/50">/ night</span>
@@ -349,15 +401,22 @@ export function BookingForm({
         </div>
 
         {/* guest info */}
-        <div className="rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
+        <div id="your-details" ref={detailsRef} className="scroll-mt-28 rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
           <h2 className="font-serif text-xl font-semibold text-emerald">
             Your Information
           </h2>
+          {search.get("checkin") && checkIn && checkOut ? (
+            <p className="mt-1 flex items-center gap-1.5 text-sm text-emerald">
+              <Check className="h-4 w-4" /> {selectedRoom.name} · {checkIn} → {checkOut} — just add your details below.
+            </p>
+          ) : null}
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm font-medium text-ink/80">
               Full Name
               <input
+                ref={nameRef}
                 required
+                autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={inputCls}
@@ -367,13 +426,21 @@ export function BookingForm({
             <label className="flex flex-col gap-1.5 text-sm font-medium text-ink/80">
               Phone Number
               <input
+                ref={phoneRef}
                 required
                 type="tel"
+                inputMode="tel"
+                autoComplete="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className={inputCls}
-                placeholder="Mobile number"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  setPhoneError("");
+                }}
+                aria-invalid={phoneError ? true : undefined}
+                className={cn(inputCls, phoneError && "border-red-400 ring-1 ring-red-300")}
+                placeholder="10-digit mobile number"
               />
+              {phoneError ? <span role="alert" className="text-xs font-medium text-red-600">{phoneError}</span> : null}
             </label>
           </div>
           <label className="mt-4 flex flex-col gap-1.5 text-sm font-medium text-ink/80">
@@ -443,6 +510,17 @@ export function BookingForm({
             </label>
           </div>
         </div>
+
+        {submitError ? (
+          <p
+            ref={submitErrorRef}
+            role="alert"
+            className="flex scroll-mt-28 items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            {submitError}
+          </p>
+        ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button type="submit" variant="primary" className="flex-1" disabled={submitting}>

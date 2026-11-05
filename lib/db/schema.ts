@@ -51,8 +51,9 @@ export const rooms = pgTable("rooms", {
 
 /* ── Bookings & manual availability blocks ──────────────────────────── */
 // kind:   "request" = guest/admin booking request | "block" = manual block
-// status: "pending" | "confirmed" | "cancelled"
-// A room is unavailable for dates covered by a "block" or a "confirmed" row.
+// status: "pending" | "confirmed" | "checked_in" | "checked_out" | "cancelled" | "no_show"
+// A room is unavailable for dates covered by a "block" row or a booking whose
+// status is in BLOCKING_STATUSES (confirmed, checked_in, checked_out).
 export const bookings = pgTable(
   "bookings",
   {
@@ -121,6 +122,17 @@ export const adminUsers = pgTable("admin_users", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/* ── Admin push notifications (one row per device that opted in) ──── */
+export const pushSubscriptions = pgTable("push_subscriptions", {
+  id: serial("id").primaryKey(),
+  endpoint: text("endpoint").notNull().unique(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  adminEmail: text("admin_email").notNull().default(""),
+  userAgent: text("user_agent").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 /* ── Inferred types ─────────────────────────────────────────────────── */
 export type Room = typeof rooms.$inferSelect;
 export type NewRoom = typeof rooms.$inferInsert;
@@ -130,3 +142,4 @@ export type Message = typeof messages.$inferSelect;
 export type GalleryImage = typeof galleryImages.$inferSelect;
 export type SiteContentRow = typeof siteContent.$inferSelect;
 export type AdminUser = typeof adminUsers.$inferSelect;
+export type PushSubscriptionRow = typeof pushSubscriptions.$inferSelect;

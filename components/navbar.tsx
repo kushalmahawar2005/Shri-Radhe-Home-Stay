@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, MessageCircle, CalendarCheck } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,12 @@ export function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => {
+    const path = href.split("#")[0].replace(/\/$/, "") || "/";
+    const current = pathname.replace(/\/$/, "") || "/";
+    return path === "/" ? current === "/" : current.startsWith(path);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -38,8 +45,10 @@ export function Navbar({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full bg-cream/90 backdrop-blur transition-shadow duration-300",
-        scrolled ? "shadow-nav" : "shadow-none"
+        "sticky top-0 z-50 w-full border-b backdrop-blur-md transition-[background-color,box-shadow,border-color] duration-300",
+        scrolled
+          ? "border-gold/25 bg-cream/95 shadow-nav"
+          : "border-transparent bg-cream/80"
       )}
     >
       <nav
@@ -56,7 +65,14 @@ export function Navbar({
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-base font-medium text-ink/80 transition-colors hover:text-emerald"
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={cn(
+                  "relative py-1 text-[0.95rem] font-medium transition-colors hover:text-emerald",
+                  "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:rounded-full after:bg-gold after:transition-transform after:duration-300",
+                  isActive(item.href)
+                    ? "text-emerald after:scale-x-100"
+                    : "text-ink/75 after:scale-x-0 hover:after:scale-x-100"
+                )}
               >
                 {item.label}
               </Link>
@@ -104,7 +120,11 @@ export function Navbar({
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-base font-medium text-ink/90 hover:bg-gold/10 hover:text-emerald"
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn(
+                "rounded-lg px-3 py-3 text-base font-medium hover:bg-gold/10 hover:text-emerald",
+                isActive(item.href) ? "bg-gold/10 text-emerald" : "text-ink/90"
+              )}
             >
               {item.label}
             </Link>

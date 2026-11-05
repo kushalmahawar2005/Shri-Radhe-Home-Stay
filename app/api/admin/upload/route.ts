@@ -17,11 +17,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  // Either a classic read/write token or a Vercel OIDC-connected Blob store.
+  const blobConfigured = Boolean(
+    process.env.BLOB_READ_WRITE_TOKEN || (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN) || process.env.VERCEL,
+  );
+  if (!blobConfigured) {
     return NextResponse.json(
       {
         error:
-          "Blob storage not configured. Vercel pe Blob store connect karke `vercel env pull` chalao.",
+          "Photo storage is not connected yet. Connect the storage service before uploading photos.",
       },
       { status: 500 }
     );

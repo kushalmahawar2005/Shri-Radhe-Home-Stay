@@ -4,7 +4,7 @@
  * should prefer `lib/content-store.ts` which has graceful fallbacks.
  */
 import "server-only";
-import { and, asc, desc, eq, gt, lt, ne, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, lt, ne, or, sql } from "drizzle-orm";
 import { db } from "./index";
 import {
   rooms,
@@ -17,6 +17,10 @@ import {
 } from "./schema";
 
 /* ── Dashboard ──────────────────────────────────────────────────────── */
+/** Booking statuses that keep the room's dates busy. */
+export const BLOCKING_STATUSES = ["confirmed", "checked_in", "checked_out"] as const;
+const blocksDates = () => or(eq(bookings.kind, "block"), inArray(bookings.status, [...BLOCKING_STATUSES]));
+
 export async function getDashboardStats() {
   const [roomCount] = await db
     .select({ n: sql<number>`count(*)::int` })
@@ -95,6 +99,7 @@ export async function listBookings() {
       booking: bookings,
       roomName: rooms.name,
       roomSlug: rooms.slug,
+      roomPrice: rooms.priceAmount,
     })
     .from(bookings)
     .leftJoin(rooms, eq(bookings.roomId, rooms.id))
@@ -108,6 +113,14 @@ export async function createBooking(data: NewBooking) {
 
 export async function updateBookingStatus(id: number, status: string) {
   await db.update(bookings).set({ status }).where(eq(bookings.id, id));
+}
+
+/** Partial update used by the admin booking workflow. */
+export async function updateBooking(
+  id: number,
+  data: Partial<Pick<NewBooking, "status" | "paymentStatus" | "checkOut" | "notes">>,
+) {
+  await db.update(bookings).set(data).where(eq(bookings.id, id));
 }
 
 export async function deleteBooking(id: number) {
@@ -139,16 +152,30 @@ export async function markBookingPaidByOrderId(
   orderId: string,
   paymentId: string
 ) {
+  const [existing] = await db
+    .select({ id: bookings.id, roomId: bookings.roomId, checkIn: bookings.checkIn, checkOut: bookings.checkOut })
+    .from(bookings)
+    .where(eq(bookings.razorpayOrderId, orderId))
+    .limit(1);
+  if (!existing) return null;
+
+  // Someone else may have confirmed the same dates while this guest was
+  // paying. Keep the payment, but leave the booking for the owner to sort
+  // out instead of double-booking the room.
+  const free = existing.roomId
+    ? await isRoomAvailable(existing.roomId, existing.checkIn, existing.checkOut, existing.id)
+    : true;
+
   const [row] = await db
     .update(bookings)
     .set({
       paymentStatus: "paid",
       razorpayPaymentId: paymentId,
-      status: "confirmed",
+      status: free ? "confirmed" : "pending",
     })
-    .where(eq(bookings.razorpayOrderId, orderId))
+    .where(eq(bookings.id, existing.id))
     .returning({ id: bookings.id });
-  return row ?? null;
+  return row ? { id: row.id, clash: !free } : null;
 }
 
 /** Marks the booking tied to a Razorpay order as payment-failed. */
@@ -187,7 +214,7 @@ export async function getRoomBlocks(roomId: number) {
     .where(
       and(
         eq(bookings.roomId, roomId),
-        or(eq(bookings.kind, "block"), eq(bookings.status, "confirmed"))
+        blocksDates()
       )
     )
     .orderBy(asc(bookings.checkIn));
@@ -205,7 +232,7 @@ export async function isRoomAvailable(
 ) {
   const conditions = [
     eq(bookings.roomId, roomId),
-    or(eq(bookings.kind, "block"), eq(bookings.status, "confirmed")),
+    blocksDates(),
     lt(bookings.checkIn, checkOut),
     gt(bookings.checkOut, checkIn),
   ];

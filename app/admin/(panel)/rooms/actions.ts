@@ -13,11 +13,11 @@ import {
 export type RoomFormState = { error?: string };
 
 const schema = z.object({
-  name: z.string().min(1, "Room name zaroori hai."),
+  name: z.string().min(1, "Add a room name to continue."),
   slug: z
     .string()
     .min(1)
-    .regex(/^[a-z0-9-]+$/, "Slug mein sirf chhote letters, numbers aur - chalega."),
+    .regex(/^[a-z0-9-]+$/, "The room link can use lowercase letters, numbers, and hyphens only."),
   priceNight: z.string().default(""),
   priceAmount: z.coerce.number().int().nonnegative().optional(),
   price: z.string().default("On Request"),
@@ -43,6 +43,11 @@ function revalidatePublic() {
   revalidatePath("/");
   revalidatePath("/rooms");
   revalidatePath("/booking");
+  revalidatePath("/gallery");
+  revalidatePath("/stay-near-shrinathji-temple");
+  // Room detail pages are statically generated; refresh all of them so a
+  // renamed, edited or deleted room shows up straight away.
+  revalidatePath("/rooms/[slug]", "page");
   revalidatePath("/admin/rooms");
 }
 
@@ -68,7 +73,7 @@ export async function saveRoomAction(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Form mein error hai." };
+    return { error: parsed.error.issues[0]?.message ?? "Please check the form and try again." };
   }
 
   const data = {
@@ -91,13 +96,13 @@ export async function saveRoomAction(
   } catch (e) {
     const msg = e instanceof Error ? e.message : "";
     if (msg.includes("unique") || msg.includes("duplicate")) {
-      return { error: "Ye slug pehle se use ho raha hai. Doosra slug daalo." };
+      return { error: "This room link is already in use. Please choose another one." };
     }
-    return { error: "Save nahi hua. Thodi der baad try karo." };
+    return { error: "This room could not be saved. Please try again." };
   }
 
   revalidatePublic();
-  redirect("/admin/rooms");
+  redirect("/admin/rooms?saved=1");
 }
 
 export async function deleteRoomAction(formData: FormData) {

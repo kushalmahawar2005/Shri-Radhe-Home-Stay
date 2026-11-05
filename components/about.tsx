@@ -7,7 +7,7 @@ import { BLUR_DATA_URL } from "@/lib/utils";
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-cream py-16 md:py-24">
+    <section id="about" className="relative overflow-hidden bg-cream py-5 sm:py-16 md:py-24">
       <div className="container">
         <SectionHeading
           eyebrow="About Us"
@@ -15,7 +15,7 @@ export function About() {
           highlight="Divine"
         />
 
-        <div className="mt-12 grid items-center gap-10 md:grid-cols-2 md:gap-14">
+        <div className="mt-5 sm:mt-12 grid items-center gap-10 md:grid-cols-2 md:gap-14">
           {/* building photo */}
           <Reveal className="group relative">
             <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-gold/40 shadow-card">
@@ -37,7 +37,7 @@ export function About() {
             <p className="text-lg leading-relaxed text-ink/80">
               Located near Shrinathji Temple, Shri Radha Villa Stay offers a
               peaceful and comfortable environment for devotees and travellers
-              visiting Nathdwara. Enjoy spotless AC rooms, 24x7 hot water,
+              visiting Nathdwara. Enjoy spotless AC & non-AC rooms, 24x7 hot water,
               free WiFi and the warmth of a true home — just a short walk from
               the temple.
             </p>

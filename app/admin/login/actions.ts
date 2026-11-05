@@ -20,27 +20,29 @@ export async function loginAction(
   if (!isDbConfigured()) {
     return {
       error:
-        "Database abhi connect nahi hai. Vercel pe Postgres connect karke seed chalao.",
+        "The database is not connected yet. Connect the database and add the first admin account.",
     };
   }
 
   const parsed = schema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
-    from: formData.get("from"),
+    // FormData.get returns null when the optional hidden field is absent.
+    // Normalize it before validation so direct visits to /admin/login work.
+    from: formData.get("from") ?? undefined,
   });
   if (!parsed.success) {
-    return { error: "Sahi email aur password daalo." };
+    return { error: "Enter a valid email address and password." };
   }
 
   let session;
   try {
     session = await authenticate(parsed.data.email, parsed.data.password);
   } catch {
-    return { error: "Server error. Thodi der baad try karo." };
+    return { error: "Something went wrong. Please try again in a moment." };
   }
   if (!session) {
-    return { error: "Galat email ya password." };
+    return { error: "The email or password is incorrect." };
   }
 
   await createSession(session);

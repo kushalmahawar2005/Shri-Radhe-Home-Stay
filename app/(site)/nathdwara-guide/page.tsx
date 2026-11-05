@@ -165,7 +165,7 @@ export default async function NathdwaraGuidePage() {
       />
 
       {/* ── hero ── */}
-      <section className="bg-cream-gradient py-14 md:py-20">
+      <section className="bg-cream-gradient py-5 sm:py-14 md:py-20">
         <div className="container grid items-center gap-10 lg:grid-cols-2">
           <Reveal className="flex flex-col gap-4">
             <Eyebrow>Travel Guide</Eyebrow>
@@ -202,7 +202,7 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── darshan timings ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Shrinathji Temple"
@@ -211,7 +211,7 @@ export default async function NathdwaraGuidePage() {
             subtitle="Shrinathji is not open all day. The deity is shown in eight short darshans, and the temple closes in between — so plan your day around these slots."
           />
 
-          <div className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-gold/30 bg-cream-light shadow-card">
+          <div className="mx-auto mt-5 sm:mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-gold/30 bg-cream-light shadow-card">
             <table className="w-full min-w-[32rem] text-left text-sm">
               <caption className="sr-only">
                 The eight daily darshans of Shrinathji at Nathdwara with
@@ -253,14 +253,14 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── how to reach ── */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Getting There"
             title="How to Reach Nathdwara"
             highlight="Reach"
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-5 sm:mt-12 grid gap-6 md:grid-cols-3">
             {ROUTES.map((r) => (
               <Reveal
                 key={r.mode}
@@ -278,14 +278,14 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── best time to visit ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="When to Go"
             title="Best Time to Visit Nathdwara"
             highlight="Best"
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-5 sm:mt-12 grid gap-6 md:grid-cols-3">
             {SEASONS.map((s) => (
               <Reveal
                 key={s.season}
@@ -303,7 +303,7 @@ export default async function NathdwaraGuidePage() {
             ))}
           </div>
 
-          <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
+          <div className="mx-auto mt-5 sm:mt-10 max-w-3xl rounded-2xl border border-gold/30 bg-cream-light p-6 shadow-soft">
             <h3 className="font-serif text-xl font-semibold text-ink">
               Festivals worth planning around
             </h3>
@@ -317,7 +317,7 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── places to visit ── */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Sightseeing"
@@ -325,7 +325,7 @@ export default async function NathdwaraGuidePage() {
             highlight="Visit"
             subtitle="Everything below is an easy half-day or day trip from the temple town."
           />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-5 sm:mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {attractions.map((a) => (
               <Reveal
                 key={a.name}
@@ -369,13 +369,13 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── where to stay ── */}
-      <section className="bg-cream py-14 md:py-20">
+      <section className="bg-cream py-5 sm:py-14 md:py-20">
         <div className="container grid items-center gap-10 lg:grid-cols-2">
           <Reveal>
             <figure className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/30 shadow-card">
               <Image
-                src="/images/room-deluxe.jpg"
-                alt={`AC room at ${brand.name}, a home stay near Shrinathji Temple in Nathdwara`}
+                src="/images/rooms/makhan-chor/01.webp"
+                alt={`Guest room at ${brand.name}, a home stay near Shrinathji Temple in Nathdwara`}
                 fill
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -394,8 +394,8 @@ export default async function NathdwaraGuidePage() {
               Because darshan happens in short slots from before dawn to early
               evening, where you stay decides how much of the day you spend in
               transport. {brand.name} is an 8 minute walk from Shrinathji
-              Temple — AC rooms with attached bathrooms, 24x7 hot water, free
-              WiFi, free parking and a family that will help you plan darshan,
+              Temple — AC and non-AC rooms with attached bathrooms, 24x7 hot
+              water, free tea and coffee, WiFi, private parking and a family that will help you plan darshan,
               taxis and sightseeing.
             </p>
             <div className="mt-2 flex flex-wrap gap-3">
@@ -419,7 +419,7 @@ export default async function NathdwaraGuidePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="bg-cream-alt py-14 md:py-20">
+      <section className="bg-cream-alt py-5 sm:py-14 md:py-20">
         <div className="container">
           <SectionHeading
             eyebrow="Common Questions"

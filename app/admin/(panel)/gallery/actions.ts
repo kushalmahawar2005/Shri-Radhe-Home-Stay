@@ -18,11 +18,11 @@ export async function addGalleryAction(
   const src = String(formData.get("src") || "");
   const alt = String(formData.get("alt") || "");
   const category = String(formData.get("category") || "Rooms");
-  if (!src) return { error: "Pehle ek photo upload karo." };
+  if (!src) return { error: "Choose a photo before adding it." };
   try {
     await addGalleryImage({ src, alt, category });
   } catch {
-    return { error: "Save nahi hua. Dobara try karo." };
+    return { error: "The photo could not be added. Please try again." };
   }
   revalidate();
   return { ok: true };

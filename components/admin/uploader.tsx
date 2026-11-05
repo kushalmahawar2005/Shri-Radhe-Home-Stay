@@ -8,7 +8,7 @@ async function uploadFile(file: File): Promise<string> {
   fd.append("file", file);
   const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || "Upload failed");
+  if (!res.ok) throw new Error(data.error || "Photo could not be uploaded. Please try again.");
   return data.url as string;
 }
 
@@ -42,8 +42,8 @@ export function ImageField({
   return (
     <div>
       <span className="mb-1.5 block text-sm font-medium text-ink/80">{label}</span>
-      <div className="flex items-center gap-4">
-        <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg border border-gold/30 bg-cream">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="relative h-28 w-full max-w-48 shrink-0 overflow-hidden rounded-xl border border-gold/30 bg-cream">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="" className="h-full w-full object-cover" />
@@ -53,7 +53,7 @@ export function ImageField({
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex min-w-0 flex-col items-start gap-2">
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -65,18 +65,20 @@ export function ImageField({
             ) : (
               <UploadCloud className="h-4 w-4" />
             )}
-            {value ? "Replace" : "Upload"}
+            {busy ? "Uploading…" : value ? "Change photo" : "Choose photo"}
           </button>
           <input
-            type="url"
+            type="text"
+            inputMode="url"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="or paste an image URL / path"
-            className="w-64 rounded-lg border border-gold/40 bg-white px-2.5 py-1.5 text-xs text-ink"
+            aria-label={`${label} URL`}
+            placeholder="Or paste a photo link"
+            className="w-full max-w-full rounded-lg border border-gold/40 bg-white px-3 py-2.5 text-sm text-ink sm:w-72"
           />
         </div>
       </div>
-      {error ? <p className="mt-1 text-xs text-red-600">{error}</p> : null}
+      {error ? <p role="alert" className="mt-1 text-sm text-red-600">{error}</p> : null}
       <input
         ref={inputRef}
         type="file"
@@ -136,7 +138,7 @@ export function GalleryField({
             <button
               type="button"
               onClick={() => onChange(value.filter((_, j) => j !== i))}
-              className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition group-hover:opacity-100"
+              className="absolute right-1 top-1 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition sm:opacity-0 sm:group-hover:opacity-100"
               aria-label="Remove image"
             >
               <X className="h-3 w-3" />
@@ -154,10 +156,10 @@ export function GalleryField({
           ) : (
             <UploadCloud className="h-5 w-5" />
           )}
-          Add
+          Add photo
         </button>
       </div>
-      {error ? <p className="mt-1 text-xs text-red-600">{error}</p> : null}
+      {error ? <p role="alert" className="mt-1 text-sm text-red-600">{error}</p> : null}
       <input
         ref={inputRef}
         type="file"

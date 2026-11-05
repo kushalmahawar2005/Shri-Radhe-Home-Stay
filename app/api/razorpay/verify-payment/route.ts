@@ -5,7 +5,9 @@ import { z } from "zod";
 import {
   markBookingPaidByOrderId,
   markBookingPaymentFailedByOrderId,
+  getBookingById,
 } from "@/lib/db/queries";
+import { notifyAdminsQuickly, shortDate } from "@/lib/push";
 
 const schema = z.object({
   razorpay_order_id: z.string().min(1),
@@ -63,7 +65,19 @@ export async function POST(req: NextRequest) {
     revalidatePath("/booking");
     revalidatePath("/rooms/[slug]", "page");
 
-    return NextResponse.json({ ok: true, bookingId: booking.id });
+    const full = await getBookingById(booking.id).catch(() => null);
+    await notifyAdminsQuickly({
+      title: booking.clash
+        ? "⚠️ Advance paid but dates are already taken — call the guest"
+        : "✅ New booking — advance paid",
+      body: full
+        ? `${full.booking.guestName || "A guest"} · ${full.roomName ?? "Room"} · ${shortDate(full.booking.checkIn)} → ${shortDate(full.booking.checkOut)}${full.booking.guests ? ` · ${full.booking.guests}` : ""}`
+        : `Booking #${booking.id} — advance received`,
+      url: "/admin/bookings/",
+      tag: `booking-${booking.id}`,
+    });
+
+    return NextResponse.json({ ok: true, bookingId: booking.id, clash: booking.clash });
   } catch (err) {
     console.error("[verify-payment]", err);
     return NextResponse.json({ error: "Verification failed" }, { status: 500 });

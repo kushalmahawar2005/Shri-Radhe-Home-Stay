@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import {
   CheckCircle2,
-  Mail,
   PhoneCall,
   ClipboardCheck,
   ShieldCheck,
@@ -13,6 +12,7 @@ import {
 import { getBrand, getContact } from "@/lib/content-store";
 import { Button } from "@/components/ui/button";
 import { BookingSummary } from "@/components/booking-summary";
+import { siteConfig } from "@/lib/site-config";
 
 export const revalidate = 3600;
 
@@ -24,94 +24,111 @@ export const metadata: Metadata = {
   alternates: { canonical: "/booking/success/" },
 };
 
-const steps = [
-  {
-    icon: PhoneCall,
-    title: "We Will Call You",
-    desc: "Our team will call you to confirm your stay details.",
-  },
-  {
-    icon: MessageCircle,
-    title: "WhatsApp Support",
-    desc: "You can also message us directly on WhatsApp anytime.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Booking Under Review",
-    desc: "Your booking is being reviewed and will be confirmed shortly.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Safe & Secure",
-    desc: "Your information is safe and secure with us at every step.",
-  },
-];
+function nextSteps(paid: boolean) {
+  return [
+    paid
+      ? {
+          icon: ShieldCheck,
+          title: "Room reserved for you",
+          desc: "Your advance is received and the room is held for your dates.",
+        }
+      : {
+          icon: ClipboardCheck,
+          title: "We check your request",
+          desc: "We confirm the room is free for your dates — usually within a few hours.",
+        },
+    {
+      icon: PhoneCall,
+      title: "We call you",
+      desc: paid
+        ? "Our family will call to share directions and your check-in details."
+        : "We call or WhatsApp you to confirm the booking. No payment is needed now.",
+    },
+    {
+      icon: MessageCircle,
+      title: "Message us anytime",
+      desc: "Questions about arrival, taxis or darshan timings? Just WhatsApp us.",
+    },
+  ];
+}
 
 export default async function BookingSuccessPage({
   searchParams,
 }: {
-  searchParams: { paymentStatus?: string };
+  searchParams: { paymentStatus?: string; review?: string };
 }) {
   const [brand, contact] = await Promise.all([getBrand(), getContact()]);
   const paid = searchParams?.paymentStatus === "paid";
+  const review = paid && searchParams?.review === "1";
+  const steps = nextSteps(paid);
   return (
     <>
-      <section className="bg-cream-gradient py-16 md:py-24">
+      <section className="bg-cream-gradient pb-8 pt-5 sm:pt-12 md:pb-10 md:pt-16">
         <div className="container max-w-3xl text-center">
-          <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald/10">
-            <CheckCircle2 className="h-12 w-12 text-emerald" />
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald/10">
+            <CheckCircle2 className="h-10 w-10 text-emerald" />
           </span>
-          <h1 className="mt-6 font-serif text-4xl font-bold text-ink sm:text-5xl">
-            Thank You!
+          <h1 className="mt-5 font-serif text-4xl font-bold text-ink sm:text-5xl">
+            {review ? "Payment Received" : paid ? "Booking Confirmed!" : "Request Received!"}
           </h1>
-          <p className="mt-3 font-serif text-xl italic text-gold-dark">
-            {paid
-              ? "Your Booking Is Confirmed"
-              : "Your Booking Request Has Been Received"}
+          <p
+            className={
+              paid
+                ? "mx-auto mt-3 inline-flex rounded-full bg-emerald/10 px-3 py-1 text-sm font-semibold text-emerald"
+                : "mx-auto mt-3 inline-flex rounded-full bg-gold/15 px-3 py-1 text-sm font-semibold text-gold-dark"
+            }
+          >
+            {paid ? `₹${siteConfig.advanceAmount} advance paid` : "Awaiting confirmation · pay at the villa"}
           </p>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-ink/70">
-            We truly appreciate you choosing {brand.name}.{" "}
-            {paid
-              ? "Your advance payment is received and our team will call you shortly with your stay details."
-              : "Our team will contact you shortly to confirm your stay."}
+            Thank you for choosing {brand.name}.{" "}
+            {review
+              ? "Your payment is safe with us, but someone booked these dates a moment before you. We'll call you right away to offer another room or a full refund."
+              : paid
+                ? "Your room is reserved — we'll call you shortly with your stay details."
+                : "We'll call or WhatsApp you shortly to confirm your stay."}
           </p>
         </div>
       </section>
 
-      {/* next steps */}
-      <section className="bg-cream py-12 md:py-16">
-        <div className="container">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s) => (
-              <div
-                key={s.title}
-                className="flex flex-col items-center gap-3 rounded-2xl border border-gold/30 bg-cream-light p-6 text-center shadow-soft"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald/10">
-                  <s.icon className="h-6 w-6 text-emerald" />
-                </span>
-                <h3 className="font-serif text-base font-semibold text-ink">
-                  {s.title}
-                </h3>
-                <p className="text-xs leading-relaxed text-ink/60">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* summary */}
-          <div className="mx-auto mt-10 max-w-3xl">
-            <h2 className="mb-4 font-serif text-2xl font-bold text-ink">
-              Booking Summary
-            </h2>
-            <Suspense fallback={<div className="h-40" />}>
+      <section className="bg-cream pb-12 md:pb-16">
+        <div className="container grid max-w-5xl gap-6 lg:grid-cols-[1.6fr_1fr] lg:items-start">
+          <div>
+            <h2 className="mb-3 font-serif text-2xl font-bold text-ink">Booking Summary</h2>
+            <Suspense fallback={<div className="h-64 rounded-2xl border border-gold/30 bg-cream-light" />}>
               <BookingSummary />
             </Suspense>
+            <p className="mt-3 text-xs text-ink/55">
+              Keep your booking ID handy — share it when you call or WhatsApp us.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-3 font-serif text-2xl font-bold text-ink">What happens next</h2>
+            <ol className="flex flex-col gap-3">
+              {steps.map((s, i) => (
+                <li
+                  key={s.title}
+                  className="flex gap-3 rounded-2xl border border-gold/30 bg-cream-light p-4 shadow-soft"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald/10">
+                    <s.icon className="h-5 w-5 text-emerald" />
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-base font-semibold text-ink">
+                      <span className="text-gold-dark">{i + 1}.</span> {s.title}
+                    </h3>
+                    <p className="mt-0.5 text-sm leading-relaxed text-ink/65">{s.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
       {/* assistance + back home */}
-      <section className="bg-cream-alt py-12 md:py-16">
+      <section className="bg-cream-alt py-5 sm:py-12 md:py-16">
         <div className="container max-w-3xl">
           <div className="flex flex-col items-center justify-between gap-5 rounded-2xl border border-gold/30 bg-cream-light px-8 py-7 text-center shadow-card md:flex-row md:text-left">
             <div>
